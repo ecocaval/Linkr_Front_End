@@ -1,8 +1,14 @@
-
+import PageHeader from "./components/PageHeader/PageHeader";
+import { PageBackground } from "./components/PageBackGround/styles";
 
 function App() {
   return (
-    <div>app</div>
+    <>
+      <PageBackground>
+        <PageHeader />
+
+      </PageBackground>
+    </>
   );
 }
 
