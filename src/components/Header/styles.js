@@ -8,8 +8,6 @@ export const HeaderCSSvariables = styled.div`
 `
 
 export const StyledHeader = styled.header`
-    position: fixed;
-    top: 0;
     width: 100%;
     display: flex;
     align-items: center;

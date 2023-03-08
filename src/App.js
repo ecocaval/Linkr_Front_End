@@ -1,12 +1,11 @@
 import { Background } from "./components/BackGround/styles";
-import Header from "./components/Header/Header";
+import { Router } from "./routes"
 
 function App() {
   return (
     <>
       <Background>
-        <Header />
-        
+        <Router />
       </Background>
     </>
   );
