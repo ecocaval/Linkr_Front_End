@@ -1,13 +1,13 @@
-import PageHeader from "./components/PageHeader/PageHeader";
-import { PageBackground } from "./components/PageBackGround/styles";
+import { Background } from "./components/BackGround/styles";
+import Header from "./components/Header/Header";
 
 function App() {
   return (
     <>
-      <PageBackground>
-        <PageHeader />
-
-      </PageBackground>
+      <Background>
+        <Header />
+        
+      </Background>
     </>
   );
 }
