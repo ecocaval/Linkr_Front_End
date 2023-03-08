@@ -1,7 +1,10 @@
 import styled from "styled-components"
+import { fadeUp, reverseFadeUp } from "../../styles/animations/fadeUp"
+import { reverseSpin180, spin180 } from "../../styles/animations/spin180"
 
-export const CSSvariables = styled.div`
+export const HeaderCSSvariables = styled.div`
     --header-height: 72px;
+    --user-search-bg: #E7E7E7;
 `
 
 export const StyledHeader = styled.header`
@@ -19,48 +22,8 @@ export const StyledHeader = styled.header`
 
 export const StyledLogo = styled.h1`
     font-family: 'Passion One';
-    font-size: 49px;
+    font-size: 3rem;
     color: #FFFFFF;
-`
-
-export const InputWrapper = styled.div`
-    position: relative;
-    width: 563px;
-    height: 45px;
-    margin: 0 20px;
-
-    > i {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-
-        @media (max-width: 475px) {
-            display: none;
-        }
-    }
-`
-
-export const StyledInput = styled.input`
-    width: 100%;
-    height: 100%;
-    background: #FFFFFF;
-    border-radius: 8px;
-    padding: 0 10px;
-    font-size: 19px;
-    transition: 0.2s all;
-
-    &:focus {
-       outline: none;
-    }
-
-    &::placeholder{
-        font-family: 'Lato';
-        color: var(--placeholder-gray);
-    }
-
-    @media (max-width: 475px) {
-        display: none;
-    }
 `
 
 export const StyledUserAside = styled.div`
@@ -76,28 +39,10 @@ export const StyledUserAside = styled.div`
 `
 
 export const ArrowController = styled.div`
-    animation: ${props => props.arrowWasClicked ? "spin-180" : "reverse-spin-180"} 0.2s ease-out forwards;
+    animation: ${props => props.arrowWasClicked ? spin180 : (props.arrowWasFirstClicked ? reverseSpin180 : "")} 0.2s ease-out forwards;
 
     &:hover {
         cursor: pointer;
-    }
-
-    @keyframes spin-180 {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(180deg);
-        }
-    }
-
-    @keyframes reverse-spin-180 {
-        from {
-            transform: rotate(180deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
     }
 `
 
@@ -114,7 +59,7 @@ export const LogoutModal = styled.div`
     top: 0;
     opacity: 0;
     z-index: 0;
-    animation: ${props => props.arrowWasClicked ? "fade-up" : "reverse-fade-up"} 0.2s ease-out forwards;
+    animation: ${props => props.arrowWasClicked ? fadeUp : (props.arrowWasFirstClicked ? reverseFadeUp : "")} 0.2s ease-out forwards;
 
     > p {
         color: #FFFFFF;
@@ -124,26 +69,12 @@ export const LogoutModal = styled.div`
             cursor: pointer;
         }
     }
+`
 
-    @keyframes fade-up {
-        0% {
-            top: 0;
-            opacity: 0;
-        }
-        100% {
-            top: var(--header-height);
-            opacity: 1;
-        }
-    }
+export const MobileSearcher = styled.div`
+    display: none;
 
-    @keyframes reverse-fade-up {
-        0% {
-            top: var(--header-height);
-            opacity: 1;
-        }
-        100% {
-            top: 0;
-            opacity: 0;
-        }
+    @media (max-width: 475px) {
+        display: block;
     }
 `

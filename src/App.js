@@ -1,5 +1,5 @@
-import Header from "./components/Header/Header";
 import { Background } from "./components/BackGround/styles";
+import Header from "./components/Header/Header";
 
 function App() {
   return (
