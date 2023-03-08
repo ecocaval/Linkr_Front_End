@@ -7,7 +7,7 @@ export const InputWrapper = styled.div`
     justify-content: center;
     width: 100%;
     height: 60px;
-    background-color: var(--strong-black);
+    margin-top: 20px;
 
     @media (min-width: 475px) {
         display: none;
@@ -17,7 +17,7 @@ export const InputWrapper = styled.div`
 export const StyledInput = styled.input`
     position: absolute;
     z-index: 3;
-    width: 70%;
+    width: 90%;
     height: 80%;
     background: #FFFFFF;
     border-radius: 8px;

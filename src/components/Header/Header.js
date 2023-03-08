@@ -27,7 +27,7 @@ export default function Header() {
     const [arrowWasClicked, setArrowWasClicked] = useState(false)
     const [arrowWasFirstClicked, setArrowWasFirstClicked] = useState(false)
     const [usersSearchFiltered, setUserSearchFiltered] = useState([])
-    const [showMobileSearchInput, setShowMobileSearchInput] = useState(false)
+    const [showMobileSearchInput, setShowMobileSearchInput] = useState(true)
 
     useEffect(() => {
         setUserSearchFiltered(filterArrayByInput(users, headerInputValue))
