@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import { HeaderContext } from "../../../contexts/HeaderContext";
 import { InputWrapper, StyledInput, UsersInSearch } from "./styles"
 
-export default function SearchInput() {
+export default function MobileSearchInput() {
 
     const {
         usersSearchFiltered,
@@ -23,7 +23,7 @@ export default function SearchInput() {
             <i><FaSearch style={{ color: "gray" }} /></i>
             <UsersInSearch usersSearchFiltered={usersSearchFiltered}>
                 {usersSearchFiltered.map((user, index) => (
-                    <ul key={index}>
+                    <ul key={index} data-test="user-search">
                         <img src={user.picture_url} alt="user search img" />
                         <p>{user.name}</p>
                     </ul>

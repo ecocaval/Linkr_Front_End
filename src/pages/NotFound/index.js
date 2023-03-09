@@ -1,8 +1,12 @@
 
+import { Wrapper } from "./styles"
 
-
-export default () => {
-    return(
-        <div>404: Página não encontrada</div>
+export const NotFound = () => {
+    return (
+        <>
+            <Wrapper>
+                <p>404: Página não encontrada</p>
+            </Wrapper>
+        </>
     )
 }
