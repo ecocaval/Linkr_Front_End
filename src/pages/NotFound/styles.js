@@ -9,5 +9,6 @@ export const Wrapper = styled.div`
     > p {
         font-size: 2rem;
         color: #FFF;
+        text-align: center;
     }
 `
