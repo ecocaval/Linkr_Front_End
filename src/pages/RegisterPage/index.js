@@ -15,13 +15,13 @@ export default function RegisterPage() {
   async function register(e) {
     e.preventDefault()
 
-    const URL = `http://localhost:5000/signup`
+    const URL = `${process.env.REACT_APP_API_URL}/signup`
     const body = {email, password, name, image}
     setIsClicked(true)
 
     try {
       await axios.post(URL, body)
-      navigate('/signin')
+      navigate('/')
       setIsClicked(false)
     } catch (err) {
       alert(err.response.data)
@@ -40,7 +40,7 @@ export default function RegisterPage() {
           <input placeholder="picure url" type="url" value={image} onChange={(e) => setImage(e.target.value)} required disabled={isClicked}/>
           <button type="submit" disabled={isClicked}>Sign Up</button>
 				</form>
-        <p onClick={() => navigate('/signin')}>Switch back to log in</p>
+        <p onClick={() => navigate('/')}>Switch back to log in</p>
 			</FormContainer>
     </Container>
   )

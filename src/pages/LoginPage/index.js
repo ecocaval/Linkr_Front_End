@@ -13,7 +13,7 @@ export default function LoginPage() {
   async function login(e) {
     e.preventDefault()
 
-    const URL = `http://localhost:5000/signin`
+    const URL = `${process.env.REACT_APP_API_URL}/signin`
     const body = {email, password}
     setIsClicked(true)
 
