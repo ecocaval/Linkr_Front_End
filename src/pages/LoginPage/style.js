@@ -2,20 +2,28 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  @media (max-width: 475px) {
+  @media (max-width: 725px) {
     display: flex;
     flex-direction: column;
   }
 `
 
 export const FormContainer = styled.div`
-  width: 536px;
+  width: 50%;
   height: 100vh;
-  background-color: #333;
-  padding-top: 274px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  @media (max-width: 725px) {
+    padding-top: 40px;
+    margin: auto;
+    height: auto;
+  }
+  @media (max-width: 900px) {
+    width: 70%;
+  }
   form {
     display: flex;
     flex-direction: column;
@@ -23,7 +31,7 @@ export const FormContainer = styled.div`
   }
   input {
     background-color: #FFF;
-    width: 429px;
+    width: 430px;
     height: 65px;
     border: none;
     border-radius: 6px;
@@ -38,7 +46,7 @@ export const FormContainer = styled.div`
     }
   }
   button {
-    width: 429px;
+    width: 430px;
     height: 65px;
     background-color: #1877F2;
     border: none;

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthLogo from "../../components/AuthLogo";
-import { Container, FormContainer } from "./style";
+import { Container, FormContainer } from "../LoginPage/style";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState('')

@@ -5,8 +5,9 @@ export const AuthLogoContainer = styled.div`
   height: 100vh;
   background-color: #151515;
   color: #FFF;
-  padding-top: 301px;
-  padding-left: 144px;
+  padding-top: 300px;
+  padding-left: 140px;
+  padding-right: 30px;
   h1 {
     font-family: 'Passion One', cursive;
     font-size: 106px;
@@ -17,7 +18,10 @@ export const AuthLogoContainer = styled.div`
     font-size: 43px;
     font-weight: 700;
   }
-  @media (max-width: 475px) {
+  @media (max-width:900px) {
+    padding: 300px 20px 0 20px;
+  }
+  @media (max-width: 725px) {
     width: 100%;
     height: 30%;
     display: flex;
