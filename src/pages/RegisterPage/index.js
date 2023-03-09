@@ -16,7 +16,7 @@ export default function RegisterPage() {
     e.preventDefault()
 
     const URL = `${process.env.REACT_APP_API_URL}/signup`
-    const body = {email, password, name, image}
+    const body = { email, password, name, image }
     setIsClicked(true)
 
     try {
@@ -29,19 +29,55 @@ export default function RegisterPage() {
     }
   }
 
-  return(
+  return (
     <Container>
       <AuthLogo />
       <FormContainer>
-				<form onSubmit={register}>
-					<input placeholder="e-mail" type="email" value={email} autoComplete="current-email" onChange={(e) => setEmail(e.target.value)} required disabled={isClicked}/>
-          <input placeholder="password" type="password" value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} required disabled={isClicked}/>
-          <input placeholder="username" type="text" value={name} autoComplete="on" onChange={(e) => setName(e.target.value)} required disabled={isClicked}/>
-          <input placeholder="picure url" type="url" value={image} autoComplete="on" onChange={(e) => setImage(e.target.value)} required disabled={isClicked}/>
-          <button type="submit" disabled={isClicked}>Sign Up</button>
-				</form>
-        <p onClick={() => navigate('/')}>Switch back to log in</p>
-			</FormContainer>
+        <form onSubmit={register}>
+          <input
+            placeholder="e-mail"
+            data-test="email"
+            type="email"
+            value={email}
+            autoComplete="current-email"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            disabled={isClicked}
+          />
+          <input
+            placeholder="password"
+            data-test="password"
+            type="password"
+            value={password}
+            autoComplete="current-password"
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            disabled={isClicked}
+          />
+          <input
+            placeholder="username"
+            data-test="username"
+            type="text"
+            value={name}
+            autoComplete="on"
+            onChange={(e) => setName(e.target.value)}
+            required
+            disabled={isClicked}
+          />
+          <input
+            placeholder="picure url"
+            data-test="picture-url"
+            type="url"
+            value={image}
+            autoComplete="on"
+            onChange={(e) => setImage(e.target.value)}
+            required
+            disabled={isClicked}
+          />
+          <button type="submit" disabled={isClicked} data-test="sign-up-btn">Sign Up</button>
+        </form>
+        <p data-test="login-link" onClick={() => navigate('/')}>Switch back to log in</p>
+      </FormContainer>
     </Container>
   )
 }

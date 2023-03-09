@@ -14,7 +14,7 @@ export default function LoginPage() {
     e.preventDefault()
 
     const URL = `${process.env.REACT_APP_API_URL}/signin`
-    const body = {email, password}
+    const body = { email, password }
     setIsClicked(true)
 
     try {
@@ -28,17 +28,35 @@ export default function LoginPage() {
     }
   }
 
-	return (
-		<Container>
-			<AuthLogo />
-			<FormContainer>
-				<form onSubmit={login}>
-					<input placeholder="e-mail" type="email" value={email} autoComplete="current-email" onChange={(e) => setEmail(e.target.value)} required disabled={isClicked}/>
-          <input placeholder="password" type="password" value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} required disabled={isClicked}/>
-          <button type="submit" disabled={isClicked}>Log In</button>
-				</form>
-        <p onClick={() => navigate('/signup')}>First time? Create an account!</p>
-			</FormContainer>
-		</Container>
-	);
+  return (
+    <Container>
+      <AuthLogo />
+      <FormContainer>
+        <form onSubmit={login}>
+          <input
+            placeholder="e-mail"
+            data-test="email"
+            type="email"
+            value={email}
+            autoComplete="current-email"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            disabled={isClicked}
+          />
+          <input
+            placeholder="password"
+            data-test="password"
+            type="password"
+            value={password}
+            autoComplete="current-password"
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            disabled={isClicked}
+          />
+          <button type="submit" disabled={isClicked} data-test="login-btn">Log In</button>
+        </form>
+        <p data-test="sign-up-link" onClick={() => navigate('/signup')}>First time? Create an account!</p>
+      </FormContainer>
+    </Container>
+  );
 }
