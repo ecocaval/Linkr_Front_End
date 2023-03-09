@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { FaSearch } from "react-icons/fa";
+import { DebounceInput } from 'react-debounce-input';
 import { HeaderContext } from "../../../contexts/HeaderContext";
 import { InputWrapper, StyledInput, UsersInSearch } from "./styles"
 
@@ -13,13 +14,17 @@ export default function SearchInput() {
 
     return (
         <InputWrapper>
-            <StyledInput
-                placeholder="Search for people..."
-                value={headerInputValue}
-                onChange={(e) => { setHeaderInputValue(e.currentTarget.value) }}
-                type="text"
-                data-test="search"
-            />
+            <StyledInput>
+                <DebounceInput
+                    minLength={3}
+                    debounceTimeout={300}
+                    placeholder="Search for people..."
+                    value={headerInputValue}
+                    onChange={(e) => { setHeaderInputValue(e.target.value) }}
+                    type="text"
+                    data-test="search"
+                />
+            </StyledInput>
             <i><FaSearch style={{ color: "gray" }} /></i>
             <UsersInSearch usersSearchFiltered={usersSearchFiltered}>
                 {usersSearchFiltered.map((user, index) => (

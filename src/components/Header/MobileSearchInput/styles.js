@@ -14,25 +14,29 @@ export const InputWrapper = styled.div`
     }
 `
 
-export const StyledInput = styled.input`
+export const StyledInput = styled.div`
     position: absolute;
     z-index: 3;
     width: 90%;
-    height: 80%;
-    background: #FFFFFF;
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 1.2rem;
-    transition: 0.2s all;
-    border: none;
+    
+    > input {
+        width: 100%;
+        height: 80%;
+        background: #FFFFFF;
+        border-radius: 8px;
+        padding: 10px;
+        font-size: 1.2rem;
+        transition: 0.2s all;
+        border: none;
 
-    &:focus {
-       outline: none;
-    }
+        &:focus {
+            outline: none;
+        }
 
-    &::placeholder{
-        font-family: 'Lato';
-        color: var(--placeholder-gray);
+        &::placeholder{
+            font-family: 'Lato';
+            color: var(--placeholder-gray);
+        }
     }
 `
 
@@ -40,7 +44,7 @@ export const UsersInSearch = styled.div`
     position: absolute;
     top: 0;
     z-index: 2;
-    width: 70%;
+    width: 90%;
     border-radius: 8px;
     padding: 10px;
     padding-top: ${props => props.usersSearchFiltered.length !== 0 && "60px"};
