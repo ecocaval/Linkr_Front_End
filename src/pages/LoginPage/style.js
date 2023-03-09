@@ -2,6 +2,10 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
+  @media (max-width: 475px) {
+    display: flex;
+    flex-direction: column;
+  }
 `
 
 export const FormContainer = styled.div`
@@ -53,5 +57,21 @@ export const FormContainer = styled.div`
     margin-top: 22px;
     text-decoration: underline;
     cursor: pointer;
+  }
+  @media (max-width: 475px) {
+    width: 100%;
+    height: 100%;
+    padding-top: 40px;
+    input {
+      width: 100%;
+      height: 56px;
+    }
+    button {
+      width: 100%;
+      height: 56px;
+    }
+    p {
+      font-size: 17px;
+    }
   }
 `
