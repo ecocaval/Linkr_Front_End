@@ -33,8 +33,8 @@ export default function LoginPage() {
 			<AuthLogo />
 			<FormContainer>
 				<form onSubmit={login}>
-					<input placeholder="e-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={isClicked}/>
-          <input placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={isClicked}/>
+					<input placeholder="e-mail" type="email" value={email} autoComplete="current-email" onChange={(e) => setEmail(e.target.value)} required disabled={isClicked}/>
+          <input placeholder="password" type="password" value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} required disabled={isClicked}/>
           <button type="submit" disabled={isClicked}>Log In</button>
 				</form>
         <p onClick={() => navigate('/signup')}>First time? Create an account!</p>
