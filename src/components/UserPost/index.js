@@ -1,7 +1,7 @@
 import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right } from "./styles"
-import { IoHeartOutline, IoHeartSharp, IoTrashSharp, IoPencilSharp } from "react-icons/io5";
+import { IoHeartOutline, IoTrashSharp, IoPencilSharp } from "react-icons/io5";
 
-export default () => {
+export default function UserPost(){
     return (
         <PostArea>
             <Left>
