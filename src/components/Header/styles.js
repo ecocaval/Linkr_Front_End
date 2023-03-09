@@ -45,8 +45,8 @@ export const ArrowController = styled.div`
 `
 
 export const LogoutModal = styled.div`
-    position: absolute;
-    display: flex;
+    position: ${props => props.arrowWasClicked ? "absolute" : "static"};
+    display: ${props => props.arrowWasClicked ? "flex" : "none"};
     align-items: center;
     right: 0;
     padding: 0 0 10px 20px ;
