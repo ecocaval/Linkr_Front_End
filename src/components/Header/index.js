@@ -13,9 +13,9 @@ import {
     StyledUserAside,
 } from "./styles"
 import { HeaderContext } from "../../contexts/HeaderContext";
-import SearchInput from "./SearchInput/SearchInput";
+import SearchInput from "./SearchInput";
 import { FaSearch } from "react-icons/fa";
-import MobileSearchInput from "./MobileSearchInput/MobileSearchInput";
+import MobileSearchInput from "./MobileSearchInput";
 
 export default function Header() {
 
