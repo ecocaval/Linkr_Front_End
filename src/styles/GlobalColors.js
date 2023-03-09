@@ -7,6 +7,7 @@ const GlobalColors = createGlobalStyle`
         --light-black: #333333;
         --regular-blue: #1877F2;
         --placeholder-gray: #C6C6C6;
+        --white: #FFF
     }
 `
 

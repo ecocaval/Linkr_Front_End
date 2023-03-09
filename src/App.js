@@ -1,11 +1,13 @@
 import PageHeader from "./components/PageHeader/PageHeader";
 import { PageBackground } from "./components/PageBackGround/styles";
+import PagePublishPost from "./components/PagePublishPost/PagePublishPost";
 
 function App() {
   return (
     <>
       <PageBackground>
-        <PageHeader />
+        <PagePublishPost/>
+        {/* <PageHeader /> */}
 
       </PageBackground>
     </>
