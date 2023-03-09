@@ -1,15 +1,12 @@
-import PageHeader from "./components/PageHeader/PageHeader";
-import { PageBackground } from "./components/PageBackGround/styles";
-import PagePublishPost from "./components/PagePublishPost/PagePublishPost";
+import { Background } from "./components/BackGround/styles";
+import { Router } from "./routes"
 
 function App() {
   return (
     <>
-      <PageBackground>
-        <PagePublishPost/>
-        {/* <PageHeader /> */}
-
-      </PageBackground>
+      <Background>
+        <Router />
+      </Background>
     </>
   );
 }
