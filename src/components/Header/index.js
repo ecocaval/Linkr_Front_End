@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { IoIosArrowDown } from "react-icons/io"
 import emptyUserImage from "../../assets/images/emptyUserImage.png"
 import logUserOff from "./utils/logUserOff"
-import filterArrayByInput from "./utils/filterArrayByInput";
+import filterUsersByInput from "./utils/filterUsersByInput";
 import {
     ArrowController,
     HeaderCSSvariables,
@@ -16,13 +16,12 @@ import { HeaderContext } from "../../contexts/HeaderContext";
 import SearchInput from "./SearchInput";
 import { FaSearch } from "react-icons/fa";
 import MobileSearchInput from "./MobileSearchInput";
+import getUsers from "./utils/getUsers";
 
 export default function Header() {
 
-    // eslint-disable-next-line
+    const [myUser, setMyUser] = useState({image: emptyUserImage})
     const [users, setUsers] = useState([])
-    // eslint-disable-next-line
-    const [userImage, setUserImage] = useState(emptyUserImage)
     const [headerInputValue, setHeaderInputValue] = useState("")
     const [arrowWasClicked, setArrowWasClicked] = useState(false)
     const [arrowWasFirstClicked, setArrowWasFirstClicked] = useState(false)
@@ -30,9 +29,15 @@ export default function Header() {
     const [showMobileSearchInput, setShowMobileSearchInput] = useState(true)
 
     useEffect(() => {
-        setUserSearchFiltered(filterArrayByInput(users, headerInputValue))
+        setUserSearchFiltered(filterUsersByInput(users, headerInputValue))
         // eslint-disable-next-line
     }, [headerInputValue])
+
+    useEffect(() => {
+        //* gets all the users to be displayed in the input search and the user itself
+        getUsers(setMyUser, 'my_user');
+        getUsers(setUsers, 'users');
+    }, [])
 
     return (
         <>
@@ -70,7 +75,7 @@ export default function Header() {
                                 }} />
                             </ArrowController>
                             <img
-                                src={userImage}
+                                src={myUser.image}
                                 alt="User img"
                                 data-test="avatar"
                             />

@@ -24,7 +24,7 @@ export default function MobileSearchInput() {
             <UsersInSearch usersSearchFiltered={usersSearchFiltered}>
                 {usersSearchFiltered.map((user, index) => (
                     <ul key={index} data-test="user-search">
-                        <img src={user.picture_url} alt="user search img" />
+                        <img src={user.image} alt="user search img" />
                         <p>{user.name}</p>
                     </ul>
                 ))}

@@ -1,4 +1,3 @@
-
 import { Wrapper } from "./styles"
 
 export const NotFound = () => {
