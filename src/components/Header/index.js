@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { IoIosArrowDown } from "react-icons/io"
-import emptyUserImage from "../../assets/images/emptyUserImage.png"
 import logUserOff from "./utils/logUserOff"
 import filterUsersByInput from "./utils/filterUsersByInput";
 import {
@@ -17,10 +16,12 @@ import SearchInput from "./SearchInput";
 import { FaSearch } from "react-icons/fa";
 import MobileSearchInput from "./MobileSearchInput";
 import getUsers from "./utils/getUsers";
+import { MyUserContext } from "../../contexts/MyUserContext";
 
 export default function Header() {
 
-    const [myUser, setMyUser] = useState({image: emptyUserImage})
+    const { myUser } = useContext(MyUserContext)
+
     const [users, setUsers] = useState([])
     const [headerInputValue, setHeaderInputValue] = useState("")
     const [arrowWasClicked, setArrowWasClicked] = useState(false)
@@ -34,8 +35,6 @@ export default function Header() {
     }, [headerInputValue])
 
     useEffect(() => {
-        //* gets all the users to be displayed in the input search and the user itself
-        getUsers(setMyUser, 'my_user');
         getUsers(setUsers, 'users');
     }, [])
 
