@@ -2,6 +2,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage"
+import Home from "./pages/Home"
+import HashtagPage from "./pages/HashtagPage"
+import UserPage from "./pages/UserPage"
 import { NotFound } from "./pages/NotFound";
 
 export const Router = () => {
@@ -10,7 +13,10 @@ export const Router = () => {
             <Routes>
                 {/* <Route path="/" element={<Home />} /> */}
                 <Route path="/" element={<LoginPage />}/>
-                <Route path="/signup" element={<RegisterPage />}/>
+                <Route path="/sign-up" element={<RegisterPage />}/>
+                <Route path="/timeline" element={<Home />}/>
+                <Route path="/hashtag/:hashtag" element={<HashtagPage />}/>
+                <Route path="/user/:id" element={<UserPage />}/>
                 <Route path="*" element={<NotFound/>} />
             </Routes>
         </BrowserRouter>

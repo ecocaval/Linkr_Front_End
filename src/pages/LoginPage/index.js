@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthLogo from '../../components/AuthLogo';
-import { Container, FormContainer } from './style';
+import { Container, FormContainer } from './styles';
 import axios from 'axios';
 
 export default function LoginPage() {
