@@ -8,6 +8,7 @@ const GlobalColors = createGlobalStyle`
         --strong-blue: #084ebf;
         --regular-blue: #1877F2;
         --placeholder-gray: #C6C6C6;
+        --white: #FFF
     }
 `
 
