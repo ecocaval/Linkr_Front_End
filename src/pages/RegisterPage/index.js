@@ -34,10 +34,10 @@ export default function RegisterPage() {
       <AuthLogo />
       <FormContainer>
 				<form onSubmit={register}>
-					<input placeholder="e-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required disabled={isClicked}/>
-          <input placeholder="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required disabled={isClicked}/>
-          <input placeholder="username" type="text" value={name} onChange={(e) => setName(e.target.value)} required disabled={isClicked}/>
-          <input placeholder="picure url" type="url" value={image} onChange={(e) => setImage(e.target.value)} required disabled={isClicked}/>
+					<input placeholder="e-mail" type="email" value={email} autoComplete="current-email" onChange={(e) => setEmail(e.target.value)} required disabled={isClicked}/>
+          <input placeholder="password" type="password" value={password} autoComplete="current-password" onChange={(e) => setPassword(e.target.value)} required disabled={isClicked}/>
+          <input placeholder="username" type="text" value={name} autoComplete="on" onChange={(e) => setName(e.target.value)} required disabled={isClicked}/>
+          <input placeholder="picure url" type="url" value={image} autoComplete="on" onChange={(e) => setImage(e.target.value)} required disabled={isClicked}/>
           <button type="submit" disabled={isClicked}>Sign Up</button>
 				</form>
         <p onClick={() => navigate('/')}>Switch back to log in</p>
