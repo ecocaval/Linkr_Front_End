@@ -1,9 +1,12 @@
 import { StyledSection, StyledDivPrimary, StyledDivSecundary } from "./styles"
 import axios from "axios"
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { MyUserContext } from "../../contexts/MyUserContext.js"
 
-export default function PagePublishPost({id, image}){
+export default function PagePublishPost(){
     const [send, setSend] = useState(false)
+    const {myUser} = useContext(MyUserContext)
+    const token = localStorage.getItem('token')
     const [form, setForm] = useState({
         link: "",
         description: ""
@@ -19,9 +22,10 @@ export default function PagePublishPost({id, image}){
     async function autenticar(e) {
         e.preventDefault()
         setSend(true)
-        const dados = {id, ...form}
+        const dados = {...form}
+        const config = { headers: { Authorization: `Bearer ${token}` } }
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/posts/new`, dados)
+            await axios.post(`${process.env.REACT_APP_API_URL}/posts/new`, dados, config)
             setForm({
                 link: "",
                 description: ""
@@ -36,7 +40,7 @@ export default function PagePublishPost({id, image}){
     return (
         <StyledSection>
             <StyledDivPrimary>
-                <img src={image} alt="imagem perfil"></img>
+                <img src={myUser.image} alt="imagem perfil"></img>
             </StyledDivPrimary>
             <StyledDivSecundary>
                 <h2>What are you going to share today?</h2>
@@ -69,5 +73,3 @@ export default function PagePublishPost({id, image}){
         </StyledSection>
     )
 }
-
-// { headers: { Authorization: `Bearer ${token}` } }
