@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
     transition: 0.4s all ease-out;
     position: fixed;
-    top: 25%;
+    top: 22%;
     left: calc(50vw + 160px);
     padding: 20px;
     width: 300px;

@@ -3,6 +3,8 @@ import { FaSearch } from "react-icons/fa";
 import { DebounceInput } from 'react-debounce-input';
 import { HeaderContext } from "../../../contexts/HeaderContext";
 import { InputWrapper, StyledInput, UsersInSearch } from "./styles"
+import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../../contexts/UserContext";
 
 export default function SearchInput() {
 
@@ -11,6 +13,12 @@ export default function SearchInput() {
         setHeaderInputValue,
         headerInputValue
     } = useContext(HeaderContext)
+
+    const navigate = useNavigate()
+
+    const {
+        setUserSelected
+    } = useContext(UserContext)
 
     return (
         <InputWrapper>
@@ -28,9 +36,15 @@ export default function SearchInput() {
             <i><FaSearch style={{ color: "gray" }} /></i>
             <UsersInSearch usersSearchFiltered={usersSearchFiltered}>
                 {usersSearchFiltered.map((user, index) => (
-                    <ul key={index} data-test="user-search">
-                        <img src={user.image} alt="user search img" />
-                        <p>{user.name}</p>
+                    <ul key={index} data-test="user-search" onClick={() => {
+                        setUserSelected(user)
+                        navigate(`/user/${user.id}`)
+                    }}>
+                        <div>
+                            <img src={user.image} alt="user search img" />
+                            <p>{user.name}</p>
+                        </div>
+                        <div className="division-line" />
                     </ul>
                 ))}
             </UsersInSearch>

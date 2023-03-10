@@ -82,6 +82,10 @@ export const Avatar = styled.img`
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: 20px;
+
+    &:hover {
+        cursor: pointer;
+    }
 `
 export const Infos = styled.div`
     display: flex;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import emptyUserImage from "./assets/images/emptyUserImage.png"
 import { Background } from "./components/BackGround/styles";
-import { MyUserContext } from "./contexts/MyUserContext";
+import { UserContext } from "./contexts/UserContext";
 import { PostsContext } from "./contexts/PostsContext";
 import { Router } from "./routes"
 import getPosts from "./utils/getPosts";
@@ -13,10 +13,17 @@ function App() {
   const [posts, setPosts] = useState([])
   const [mustUpdatePosts, setMustUpdatePosts] = useState(false)
   const [sendPost, setSendPost] = useState(false)
+  const [userSelected, setUserSelected] = useState(null)
+  const [gotPosts, setGotPosts] = useState(false)
+  // setGotPosts(true)
+
+  async function handlePosts() {
+    setGotPosts(await getPosts(setPosts))
+  }
 
   useEffect(() => {
     getUsers(setMyUser, 'my_user')
-    getPosts(setPosts)
+    handlePosts()
   }, [])
 
   useEffect(() => {
@@ -28,13 +35,13 @@ function App() {
 
   return (
     <>
-      <MyUserContext.Provider value={{ myUser }}>
-        <PostsContext.Provider value={{ posts, setPosts, setMustUpdatePosts, sendPost, setSendPost }}>
+      <UserContext.Provider value={{ myUser, userSelected, setUserSelected }}>
+        <PostsContext.Provider value={{ posts, setPosts, setMustUpdatePosts, sendPost, setSendPost, gotPosts }}>
           <Background>
             <Router />
           </Background>
         </PostsContext.Provider>
-      </MyUserContext.Provider>
+      </UserContext.Provider>
     </>
   );
 }

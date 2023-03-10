@@ -9,8 +9,10 @@ export default async function getPosts(setPosts, setSendPost) {
             }
         })
         setPosts(data)
-        if (!!setSendPost) setSendPost(false)
+        if (!!setSendPost) setSendPost(false) //* used in the loader button in the publish post modal
+        return true
     } catch (error) {
         console.error(error)
     }
+    return false
 }

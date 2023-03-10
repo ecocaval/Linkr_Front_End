@@ -5,35 +5,50 @@ import Modal from "../Modal";
 import deletePost from "./utils/deletePost";
 import { PostsContext } from "../../contexts/PostsContext";
 import { Blocks } from 'react-loader-spinner'
+import { UserContext } from "../../contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function UserPost({ post }) {
 
+    const { setPosts } = useContext(PostsContext)
+    const { setUserSelected } = useContext(UserContext)
+
+    const navigate = useNavigate()
+
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [postBeingDeleted, setPostBeingDeleted] = useState(false)
-    const { setPosts } = useContext(PostsContext)
 
     return (
         <>
-            <PostArea>
+            <PostArea data-test="post">
                 <Left>
-                    <Avatar src={post.userImage} />
+                    <Avatar src={post.userImage} onClick={() => {
+                        setUserSelected({
+                            id: post.userId,
+                            name: post.userName,
+                            image: post.userImage
+                        })
+                        navigate(`/user/${post.userId}`)
+                    }} />
                     <IoHeartOutline className="heart-outline-icon" />
                     <div className="likes-count">{post.likesCount} likes</div>
                 </Left>
                 <Right>
                     <Infos>
                         <Header>
-                            <div className="user-name">{post.userName}</div>
+                            <div className="user-name" data-test="username">{post.userName}</div>
                             <Icons>
-                                <IoPencilSharp className="icon" />
                                 {
-                                    post.userCanDelete &&
-                                    <IoTrashSharp className="icon" onClick={() => { setShowDeleteModal(!showDeleteModal) }} />
+                                    post.userCanDeletePost &&
+                                    <>
+                                        <IoPencilSharp className="icon" />
+                                        <IoTrashSharp className="icon" onClick={() => { setShowDeleteModal(!showDeleteModal) }} />
+                                    </>
                                 }
                             </Icons>
                         </Header>
-                        <div className="description">{post.postDesc}</div>
-                        <LinkArea>
+                        <div className="description" data-test="description">{post.postDesc}</div>
+                        <LinkArea data-test="link">
                             <div className="left">
                                 <div className="title">{post.linkData.title}</div>
                                 <div className="subtitle">
@@ -64,12 +79,12 @@ export default function UserPost({ post }) {
                         </button>
                         <button
                             data-test="confirm"
-                            onClick={() => { 
+                            onClick={() => {
                                 setPostBeingDeleted(true)
-                                deletePost(post, setPosts, setPostBeingDeleted, setShowDeleteModal) 
+                                deletePost(post, setPosts, setPostBeingDeleted, setShowDeleteModal)
                             }}
                             disabled={postBeingDeleted}
-                            style={{overflow:'hidden'}}
+                            style={{ overflow: 'hidden' }}
                         >
                             {postBeingDeleted ?
                                 <Blocks
@@ -78,7 +93,7 @@ export default function UserPost({ post }) {
                                     width="40"
                                     ariaLabel="blocks-loading"
                                     wrapperClass="blocks-wrapper"
-                                    style={{overflow:'hidden'}}
+                                    style={{ overflow: 'hidden' }}
                                 />
                                 : "Yes, delete it"}
                         </button>

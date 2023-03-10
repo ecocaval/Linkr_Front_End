@@ -16,12 +16,14 @@ import SearchInput from "./SearchInput";
 import { FaSearch } from "react-icons/fa";
 import MobileSearchInput from "./MobileSearchInput";
 import getUsers from "../../utils/getUsers";
-import { MyUserContext } from "../../contexts/MyUserContext";
+import { UserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
 
-    const { myUser } = useContext(MyUserContext)
+    const { myUser } = useContext(UserContext)
+
+    const navigate = useNavigate()
 
     const [users, setUsers] = useState([])
     const [headerInputValue, setHeaderInputValue] = useState("")
@@ -29,8 +31,6 @@ export default function Header() {
     const [arrowWasFirstClicked, setArrowWasFirstClicked] = useState(false)
     const [usersSearchFiltered, setUserSearchFiltered] = useState([])
     const [showMobileSearchInput, setShowMobileSearchInput] = useState(true)
-
-    const navigate = useNavigate()
 
     useEffect(() => {
         setUserSearchFiltered(filterUsersByInput(users, headerInputValue))
@@ -53,7 +53,7 @@ export default function Header() {
             }}>
                 <HeaderCSSvariables>
                     <StyledHeader>
-                        <StyledLogo>linkr</StyledLogo>
+                        <StyledLogo onClick={() => {navigate('/timeline')}}>linkr</StyledLogo>
                         <SearchInput />
                         <MobileSearcher>
                             <FaSearch

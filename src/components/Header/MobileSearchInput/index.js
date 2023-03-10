@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import { DebounceInput } from 'react-debounce-input';
+import { useNavigate } from "react-router-dom";
 import { HeaderContext } from "../../../contexts/HeaderContext";
+import { UserContext } from "../../../contexts/UserContext";
 import { InputWrapper, StyledInput, UsersInSearch } from "./styles"
 
 export default function MobileSearchInput() {
@@ -10,6 +12,12 @@ export default function MobileSearchInput() {
         setHeaderInputValue,
         headerInputValue
     } = useContext(HeaderContext)
+
+    const navigate = useNavigate()
+
+    const {
+        setUserSelected
+    } = useContext(UserContext)
 
     return (
         <InputWrapper>
@@ -26,7 +34,10 @@ export default function MobileSearchInput() {
             </StyledInput>
             <UsersInSearch usersSearchFiltered={usersSearchFiltered}>
                 {usersSearchFiltered.map((user, index) => (
-                    <ul key={index} data-test="user-search">
+                    <ul key={index} data-test="user-search" onClick={() => {
+                        setUserSelected(user)
+                        navigate(`/user/${user.id}`)
+                    }}>
                         <img src={user.image} alt="user search img" />
                         <p>{user.name}</p>
                     </ul>
