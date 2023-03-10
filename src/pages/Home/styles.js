@@ -2,12 +2,15 @@ import styled from "styled-components";
 
 export const HomeArea = styled.div`
     margin: 0 auto;
+    padding-right: 25vw;
     padding-top: 20px;
     height: calc(100vh - 72px);
     overflow-y: auto;
 
-    scrollbar-width: thin;
-    scrollbar-color: #000000;
+    @media (max-width:1080px) {
+        padding-right: 0;
+    }
+
     /* Works on Chrome, Edge, and Safari */
     ::-webkit-scrollbar {
         width: 12px;
@@ -30,6 +33,19 @@ export const HomeArea = styled.div`
         ::-webkit-scrollbar-thumb {
             width: 0;
         }
+    }
+`
+
+export const Title = styled.p`
+    font-family: 'Oswald';
+    font-weight: 700;
+    font-size: 3rem;
+    color: #FFFFFF;
+    margin: 40px 0;
+
+    @media (max-width: 550px) {
+        margin: 40px 20px;
+        margin-top: 0;
     }
 `
 
