@@ -5,11 +5,12 @@ import PagePublishPost from "../../components/PublishPost/PagePublishPost"
 import TrendingHashtags from "../../components/TrendingHashtags"
 import UserPost from "../../components/UserPost"
 import { PostsContext } from "../../contexts/PostsContext"
+import { NoPostText } from "../UserPage/styles"
 import { HomeArea, PostsWrapper, Title } from "./styles"
 
 export default function Home() {
 
-    const { posts } = useContext(PostsContext)
+    const { posts, gotPosts } = useContext(PostsContext)
 
     return (
         <>
@@ -21,7 +22,7 @@ export default function Home() {
                     {
                         posts[0] ?
                             posts.map((post, index) => <UserPost key={index} post={post} />) :
-                            <Loader />
+                            (gotPosts ? <NoPostText data-test="message" >There are no posts yet</NoPostText> : <Loader />)
                     }
                     <TrendingHashtags />
                 </PostsWrapper>

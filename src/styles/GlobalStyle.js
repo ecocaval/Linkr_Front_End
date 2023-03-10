@@ -55,6 +55,20 @@ table {
     scrollbar-width: thin;
     scrollbar-color: #000000;
 }
+/* Works on Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 12px;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: #000;
+    width: 15px;
+    border-radius: 20px;
+}
 a{
     text-decoration: none;
 }

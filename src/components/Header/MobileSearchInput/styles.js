@@ -46,21 +46,23 @@ export const UsersInSearch = styled.div`
     width: 90%;
     border-radius: 8px;
     padding: 10px;
-    padding-top: ${props => props.usersSearchFiltered.length !== 0 && "60px"};
+    padding-bottom: 0;
+    padding-top: ${props => props.usersSearchFiltered.length !== 0 && "40px"};
     background-color: var(--user-search-bg);
     transition: 0.3s all;
-
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.5);
+    
     img {
         width: 39px;
         height: 39px;
         border-radius: 18px;
     }
-
+    
     ul {
         display: flex;
         align-items: center;
         gap: 10px;
-        margin: 10px 0;
+        margin: 20px 0;
         font-family: 'Lato';
     }
 `

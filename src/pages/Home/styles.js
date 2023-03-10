@@ -2,28 +2,14 @@ import styled from "styled-components";
 
 export const HomeArea = styled.div`
     margin: 0 auto;
-    padding-right: 25vw;
-    padding-top: 20px;
     height: calc(100vh - 72px);
     overflow-y: auto;
+    padding-right: 25vw;
+    padding-top: 20px;
+    transition: 0.4s all;
 
     @media (max-width:1080px) {
         padding-right: 0;
-    }
-
-    /* Works on Chrome, Edge, and Safari */
-    ::-webkit-scrollbar {
-        width: 12px;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: transparent;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background-color: #000;
-        width: 15px;
-        border-radius: 20px;
     }
     
     @media only screen and (hover: none) and (pointer: coarse) and (max-width:475px){
@@ -45,11 +31,12 @@ export const Title = styled.p`
 
     @media (max-width: 550px) {
         margin: 40px 20px;
-        margin-top: 0;
+        margin-top: 10px;
     }
 `
 
 export const PostsWrapper = styled.div`
     max-width: 550px;
     margin: auto;
+    padding-bottom: 20px;
 `

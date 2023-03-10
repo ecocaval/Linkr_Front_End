@@ -22,6 +22,10 @@ export const StyledLogo = styled.h1`
     font-family: 'Passion One';
     font-size: 3rem;
     color: #FFFFFF;
+
+    &:hover {
+        cursor: pointer;
+    }
 `
 
 export const StyledUserAside = styled.div`
@@ -30,7 +34,7 @@ export const StyledUserAside = styled.div`
     gap: 10px;
 
     > img {
-        width: 55px;
+        width: 50px;
         height: 50px;
         border-radius: 25px;
     }

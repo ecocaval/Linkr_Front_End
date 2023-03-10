@@ -1,11 +1,11 @@
 import { StyledSection, StyledDivPrimary, StyledDivSecundary } from "./styles"
 import axios from "axios"
 import { useContext, useState } from "react"
-import { MyUserContext } from "../../contexts/MyUserContext.js"
+import { UserContext } from "../../contexts/UserContext.js"
 import { PostsContext } from "../../contexts/PostsContext"
 
 export default function PagePublishPost() {
-    const { myUser } = useContext(MyUserContext)
+    const { myUser } = useContext(UserContext)
     const { setMustUpdatePosts, sendPost, setSendPost } = useContext(PostsContext)
     const token = localStorage.getItem('token')
     const [form, setForm] = useState({
