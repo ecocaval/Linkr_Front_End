@@ -17,6 +17,7 @@ import { FaSearch } from "react-icons/fa";
 import MobileSearchInput from "./MobileSearchInput";
 import getUsers from "../../utils/getUsers";
 import { MyUserContext } from "../../contexts/MyUserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
 
@@ -29,6 +30,8 @@ export default function Header() {
     const [usersSearchFiltered, setUserSearchFiltered] = useState([])
     const [showMobileSearchInput, setShowMobileSearchInput] = useState(true)
 
+    const navigate = useNavigate()
+
     useEffect(() => {
         setUserSearchFiltered(filterUsersByInput(users, headerInputValue))
         // eslint-disable-next-line
@@ -37,6 +40,11 @@ export default function Header() {
     useEffect(() => {
         getUsers(setUsers, 'users');
     }, [])
+
+    function logout() {
+        localStorage.clear()
+        navigate('/')
+    }
 
     return (
         <>
@@ -84,7 +92,7 @@ export default function Header() {
                         onClick={() => { logUserOff() }}
                         data-test="menu"
                     >
-                        <p data-test="logout">Logout</p>
+                        <p data-test="logout" onClick={logout}>Logout</p>
                     </LogoutModal>
                     {showMobileSearchInput && <MobileSearchInput />}
                 </HeaderCSSvariables>
