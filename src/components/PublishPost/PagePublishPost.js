@@ -7,7 +7,9 @@ import { PostsContext } from "../../contexts/PostsContext"
 export default function PagePublishPost() {
     const { myUser } = useContext(UserContext)
     const { setMustUpdatePosts, sendPost, setSendPost } = useContext(PostsContext)
+
     const token = localStorage.getItem('token')
+    
     const [form, setForm] = useState({
         link: "",
         description: ""
