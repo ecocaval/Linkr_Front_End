@@ -22,7 +22,7 @@ export default function Home() {
                     {
                         posts[0] ?
                             posts.map((post, index) => <UserPost key={index} post={post} />) :
-                            (gotPosts ? <NoPostText data-test="message" >There are no posts yet</NoPostText> : <Loader />)
+                            (gotPosts ? <NoPostText data-test="message">There are no posts yet</NoPostText> : <Loader />)
                     }
                     <TrendingHashtags />
                 </PostsWrapper>

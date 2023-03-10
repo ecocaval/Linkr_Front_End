@@ -25,6 +25,10 @@ export const Wrapper = styled.div`
         font-family: 'Oswald';
         font-size: 1.2rem;
         padding: 10px 0;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     .division-line {

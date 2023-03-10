@@ -41,8 +41,15 @@ export default function UserPost({ post }) {
                                 {
                                     post.userCanDeletePost &&
                                     <>
-                                        <IoPencilSharp className="icon" />
-                                        <IoTrashSharp className="icon" onClick={() => { setShowDeleteModal(!showDeleteModal) }} />
+                                        <IoPencilSharp
+                                            className="icon"
+                                            data-test="edit-btn"
+                                        />
+                                        <IoTrashSharp
+                                            className="icon"
+                                            onClick={() => { setShowDeleteModal(!showDeleteModal) }}
+                                            data-test="delete-btn"
+                                        />
                                     </>
                                 }
                             </Icons>
