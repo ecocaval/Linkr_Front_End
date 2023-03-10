@@ -58,10 +58,13 @@ export const StyledModal = styled.div`
         }
         
         div {   
+            height: 40px;
+            display: flex;
+            align-items: center;
             button {
                 margin: 0 10px;
                 width: 135px;
-                height: 35px;
+                height: 40px;
                 background: #FFF;
                 border-radius: 5px;
                 color: var(--regular-blue);

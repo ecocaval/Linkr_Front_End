@@ -44,7 +44,6 @@ export default function Header() {
                 usersSearchFiltered, setHeaderInputValue, headerInputValue
             }}>
                 <HeaderCSSvariables>
-                    {showMobileSearchInput && <MobileSearchInput />}
                     <StyledHeader>
                         <StyledLogo>linkr</StyledLogo>
                         <SearchInput />
@@ -87,6 +86,7 @@ export default function Header() {
                     >
                         <p data-test="logout">Logout</p>
                     </LogoutModal>
+                    {showMobileSearchInput && <MobileSearchInput />}
                 </HeaderCSSvariables>
             </HeaderContext.Provider>
         </>

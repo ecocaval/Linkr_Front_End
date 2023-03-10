@@ -30,7 +30,7 @@ export const Icons = styled.div`
 
 export const LinkArea = styled.h1`
     width: 100%;
-    height: 155px;
+    min-height: 155px;
     border: 1px solid #4D4D4D;
     border-radius: 12px;
     display: flex;
@@ -38,6 +38,7 @@ export const LinkArea = styled.h1`
     .left{
         width: 100%;
         margin-left: 12px;
+        padding: 5px;
 
         .title{
             color: #CECECE;
@@ -49,9 +50,10 @@ export const LinkArea = styled.h1`
             font-size: 11px;
             margin: 8px 0;
         }
-        .link{
+        .link{  
             color: #CECECE;
             font-size: 11px;
+            word-break: break-all;
         }
     }
     .right{

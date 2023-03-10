@@ -16,9 +16,9 @@ export default async function deletePost(post, setPosts, setPostBeingDeleted, se
             })
             setPosts(posts.data)
         }
+        setPostBeingDeleted(false)
     } catch (error) {
         console.error(error)
     }
-    setPostBeingDeleted(false)
     setShowDeleteModal(false)
 }

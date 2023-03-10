@@ -11,16 +11,25 @@ function App() {
 
   const [myUser, setMyUser] = useState({ image: emptyUserImage })
   const [posts, setPosts] = useState([])
+  const [mustUpdatePosts, setMustUpdatePosts] = useState(false)
+  const [sendPost, setSendPost] = useState(false)
 
   useEffect(() => {
     getUsers(setMyUser, 'my_user')
     getPosts(setPosts)
   }, [])
 
+  useEffect(() => {
+    if (mustUpdatePosts) {
+      getPosts(setPosts, setSendPost)
+      setMustUpdatePosts(false)
+    }
+  }, [mustUpdatePosts])
+
   return (
     <>
       <MyUserContext.Provider value={{ myUser }}>
-        <PostsContext.Provider value={{ posts, setPosts }}>
+        <PostsContext.Provider value={{ posts, setPosts, setMustUpdatePosts, sendPost, setSendPost }}>
           <Background>
             <Router />
           </Background>
