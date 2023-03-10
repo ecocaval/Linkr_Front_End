@@ -14,12 +14,13 @@ export default function TrendingHashtags() {
     }, [])
 
     return (
-        <Wrapper>
+        <Wrapper data-test="trending" >
             <p>trending</p>
             <div className="division-line"></div>
             {hashtags.map((hashtag, index) => (
                 <p
                     key={index}
+                    data-test="hashtag"
                     onClick={() => {
                         navigate(`/hashtag/${hashtag.name}`)
                     }}

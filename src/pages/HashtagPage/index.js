@@ -13,12 +13,14 @@ export default function HashtagPage() {
 
     const [hashtagPosts, setHashtagPosts] = useState([])
     const [gotPosts, setGotPosts] = useState(false)
+    const [firstRender, setFirstRender] = useState(true)
 
     useEffect(() => {
-        if(gotPosts) {
+        if (gotPosts || firstRender) {
             setHashtagPosts([])
             setGotPosts(false)
             getHashtagPosts(hashtag, setHashtagPosts, setGotPosts)
+            if (firstRender) setFirstRender(false)
         }
     }, [hashtag])
 
@@ -27,10 +29,10 @@ export default function HashtagPage() {
             <Header />
             <HashtagsArea>
                 <PostsWrapper>
-                    <Title>{`#${hashtag}`}</Title>
+                    <Title data-test="hashtag-title" >{`#${hashtag}`}</Title>
                     {
                         hashtagPosts[0] ? hashtagPosts.map((post, index) => <UserPost key={index} post={post} />) :
-                            (gotPosts ? <NoPostText>There are no posts yet</NoPostText> : <Loader />)
+                            (gotPosts ? <NoPostText data-test="message">There are no posts yet</NoPostText> : <Loader />)
                     }
                     <TrendingHashtags />
                 </PostsWrapper>

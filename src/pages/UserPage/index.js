@@ -7,20 +7,28 @@ import UserPost from "../../components/UserPost"
 import { PostsContext } from "../../contexts/PostsContext"
 import { UserContext } from "../../contexts/UserContext"
 import { NoPostText, PostsWrapper, Title, TrendingWrapper, UserArea } from "./styles"
+import getMyPosts from "./utils/getMyPosts"
 
 export default function UserPage() {
 
     const { id } = useParams()
-    const [myPosts, setMyPosts] = useState([])
-
-    const { posts, gotPosts } = useContext(PostsContext)
+    
+    const { posts } = useContext(PostsContext)
     const { userSelected } = useContext(UserContext)
+    
+    const [myPosts, setMyPosts] = useState([])
+    const [gotPosts, setGotPosts] = useState(false)
 
     useEffect(() => {
-        const filteredPosts = posts.filter(post => {
-            return post.userId === Number(id)
-        })
-        setMyPosts(filteredPosts)
+        if(posts) {
+            const filteredPosts = posts.filter(post => {
+                return post.userId === Number(id)
+            })
+            setMyPosts(filteredPosts)
+            return
+        } else {
+            getMyPosts(setMyPosts, setGotPosts)
+        }
     }, [id, posts])
 
     return (
@@ -43,7 +51,7 @@ export default function UserPage() {
                     </div>
                     {
                         myPosts[0] ? myPosts.map((post, index) => <UserPost key={index} post={post} />) :
-                            (gotPosts ? <NoPostText>There are no posts yet</NoPostText> : <Loader/>)
+                            (gotPosts ? <NoPostText data-test="message">There are no posts yet</NoPostText> : <Loader />)
                     }
                     <TrendingWrapper>
                         <TrendingHashtags />
