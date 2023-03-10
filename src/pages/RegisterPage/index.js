@@ -14,7 +14,7 @@ export default function RegisterPage() {
 
   async function register(e) {
     e.preventDefault()
-    if(!name || !password || !name || !image) return alert("Informe todos os campos!")
+    if(!email || !password || !name || !image) return alert("Informe todos os campos!")
 
     const URL = `${process.env.REACT_APP_API_URL}/signup`
     const body = { email, password, name, image }
