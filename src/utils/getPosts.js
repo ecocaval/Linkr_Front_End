@@ -9,7 +9,7 @@ export default async function getPosts(setPosts, setSendPost) {
             }
         })
         setPosts(data)
-        if (setSendPost) setSendPost(false)
+        if (!!setSendPost) setSendPost(false)
     } catch (error) {
         console.error(error)
     }

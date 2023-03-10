@@ -11,7 +11,7 @@ function App() {
 
   const [myUser, setMyUser] = useState({ image: emptyUserImage })
   const [posts, setPosts] = useState([])
-  const [mustUpdatePosts, setMustUpdatePosts] = useState([])
+  const [mustUpdatePosts, setMustUpdatePosts] = useState(false)
   const [sendPost, setSendPost] = useState(false)
 
   useEffect(() => {
