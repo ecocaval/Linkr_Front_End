@@ -28,7 +28,7 @@ export const Icons = styled.div`
     }
 `
 
-export const LinkArea = styled.h1`
+export const LinkArea = styled.a`
     width: 100%;
     min-height: 155px;
     border: 1px solid #4D4D4D;
