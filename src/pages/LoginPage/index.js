@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthLogo from '../../components/AuthLogo';
 import { Container, FormContainer } from './styles';
@@ -9,6 +9,12 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [isClicked, setIsClicked] = useState(false)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    if (localStorage.length !== 0) {
+      navigate('/timeline')
+    }
+  }, [])
 
   async function login(e) {
     e.preventDefault()
