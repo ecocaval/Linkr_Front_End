@@ -55,7 +55,7 @@ export default function UserPost({ post }) {
                             </Icons>
                         </Header>
                         <div className="description" data-test="description">{post.postDesc}</div>
-                        <LinkArea data-test="link">
+                        <LinkArea data-test="link" href={post.linkData.url} target="_blank">
                             <div className="left">
                                 <div className="title">{post.linkData.title}</div>
                                 <div className="subtitle">

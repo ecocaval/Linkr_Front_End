@@ -23,6 +23,11 @@ export default function LoginPage() {
     const body = { email, password }
     setIsClicked(true)
 
+    if (email === '' || password === '') {
+      setIsClicked(false)
+      return alert('Preencha todos os campos')
+    }
+
     try {
       const data = await axios.post(URL, body)
       localStorage.setItem('token', data.data.token)
@@ -47,7 +52,6 @@ export default function LoginPage() {
             value={email}
             autoComplete="current-email"
             onChange={(e) => setEmail(e.target.value)}
-            required
             disabled={isClicked}
           />
           <input
@@ -57,7 +61,6 @@ export default function LoginPage() {
             value={password}
             autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
-            required
             disabled={isClicked}
           />
           <button type="submit" disabled={isClicked} data-test="login-btn">Log In</button>
