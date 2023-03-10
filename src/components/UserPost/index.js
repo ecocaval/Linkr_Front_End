@@ -9,6 +9,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
 import handleKeyPress from "./utils/handleKeyPress";
 import axios from "axios";
+import { ReactTagify } from "react-tagify";
 
 export default function UserPost({ post }) {
     const navigate = useNavigate();
@@ -133,12 +134,18 @@ export default function UserPost({ post }) {
                             />
                         }
                         {
-                            !editPostMode && <div
+                            !editPostMode &&
+                            <ReactTagify
+                                colors={"white"} 
+                                tagClicked={(tag)=> navigate(`/hashtag/${tag.replace("#", "")}`)}
+                            >
+                                <div
                                 className="description"
                                 data-test="description"
                             >
                                 {post.postDesc}
                             </div>
+                            </ReactTagify>
                         }
                         <LinkArea data-test="link" href={post.linkData.url} target="_blank">
                             <div className="left">
