@@ -22,6 +22,7 @@ export default function HashtagPage() {
             getHashtagPosts(hashtag, setHashtagPosts, setGotPosts)
             if (firstRender) setFirstRender(false)
         }
+        // eslint-disable-next-line 
     }, [hashtag])
 
     return (
