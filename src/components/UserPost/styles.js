@@ -3,7 +3,7 @@ import styled from "styled-components"
 export const PostArea = styled.div`
     font-family: 'Lato', sans-serif;
     margin: 0 auto;
-    margin-top: 120px;
+    margin-top: 25px;
     padding: 20px;
     max-width: 800px;
     height: auto;
