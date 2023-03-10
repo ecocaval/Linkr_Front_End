@@ -11,7 +11,7 @@ export const Router = () => {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<LoginPage />}/>
-                <Route path="/signup" element={<RegisterPage />}/>
+                <Route path="/sign-up" element={<RegisterPage />}/>
                 <Route path="/timeline" element={<Home />}/>
                 <Route path="/hashtag/:hashtag" element={<HashtagPage />}/>
                 <Route path="/user/:id" element={<UserPage />}/>
