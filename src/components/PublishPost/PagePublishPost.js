@@ -51,7 +51,7 @@ export default function PagePublishPost(){
                         required
                         name="link"
                         onChange={handleForm}
-                        value={form.value}
+                        value={form.link}
                         disabled={send}
                         data-test="link" 
                     >   
@@ -60,7 +60,7 @@ export default function PagePublishPost(){
                         placeholder="Awesome article about #javascript"
                         name="description"
                         onChange={handleForm}
-                        value={form.value}
+                        value={form.description}
                         disabled={send}
                         data-test="description"
                     ></textarea>
