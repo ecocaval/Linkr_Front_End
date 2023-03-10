@@ -69,10 +69,6 @@ export default function Header() {
                             <ArrowController
                                 arrowWasClicked={arrowWasClicked}
                                 arrowWasFirstClicked={arrowWasFirstClicked}
-                                onClick={() => {
-                                    setArrowWasClicked(!arrowWasClicked)
-                                    if (!arrowWasFirstClicked) setArrowWasFirstClicked(true)
-                                }}
                             >
                                 <IoIosArrowDown style={{
                                     color: "#FFFFFF",
@@ -84,6 +80,10 @@ export default function Header() {
                                 src={myUser.image}
                                 alt="User img"
                                 data-test="avatar"
+                                onClick={() => {
+                                    setArrowWasClicked(!arrowWasClicked)
+                                    if (!arrowWasFirstClicked) setArrowWasFirstClicked(true)
+                                }}
                             />
                         </StyledUserAside>
                     </StyledHeader>
