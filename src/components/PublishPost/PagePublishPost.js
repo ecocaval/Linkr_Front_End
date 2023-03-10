@@ -51,7 +51,7 @@ export default function PagePublishPost(){
                         required
                         name="link"
                         onChange={handleForm}
-                        value={form.value}
+                        value={form.link}
                         disabled={send}
                     >   
                     </input>
@@ -59,7 +59,7 @@ export default function PagePublishPost(){
                         placeholder="Awesome article about #javascript"
                         name="description"
                         onChange={handleForm}
-                        value={form.value}
+                        value={form.description}
                         disabled={send}
                     ></textarea>
                     <button 
