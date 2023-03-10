@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import Header from "../../components/Header"
 import Loader from "../../components/Loader"
 import TrendingHashtags from "../../components/TrendingHashtags"
 import UserPost from "../../components/UserPost"
+import { PostsContext } from "../../contexts/PostsContext"
 import { HashtagsArea, NoPostText, PostsWrapper, Title } from "./styles"
 import getHashtagPosts from "./utils/getHashtagPosts"
 
 export default function HashtagPage() {
 
     const { hashtag } = useParams()
+
+    const { posts } = useContext(PostsContext)
 
     const [hashtagPosts, setHashtagPosts] = useState([])
     const [gotPosts, setGotPosts] = useState(false)
@@ -24,6 +27,13 @@ export default function HashtagPage() {
         }
         // eslint-disable-next-line 
     }, [hashtag])
+
+    useEffect(() => {
+        if(hashtagPosts[0]) {
+            getHashtagPosts(hashtag, setHashtagPosts, setGotPosts)
+        }
+        // eslint-disable-next-line
+    }, [posts])
 
     return (
         <>
