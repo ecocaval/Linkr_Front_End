@@ -124,3 +124,17 @@ export const Left = styled.div`
 export const Right = styled.div`
     width: 100%;
 `
+
+export const TextArea = styled.textarea`
+    background: #FFFFFF;
+    border-radius: 7px;
+    border: none;
+    overflow: auto;
+    outline: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    resize: none;
+    margin: 10px 0;
+    padding: 10px;
+`

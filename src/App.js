@@ -15,6 +15,7 @@ function App() {
   const [sendPost, setSendPost] = useState(false)
   const [userSelected, setUserSelected] = useState(null)
   const [gotPosts, setGotPosts] = useState(false)
+  const [hashtagPosts, setHashtagPosts] = useState([])
   // setGotPosts(true)
 
   async function handlePosts() {
@@ -36,7 +37,7 @@ function App() {
   return (
     <>
       <UserContext.Provider value={{ myUser, userSelected, setUserSelected }}>
-        <PostsContext.Provider value={{ posts, setPosts, setMustUpdatePosts, sendPost, setSendPost, gotPosts }}>
+        <PostsContext.Provider value={{ posts, setPosts, setMustUpdatePosts, sendPost, setSendPost, gotPosts, setHashtagPosts, hashtagPosts }}>
           <Background>
             <Router />
           </Background>

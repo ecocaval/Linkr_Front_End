@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function deletePost(post, setPosts, setPostBeingDeleted, setShowDeleteModal) {
     const token = localStorage.getItem('token')
     try {
-        const response = await axios.delete(`${process.env.REACT_APP_API_URL}/post/${post.postId}`, {
+        const response = await axios.delete(`${process.env.REACT_APP_API_URL}/posts/${post.postId}`, {
             headers: {
                 authorization: `Bearer ${token}`
             }
