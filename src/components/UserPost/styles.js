@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import { fadeIn } from "../../styles/animations/fadeInOut"
 
 export const PostArea = styled.div`
     font-family: 'Lato', sans-serif;
@@ -119,8 +118,4 @@ export const Left = styled.div`
 `
 export const Right = styled.div`
     width: 100%;
-`
-
-export const FadeIn = styled.div`
-    animation: ${fadeIn} 0.2s ease-out;
 `
