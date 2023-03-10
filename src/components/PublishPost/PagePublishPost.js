@@ -38,7 +38,7 @@ export default function PagePublishPost(){
     }
 
     return (
-        <StyledSection>
+        <StyledSection data-test="publish-box">
             <StyledDivPrimary>
                 <img src={myUser.image} alt="imagem perfil"></img>
             </StyledDivPrimary>
@@ -53,6 +53,7 @@ export default function PagePublishPost(){
                         onChange={handleForm}
                         value={form.value}
                         disabled={send}
+                        data-test="link" 
                     >   
                     </input>
                     <textarea 
@@ -61,10 +62,12 @@ export default function PagePublishPost(){
                         onChange={handleForm}
                         value={form.value}
                         disabled={send}
+                        data-test="description"
                     ></textarea>
                     <button 
-                    type="submit"
-                    disabled={send}
+                        type="submit"
+                        disabled={send}
+                        data-test="publish-btn"
                     >
                         {send ? "Publishing..." : "Publish"}
                     </button>
