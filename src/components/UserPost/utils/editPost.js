@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export default async function editPost(post, description, posts, setPosts, setEditPostMode, setHashtagPosts) {
+export default async function editPost(post, description, posts, setPosts, setEditPostMode) {
     const token = localStorage.getItem('token')
     try {
         await axios.put(`${process.env.REACT_APP_API_URL}/posts/${post.postId}`, {
@@ -22,8 +22,6 @@ export default async function editPost(post, description, posts, setPosts, setEd
         })
         updatedPost.postDesc = description.trim()
         postsCopy[indexToUpdate] = updatedPost
-        console.log(updatedPost)
-        console.log(postsCopy)
         setPosts(postsCopy)
         setEditPostMode(false)
     } catch (error) {

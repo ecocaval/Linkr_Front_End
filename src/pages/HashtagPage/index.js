@@ -11,7 +11,10 @@ import getHashtagPosts from "./utils/getHashtagPosts"
 export default function HashtagPage() {
 
     const { hashtag } = useParams()
-    const {hashtagPosts, setHashtagPosts} = useContext(PostsContext)
+
+    const { posts } = useContext(PostsContext)
+
+    const [hashtagPosts, setHashtagPosts] = useState([])
     const [gotPosts, setGotPosts] = useState(false)
     const [firstRender, setFirstRender] = useState(true)
 
@@ -24,6 +27,13 @@ export default function HashtagPage() {
         }
         // eslint-disable-next-line 
     }, [hashtag])
+
+    useEffect(() => {
+        if(hashtagPosts[0]) {
+            getHashtagPosts(hashtag, setHashtagPosts, setGotPosts)
+        }
+        // eslint-disable-next-line
+    }, [posts])
 
     return (
         <>
