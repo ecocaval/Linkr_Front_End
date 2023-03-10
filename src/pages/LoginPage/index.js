@@ -62,7 +62,7 @@ export default function LoginPage() {
           />
           <button type="submit" disabled={isClicked} data-test="login-btn">Log In</button>
         </form>
-        <p data-test="sign-up-link" onClick={() => navigate('/signup')}>First time? Create an account!</p>
+        <p data-test="sign-up-link" onClick={() => navigate('/sign-up')}>First time? Create an account!</p>
       </FormContainer>
     </Container>
   );

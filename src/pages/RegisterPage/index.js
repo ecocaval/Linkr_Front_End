@@ -14,6 +14,7 @@ export default function RegisterPage() {
 
   async function register(e) {
     e.preventDefault()
+    if(!name || !password || !name || !image) return alert("Informe todos os campos!")
 
     const URL = `${process.env.REACT_APP_API_URL}/signup`
     const body = { email, password, name, image }
@@ -22,9 +23,9 @@ export default function RegisterPage() {
     try {
       await axios.post(URL, body)
       navigate('/')
-      setIsClicked(false)
     } catch (err) {
       alert(err.response.data)
+    } finally {
       setIsClicked(false)
     }
   }
@@ -41,7 +42,6 @@ export default function RegisterPage() {
             value={email}
             autoComplete="current-email"
             onChange={(e) => setEmail(e.target.value)}
-            required
             disabled={isClicked}
           />
           <input
@@ -51,7 +51,6 @@ export default function RegisterPage() {
             value={password}
             autoComplete="current-password"
             onChange={(e) => setPassword(e.target.value)}
-            required
             disabled={isClicked}
           />
           <input
@@ -61,7 +60,6 @@ export default function RegisterPage() {
             value={name}
             autoComplete="on"
             onChange={(e) => setName(e.target.value)}
-            required
             disabled={isClicked}
           />
           <input
@@ -71,7 +69,6 @@ export default function RegisterPage() {
             value={image}
             autoComplete="on"
             onChange={(e) => setImage(e.target.value)}
-            required
             disabled={isClicked}
           />
           <button type="submit" disabled={isClicked} data-test="sign-up-btn">Sign Up</button>
