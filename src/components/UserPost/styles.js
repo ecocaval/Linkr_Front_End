@@ -120,6 +120,14 @@ export const Left = styled.div`
     .likes-count{
         text-align: center;
     }
+
+    .heart-sharp-icon{
+        width: 20px;
+        height: 20px;
+        color: red;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
 `
 export const Right = styled.div`
     width: 100%;
