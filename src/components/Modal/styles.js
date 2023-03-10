@@ -58,9 +58,9 @@ export const StyledModal = styled.div`
         }
         
         div {   
-            height: 40px;
             display: flex;
             align-items: center;
+            height: auto;
             button {
                 margin: 0 10px;
                 width: 135px;

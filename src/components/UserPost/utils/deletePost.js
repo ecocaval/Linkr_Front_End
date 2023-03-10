@@ -19,6 +19,7 @@ export default async function deletePost(post, setPosts, setPostBeingDeleted, se
         setPostBeingDeleted(false)
     } catch (error) {
         console.error(error)
+        alert("Não foi possível excluir o post!")
     }
     setShowDeleteModal(false)
 }
