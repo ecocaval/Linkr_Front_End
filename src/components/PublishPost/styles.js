@@ -12,7 +12,7 @@ export const StyledSection = styled.section`
 
     @media(max-width: 500px){
         border-radius: 0; 
-        height: 164px;
+        height: auto;
         padding: 10px 15px;
     }
 `

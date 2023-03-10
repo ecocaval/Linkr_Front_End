@@ -4,6 +4,9 @@ import { scaleUp } from "../../styles/animations/scales";
 
 export const Wrapper = styled.div`
     position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 5;
     width: 100vw;
     height: 100vh;
     display: flex;
@@ -55,10 +58,13 @@ export const StyledModal = styled.div`
         }
         
         div {   
+            display: flex;
+            align-items: center;
+            height: auto;
             button {
                 margin: 0 10px;
                 width: 135px;
-                height: 35px;
+                height: 40px;
                 background: #FFF;
                 border-radius: 5px;
                 color: var(--regular-blue);

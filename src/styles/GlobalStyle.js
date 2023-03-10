@@ -51,6 +51,9 @@ table {
 }
 * {
     box-sizing: border-box;
+    /* Works on Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #000000;
 }
 a{
     text-decoration: none;

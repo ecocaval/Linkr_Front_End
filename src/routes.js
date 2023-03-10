@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import Home from "./pages/Home";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage"
 import Home from "./pages/Home"
@@ -11,9 +10,8 @@ export const Router = () => {
     return (
         <BrowserRouter>
             <Routes>
-                {/* <Route path="/" element={<Home />} /> */}
                 <Route path="/" element={<LoginPage />}/>
-                <Route path="/sign-up" element={<RegisterPage />}/>
+                <Route path="/signup" element={<RegisterPage />}/>
                 <Route path="/timeline" element={<Home />}/>
                 <Route path="/hashtag/:hashtag" element={<HashtagPage />}/>
                 <Route path="/user/:id" element={<UserPage />}/>

@@ -1,8 +1,7 @@
 import styled from "styled-components"
 
 export const InputWrapper = styled.div`
-    position: fixed;
-    top: var(--header-height);
+    position: relative;
     display: flex;
     justify-content: center;
     width: 100%;
