@@ -22,7 +22,7 @@ export const PostsWrapper = styled.div`
     max-width: 550px;
     margin: auto;
     
-    > div {
+    > div:first-child {
         display: flex;
         align-items: center;
         height: auto;
