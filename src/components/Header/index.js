@@ -41,6 +41,11 @@ export default function Header() {
         getUsers(setUsers, 'users');
     }, [])
 
+    function logout() {
+        localStorage.clear()
+        navigate('/')
+    }
+
     return (
         <>
             <HeaderContext.Provider value={{
@@ -87,7 +92,7 @@ export default function Header() {
                         onClick={() => { logUserOff() }}
                         data-test="menu"
                     >
-                        <p data-test="logout">Logout</p>
+                        <p data-test="logout" onClick={logout}>Logout</p>
                     </LogoutModal>
                     {showMobileSearchInput && <MobileSearchInput />}
                 </HeaderCSSvariables>
