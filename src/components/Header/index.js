@@ -15,7 +15,7 @@ import { HeaderContext } from "../../contexts/HeaderContext";
 import SearchInput from "./SearchInput";
 import { FaSearch } from "react-icons/fa";
 import MobileSearchInput from "./MobileSearchInput";
-import getUsers from "./utils/getUsers";
+import getUsers from "../../utils/getUsers";
 import { MyUserContext } from "../../contexts/MyUserContext";
 
 export default function Header() {

@@ -1,40 +1,76 @@
 import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right } from "./styles"
 import { IoHeartOutline, IoTrashSharp, IoPencilSharp } from "react-icons/io5";
+import { useContext, useState } from "react";
+import Modal from "../Modal";
+import deletePost from "./utils/deletePost";
+import { PostsContext } from "../../contexts/PostsContext";
 
-export default function UserPost(){
+export default function UserPost({ post }) {
+
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [postBeingDeleted, setPostBeingDeleted] = useState(false)
+    const { setPosts } = useContext(PostsContext)
+
     return (
-        <PostArea>
-            <Left>
-                <Avatar src="https://ogimg.infoglobo.com.br/in/24907109-c86-bcf/FT1086A/avatar-a-lenda-de-aang.jpg" />
-                <IoHeartOutline className="heart-outline-icon" />
-                <div className="likes-count">14 likes</div>
-            </Left>
-            <Right>
-                <Infos>
-                    <Header>
-                        <div className="user-name">Juvenal Juvênio</div>
-                        <Icons>
-                            <IoPencilSharp className="icon" />
-                            <IoTrashSharp className="icon" />
-                        </Icons>
-                    </Header>
-                    <div className="description">Muito obrigado</div>
-                    <LinkArea>
-                        <div className="left">
-                            <div className="title">Como aplicar o Material UI em um Projeto React</div>
-                            <div className="subtitle">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, obcaecati cumque repudiandae voluptatum ad illo. 
+        <>
+            <PostArea>
+                <Left>
+                    <Avatar src={post.userImage} />
+                    <IoHeartOutline className="heart-outline-icon" />
+                    <div className="likes-count">{post.likesCount} likes</div>
+                </Left>
+                <Right>
+                    <Infos>
+                        <Header>
+                            <div className="user-name">{post.linkData.userName}</div>
+                            <Icons>
+                                <IoPencilSharp className="icon" />
+                                {
+                                    post.userCanDelete &&
+                                    <IoTrashSharp className="icon" onClick={() => { setShowDeleteModal(!showDeleteModal) }} />
+                                }
+                            </Icons>
+                        </Header>
+                        <div className="description">{post.postDesc}</div>
+                        <LinkArea>
+                            <div className="left">
+                                <div className="title">{post.linkData.title}</div>
+                                <div className="subtitle">
+                                    {post.linkData.description}
+                                </div>
+                                <div className="link">
+                                    {post.linkData.url}
+                                </div>
                             </div>
-                            <div className="link">
-                                https://www.material-ui.com
+                            <div className="right">
+                                <img src={post.linkData.image} alt="" />
                             </div>
-                        </div>
-                        <div className="right">
-                            <img src="https://res.cloudinary.com/practicaldev/image/fetch/s--IwFcphyV--/c_imagga_scale,f_auto,fl_progressive,h_900,q_auto,w_1600/https://thepracticaldev.s3.amazonaws.com/i/vb6ai56xqgpc0bcfn92y.png" alt="" />
-                        </div>
-                    </LinkArea>
-                </Infos>
-            </Right>
-        </PostArea>
+                        </LinkArea>
+                    </Infos>
+                </Right>
+            </PostArea>
+            {
+                showDeleteModal &&
+                <Modal setShowModal={setShowDeleteModal}>
+                    <p>Are you sure you want to delete this post?</p>
+                    <div>
+                        <button
+                            data-test="cancel"
+                            onClick={() => { setShowDeleteModal(false) }}
+                            disabled={postBeingDeleted}
+                        >
+                            No, go back
+                        </button>
+                        <button
+                            data-test="confirm"
+                            onClick={() => { deletePost(post, setPosts, setPostBeingDeleted, setShowDeleteModal) }}
+                            disabled={postBeingDeleted}
+                        >
+                            Yes, delete it
+                        </button>
+                    </div>
+                </Modal>
+            }
+        </>
     )
 }

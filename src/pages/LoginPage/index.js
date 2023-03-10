@@ -20,6 +20,7 @@ export default function LoginPage() {
     try {
       const data = await axios.post(URL, body)
       localStorage.setItem('token', data.data.token)
+      localStorage.setItem('userId', data.data.userId)
       navigate('/timeline')
       setIsClicked(false)
     } catch (err) {
