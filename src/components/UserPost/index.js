@@ -1,22 +1,64 @@
 import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right } from "./styles"
-import { IoHeartOutline, IoTrashSharp, IoPencilSharp } from "react-icons/io5";
-import { useContext, useState } from "react";
+import { IoHeartOutline, IoHeartSharp, IoTrashSharp, IoPencilSharp } from "react-icons/io5";
+import { useContext, useEffect, useState } from "react";
 import Modal from "../Modal";
 import deletePost from "./utils/deletePost";
 import { PostsContext } from "../../contexts/PostsContext";
 import { Blocks } from 'react-loader-spinner'
 import { UserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function UserPost({ post }) {
-
     const { setPosts } = useContext(PostsContext)
     const { setUserSelected } = useContext(UserContext)
+    const token = localStorage.getItem('token')
+    const userId = localStorage.getItem('userId')
 
     const navigate = useNavigate()
 
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [postBeingDeleted, setPostBeingDeleted] = useState(false)
+    const [liked, setLiked] = useState(false);
+    const [likesCount, setLikesCount] = useState(post.likesCount);
+
+    useEffect(() => {
+        checkLike()
+    }, []);
+
+    async function checkLike() {
+        let data = {
+            post_id: post.postId,
+            user_id: userId
+        }
+
+        try {
+            let result = await axios.post(process.env.REACT_APP_API_URL + '/posts/liked', data)
+            setLiked(result.data)
+        } catch (error) {
+            console.log("error");
+        }
+    }
+
+    async function toggleLike() {
+        if (liked) setLikesCount(likesCount - 1)
+        else setLikesCount(likesCount + 1)
+
+        setLiked(!liked)
+
+        let data = {
+            post_id: post.postId,
+            user_id: userId
+        }
+
+        const config = { headers: { Authorization: `Bearer ${token}` } }
+
+        try {
+            await axios.post(process.env.REACT_APP_API_URL + '/posts/toggle-like', data, config)
+        } catch (error) {
+            console.log("error");
+        }
+    }
 
     return (
         <>
@@ -30,8 +72,17 @@ export default function UserPost({ post }) {
                         })
                         navigate(`/user/${post.userId}`)
                     }} />
-                    <IoHeartOutline className="heart-outline-icon" />
-                    <div className="likes-count">{post.likesCount} likes</div>
+                    {liked ?
+                        <div data-test="like-btn" onClick={toggleLike}>
+                            <IoHeartSharp  className="heart-sharp-icon" />
+                        </div>
+                        :
+                        <div data-test="like-btn" onClick={toggleLike}>
+                            <IoHeartOutline className="heart-outline-icon" />
+                        </div>
+                    }
+
+                    <div data-test="counter" className="likes-count">{likesCount} likes</div>
                 </Left>
                 <Right>
                     <Infos>

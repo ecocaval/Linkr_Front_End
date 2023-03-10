@@ -116,6 +116,13 @@ export const Left = styled.div`
         margin-bottom: 5px;
         cursor: pointer;
     }
+    .heart-sharp-icon{
+        width: 20px;
+        height: 20px;
+        color: red;
+        margin-bottom: 5px;
+        cursor: pointer;
+    }
 
     .likes-count{
         text-align: center;
