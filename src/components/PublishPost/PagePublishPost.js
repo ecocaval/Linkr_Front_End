@@ -20,13 +20,13 @@ export default function PagePublishPost() {
         })
     }
 
-    async function autenticar(e) {
+    async function authenticate(e) {
         e.preventDefault()
         setSendPost(true)
-        const dados = { ...form }
+        const data = { ...form }
         const config = { headers: { Authorization: `Bearer ${token}` } }
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/posts/new`, dados, config)
+            await axios.post(`${process.env.REACT_APP_API_URL}/posts/new`, data, config)
             setForm({
                 link: "",
                 description: ""
@@ -45,7 +45,7 @@ export default function PagePublishPost() {
             </StyledDivPrimary>
             <StyledDivSecundary>
                 <h2>What are you going to share today?</h2>
-                <form onSubmit={autenticar}>
+                <form onSubmit={authenticate}>
                     <input
                         type="url"
                         placeholder="http://..."
