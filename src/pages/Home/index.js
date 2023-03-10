@@ -4,7 +4,7 @@ import Loader from "../../components/Loader"
 import PagePublishPost from "../../components/PublishPost/PagePublishPost"
 import UserPost from "../../components/UserPost"
 import { PostsContext } from "../../contexts/PostsContext"
-import { HomeArea } from "./styles"
+import { HomeArea, PostsWrapper } from "./styles"
 
 export default function Home() {
 
@@ -14,12 +14,14 @@ export default function Home() {
         <>
             <Header />
             <HomeArea>
-                <PagePublishPost />
-                {
-                    posts[0] ?
-                        posts.map((post, index) => <UserPost key={index} post={post} />) :
-                        <Loader />
-                }
+                <PostsWrapper>
+                    <PagePublishPost />
+                    {
+                        posts[0] ?
+                            posts.map((post, index) => <UserPost key={index} post={post} />) :
+                            <Loader />
+                    }
+                </PostsWrapper>
             </HomeArea>
         </>
     )

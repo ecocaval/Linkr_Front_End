@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import Modal from "../Modal";
 import deletePost from "./utils/deletePost";
 import { PostsContext } from "../../contexts/PostsContext";
+import { Blocks } from 'react-loader-spinner'
 
 export default function UserPost({ post }) {
 
@@ -22,7 +23,7 @@ export default function UserPost({ post }) {
                 <Right>
                     <Infos>
                         <Header>
-                            <div className="user-name">{post.linkData.userName}</div>
+                            <div className="user-name">{post.userName}</div>
                             <Icons>
                                 <IoPencilSharp className="icon" />
                                 {
@@ -63,10 +64,23 @@ export default function UserPost({ post }) {
                         </button>
                         <button
                             data-test="confirm"
-                            onClick={() => { deletePost(post, setPosts, setPostBeingDeleted, setShowDeleteModal) }}
+                            onClick={() => { 
+                                setPostBeingDeleted(true)
+                                deletePost(post, setPosts, setPostBeingDeleted, setShowDeleteModal) 
+                            }}
                             disabled={postBeingDeleted}
+                            style={{overflow:'hidden'}}
                         >
-                            Yes, delete it
+                            {postBeingDeleted ?
+                                <Blocks
+                                    visible={true}
+                                    height="40"
+                                    width="40"
+                                    ariaLabel="blocks-loading"
+                                    wrapperClass="blocks-wrapper"
+                                    style={{overflow:'hidden'}}
+                                />
+                                : "Yes, delete it"}
                         </button>
                     </div>
                 </Modal>
