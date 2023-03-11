@@ -16,6 +16,10 @@ export const HashtagsArea = styled.div`
     @media (max-width:550px) {
         padding-top: 25px;
     }
+
+    @media (max-width: 475px) {
+        height: ${props => props.showMobileSearchInput ? "calc(100vh - 152px)" : "calc(100vh - 72px)" };
+    }
 `
 
 export const PostsWrapper = styled.div`

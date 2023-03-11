@@ -4,6 +4,7 @@ import Header from "../../components/Header"
 import Loader from "../../components/Loader"
 import TrendingHashtags from "../../components/TrendingHashtags"
 import UserPost from "../../components/UserPost"
+import { MobileSearchContext } from "../../contexts/MobileSearchContext"
 import { PostsContext } from "../../contexts/PostsContext"
 import { HashtagsArea, NoPostText, PostsWrapper, Title } from "./styles"
 import getHashtagPosts from "./utils/getHashtagPosts"
@@ -13,6 +14,7 @@ export default function HashtagPage() {
     const { hashtag } = useParams()
 
     const { posts } = useContext(PostsContext)
+    const { showMobileSearchInput } = useContext(MobileSearchContext)
 
     const [hashtagPosts, setHashtagPosts] = useState([])
     const [gotPosts, setGotPosts] = useState(false)
@@ -38,7 +40,7 @@ export default function HashtagPage() {
     return (
         <>
             <Header />
-            <HashtagsArea>
+            <HashtagsArea showMobileSearchInput={showMobileSearchInput}>
                 <PostsWrapper>
                     <Title data-test="hashtag-title" >{`#${hashtag}`}</Title>
                     {

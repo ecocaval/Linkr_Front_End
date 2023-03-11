@@ -1,6 +1,6 @@
 import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, TextArea } from "./styles";
 import { IoHeartOutline, IoTrashSharp, IoPencilSharp, IoHeartSharp } from "react-icons/io5";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Modal from "../Modal";
 import deletePost from "./utils/deletePost";
 import { PostsContext } from "../../contexts/PostsContext";
@@ -30,20 +30,6 @@ export default function UserPost({ post }) {
     const [liked, setLiked] = useState(false);
     const [likesCount, setLikesCount] = useState(Number(post.likesCount));
 
-    async function checkLike() {
-        let data = {
-            post_id: post.postId,
-            user_id: userId
-        }
-
-        try {
-            let result = await axios.post(process.env.REACT_APP_API_URL + '/posts/liked', data)
-            setLiked(result.data)
-        } catch (error) {
-            console.log("error");
-        }
-    }
-
     async function toggleLike() {
         if (liked) setLikesCount(likesCount - 1)
         else setLikesCount(likesCount + 1)
@@ -67,11 +53,6 @@ export default function UserPost({ post }) {
             console.log("error");
         }
     }
-
-    useEffect(() => {
-        checkLike()
-        // eslint-disable-next-line
-    }, []);
 
     return (
         <>

@@ -6,6 +6,7 @@ import { PostsContext } from "./contexts/PostsContext";
 import { Router } from "./routes"
 import getPosts from "./utils/getPosts";
 import getUsers from "./utils/getUsers";
+import { MobileSearchContext } from "./contexts/MobileSearchContext";
 
 function App() {
 
@@ -15,7 +16,7 @@ function App() {
   const [sendPost, setSendPost] = useState(false)
   const [userSelected, setUserSelected] = useState(null)
   const [gotPosts, setGotPosts] = useState(false)
-  // setGotPosts(true)
+  const [showMobileSearchInput, setShowMobileSearchInput] = useState(true)
 
   async function handlePosts() {
     setGotPosts(await getPosts(setPosts))
@@ -35,11 +36,14 @@ function App() {
 
   return (
     <>
+
       <UserContext.Provider value={{ myUser, userSelected, setUserSelected }}>
         <PostsContext.Provider value={{ posts, setPosts, setMustUpdatePosts, sendPost, setSendPost, gotPosts }}>
-          <Background>
-            <Router />
-          </Background>
+          <MobileSearchContext.Provider value={{ showMobileSearchInput, setShowMobileSearchInput }}>
+            <Background>
+              <Router />
+            </Background>
+          </MobileSearchContext.Provider>
         </PostsContext.Provider>
       </UserContext.Provider>
     </>

@@ -26,6 +26,7 @@ export const AuthLogoContainer = styled.div`
     height: 30%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     text-align: center;
     padding-left: 0;
     padding-top: 0;

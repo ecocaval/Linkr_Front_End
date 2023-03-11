@@ -4,6 +4,7 @@ import Header from "../../components/Header"
 import Loader from "../../components/Loader"
 import TrendingHashtags from "../../components/TrendingHashtags"
 import UserPost from "../../components/UserPost"
+import { MobileSearchContext } from "../../contexts/MobileSearchContext"
 import { PostsContext } from "../../contexts/PostsContext"
 import { UserContext } from "../../contexts/UserContext"
 import { NoPostText, PostsWrapper, Title, TrendingWrapper, UserArea } from "./styles"
@@ -15,6 +16,7 @@ export default function UserPage() {
     
     const { posts } = useContext(PostsContext)
     const { userSelected } = useContext(UserContext)
+    const { showMobileSearchInput } = useContext(MobileSearchContext)
     
     const [myPosts, setMyPosts] = useState([])
     const [gotPosts, setGotPosts] = useState(false)
@@ -34,7 +36,7 @@ export default function UserPage() {
     return (
         <>
             <Header />
-            <UserArea>
+            <UserArea showMobileSearchInput={showMobileSearchInput}>
                 <PostsWrapper>
                     <div>
                         <img
