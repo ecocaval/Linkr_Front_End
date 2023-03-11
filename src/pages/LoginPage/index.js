@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Blocks } from 'react-loader-spinner';
+import axios from 'axios';
 import AuthLogo from '../../components/AuthLogo';
 import { Container, FormContainer } from './styles';
-import axios from 'axios';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isClicked, setIsClicked] = useState(false)
+  const [sentLogin, setSentLogin] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -18,6 +20,7 @@ export default function LoginPage() {
 
   async function login(e) {
     e.preventDefault()
+    setSentLogin(true)
 
     const URL = `${process.env.REACT_APP_API_URL}/signin`
     const body = { email, password }
@@ -38,6 +41,7 @@ export default function LoginPage() {
       alert(err.response.data)
       setIsClicked(false)
     }
+    setSentLogin(false)
   }
 
   return (
@@ -63,7 +67,16 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             disabled={isClicked}
           />
-          <button type="submit" disabled={isClicked} data-test="login-btn">Log In</button>
+          <button type="submit" disabled={isClicked} data-test="login-btn">
+            {sentLogin ? <Blocks
+              visible={true}
+              height="40"
+              width="40"
+              ariaLabel="blocks-loading"
+              wrapperClass="blocks-wrapper"
+              style={{ overflow: 'hidden' }}
+            /> : "Log In"}
+          </button>
         </form>
         <p data-test="sign-up-link" onClick={() => navigate('/sign-up')}>First time? Create an account!</p>
       </FormContainer>

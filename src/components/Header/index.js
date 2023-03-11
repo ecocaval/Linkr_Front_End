@@ -18,6 +18,7 @@ import MobileSearchInput from "./MobileSearchInput";
 import getUsers from "../../utils/getUsers";
 import { UserContext } from "../../contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import { MobileSearchContext } from "../../contexts/MobileSearchContext";
 
 export default function Header() {
 
@@ -30,7 +31,7 @@ export default function Header() {
     const [arrowWasClicked, setArrowWasClicked] = useState(false)
     const [arrowWasFirstClicked, setArrowWasFirstClicked] = useState(false)
     const [usersSearchFiltered, setUserSearchFiltered] = useState([])
-    const [showMobileSearchInput, setShowMobileSearchInput] = useState(true)
+    const {showMobileSearchInput, setShowMobileSearchInput} = useContext(MobileSearchContext)
 
     useEffect(() => {
         setUserSearchFiltered(filterUsersByInput(users, headerInputValue))

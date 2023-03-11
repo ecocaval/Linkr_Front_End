@@ -37,15 +37,15 @@ export const StyledUserAside = styled.div`
         width: 50px;
         height: 50px;
         border-radius: 25px;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 `
 
 export const ArrowController = styled.div`
     animation: ${props => props.arrowWasClicked ? spin180 : (props.arrowWasFirstClicked ? reverseSpin180 : "")} 0.2s ease-out forwards;
-
-    &:hover {
-        cursor: pointer;
-    }
 `
 
 export const LogoutModal = styled.div`
@@ -60,7 +60,7 @@ export const LogoutModal = styled.div`
     border-radius: 0 0 0 10px;
     top: 0;
     opacity: 0;
-    z-index: 0;
+    z-index: 4;
     animation: ${props => props.arrowWasClicked ? fadeUp : (props.arrowWasFirstClicked ? reverseFadeUp : "")} 0.2s ease-out forwards;
 
     > p {
