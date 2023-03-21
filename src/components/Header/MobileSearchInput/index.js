@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { DebounceInput } from 'react-debounce-input';
 import { useNavigate } from "react-router-dom";
 import { HeaderContext } from "../../../contexts/HeaderContext";
-import { UserContext } from "../../../contexts/UserContext";
+import { UserContext } from "../../../contexts/UserProvider";
 import { InputWrapper, StyledInput, UsersInSearch } from "./styles"
 
 export default function MobileSearchInput() {

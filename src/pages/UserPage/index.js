@@ -4,9 +4,9 @@ import Header from "../../components/Header"
 import Loader from "../../components/Loader"
 import TrendingHashtags from "../../components/TrendingHashtags"
 import UserPost from "../../components/UserPost"
-import { MobileSearchContext } from "../../contexts/MobileSearchContext"
-import { PostsContext } from "../../contexts/PostsContext"
-import { UserContext } from "../../contexts/UserContext"
+import { MobileSearchContext } from "../../contexts/MobileProvider"
+import { PostsContext } from "../../contexts/PostsProvider"
+import { UserContext } from "../../contexts/UserProvider"
 import { NoPostText, PostsWrapper, Title, TrendingWrapper, UserArea } from "./styles"
 import getMyPosts from "./utils/getMyPosts"
 
@@ -40,7 +40,7 @@ export default function UserPage() {
                 <PostsWrapper>
                     <div>
                         <img
-                            src={userSelected.image}
+                            src={userSelected?.image}
                             style={{
                                 width: "50px",
                                 height: "50px",

@@ -2,6 +2,7 @@ import axios from "axios"
 
 export default async function editPost(post, description, posts, setPosts, setEditPostMode) {
     const token = localStorage.getItem('token')
+    if(!token) return  
     try {
         await axios.put(`${process.env.REACT_APP_API_URL}/posts/${post.postId}`, {
             description
