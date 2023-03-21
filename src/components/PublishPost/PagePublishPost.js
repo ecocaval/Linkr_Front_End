@@ -1,8 +1,8 @@
 import { StyledSection, StyledDivPrimary, StyledDivSecundary } from "./styles"
 import axios from "axios"
 import { useContext, useState } from "react"
-import { UserContext } from "../../contexts/UserContext.js"
-import { PostsContext } from "../../contexts/PostsContext"
+import { UserContext } from "../../contexts/UserProvider.js"
+import { PostsContext } from "../../contexts/PostsProvider"
 
 export default function PagePublishPost() {
     const { myUser } = useContext(UserContext)

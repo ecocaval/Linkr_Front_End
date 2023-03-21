@@ -4,7 +4,7 @@ import { DebounceInput } from 'react-debounce-input';
 import { HeaderContext } from "../../../contexts/HeaderContext";
 import { InputWrapper, StyledInput, UsersInSearch } from "./styles"
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../../../contexts/UserContext";
+import { UserContext } from "../../../contexts/UserProvider";
 
 export default function SearchInput() {
 

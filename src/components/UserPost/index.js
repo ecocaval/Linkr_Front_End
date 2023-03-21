@@ -3,9 +3,9 @@ import { IoHeartOutline, IoTrashSharp, IoPencilSharp, IoHeartSharp } from "react
 import { useContext, useRef, useState } from "react";
 import Modal from "../Modal";
 import deletePost from "./utils/deletePost";
-import { PostsContext } from "../../contexts/PostsContext";
+import { PostsContext } from "../../contexts/PostsProvider";
 import { Blocks } from 'react-loader-spinner';
-import { UserContext } from "../../contexts/UserContext";
+import { UserContext } from "../../contexts/UserProvider";
 import { useNavigate } from "react-router-dom";
 import handleKeyPress from "./utils/handleKeyPress";
 import axios from "axios";

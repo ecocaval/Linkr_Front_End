@@ -4,7 +4,7 @@ import { Blocks } from 'react-loader-spinner';
 import axios from 'axios';
 import AuthLogo from '../../components/AuthLogo';
 import { Container, FormContainer } from './styles';
-import { UserContext } from '../../contexts/UserContext';
+import { LoginContext } from '../../contexts/LoginProvider';
 
 export default function LoginPage() {
 
@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [isClicked, setIsClicked] = useState(false)
   
-  const { sentLogin, setSentLogin } = useContext(UserContext)
+  const { sentLogin, setSentLogin } = useContext(LoginContext)
 
   const navigate = useNavigate()
 

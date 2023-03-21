@@ -16,9 +16,9 @@ import SearchInput from "./SearchInput";
 import { FaSearch } from "react-icons/fa";
 import MobileSearchInput from "./MobileSearchInput";
 import getUsers from "../../utils/getUsers";
-import { UserContext } from "../../contexts/UserContext";
+import { UserContext } from "../../contexts/UserProvider";
 import { useNavigate } from "react-router-dom";
-import { MobileSearchContext } from "../../contexts/MobileSearchContext";
+import { MobileSearchContext } from "../../contexts/MobileProvider";
 
 export default function Header() {
 

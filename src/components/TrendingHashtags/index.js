@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { PostsContext } from "../../contexts/PostsContext";
+import { PostsContext } from "../../contexts/PostsProvider";
 import { Wrapper } from "./styles";
 import getHashtags from "./utils/getHashtags";
 
