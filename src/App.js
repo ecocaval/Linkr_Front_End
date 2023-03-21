@@ -17,15 +17,21 @@ function App() {
   const [userSelected, setUserSelected] = useState(null)
   const [gotPosts, setGotPosts] = useState(false)
   const [showMobileSearchInput, setShowMobileSearchInput] = useState(true)
+  const [returnToSignUp, setReturnToSignUp] = useState(false)
+  const [sentLogin, setSentLogin] = useState(false)
 
   async function handlePosts() {
     setGotPosts(await getPosts(setPosts))
   }
 
+  async function handleMyUser() {
+    await getUsers(setMyUser, 'my_user', setReturnToSignUp) 
+  }
+
   useEffect(() => {
-    getUsers(setMyUser, 'my_user')
+    handleMyUser()
     handlePosts()
-  }, [])
+  }, [sentLogin, setSentLogin])
 
   useEffect(() => {
     if (mustUpdatePosts) {
@@ -36,8 +42,7 @@ function App() {
 
   return (
     <>
-
-      <UserContext.Provider value={{ myUser, userSelected, setUserSelected }}>
+      <UserContext.Provider value={{ myUser, userSelected, setUserSelected, returnToSignUp, setReturnToSignUp, sentLogin, setSentLogin }}>
         <PostsContext.Provider value={{ posts, setPosts, setMustUpdatePosts, sendPost, setSendPost, gotPosts }}>
           <MobileSearchContext.Provider value={{ showMobileSearchInput, setShowMobileSearchInput }}>
             <Background>

@@ -1,22 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Blocks } from 'react-loader-spinner';
 import axios from 'axios';
 import AuthLogo from '../../components/AuthLogo';
 import { Container, FormContainer } from './styles';
+import { UserContext } from '../../contexts/UserContext';
 
 export default function LoginPage() {
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isClicked, setIsClicked] = useState(false)
-  const [sentLogin, setSentLogin] = useState(false)
+  
+  const { sentLogin, setSentLogin } = useContext(UserContext)
+
   const navigate = useNavigate()
 
   useEffect(() => {
     if (localStorage.length !== 0) {
       navigate('/timeline')
     }
-  }, [])
+  }, [navigate])
 
   async function login(e) {
     e.preventDefault()
@@ -33,10 +37,12 @@ export default function LoginPage() {
 
     try {
       const data = await axios.post(URL, body)
-      localStorage.setItem('token', data.data.token)
-      localStorage.setItem('userId', data.data.userId)
-      navigate('/timeline')
-      setIsClicked(false)
+      if (data) {
+        localStorage.setItem('token', data.data.token)
+        localStorage.setItem('userId', data.data.userId)
+        navigate('/timeline')
+        setIsClicked(false)
+      }
     } catch (err) {
       alert(err.response.data)
       setIsClicked(false)

@@ -40,7 +40,7 @@ export default function UserPage() {
                 <PostsWrapper>
                     <div>
                         <img
-                            src={userSelected.image}
+                            src={userSelected?.image}
                             style={{
                                 width: "50px",
                                 height: "50px",

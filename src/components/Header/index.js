@@ -23,6 +23,8 @@ import { MobileSearchContext } from "../../contexts/MobileSearchContext";
 export default function Header() {
 
     const { myUser } = useContext(UserContext)
+    const { showMobileSearchInput, setShowMobileSearchInput } = useContext(MobileSearchContext)
+    const { returnToSignUp, setReturnToSignUp } = useContext(UserContext)
 
     const navigate = useNavigate()
 
@@ -31,7 +33,13 @@ export default function Header() {
     const [arrowWasClicked, setArrowWasClicked] = useState(false)
     const [arrowWasFirstClicked, setArrowWasFirstClicked] = useState(false)
     const [usersSearchFiltered, setUserSearchFiltered] = useState([])
-    const {showMobileSearchInput, setShowMobileSearchInput} = useContext(MobileSearchContext)
+
+    useEffect(() => {
+        if (returnToSignUp) {
+            setReturnToSignUp(false)
+            navigate('/')
+        }
+    }, [returnToSignUp, navigate, setReturnToSignUp])
 
     useEffect(() => {
         setUserSearchFiltered(filterUsersByInput(users, headerInputValue))
@@ -54,7 +62,7 @@ export default function Header() {
             }}>
                 <HeaderCSSvariables>
                     <StyledHeader>
-                        <StyledLogo onClick={() => {navigate('/timeline')}}>linkr</StyledLogo>
+                        <StyledLogo onClick={() => { navigate('/timeline') }}>linkr</StyledLogo>
                         <SearchInput />
                         <MobileSearcher>
                             <FaSearch

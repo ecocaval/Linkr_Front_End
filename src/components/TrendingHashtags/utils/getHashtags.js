@@ -2,6 +2,7 @@ import axios from "axios";
 
 export default async function getHashtags(setHashtags) {
     const token = localStorage.getItem('token')
+    if(!token) return  
     try {
         const hashtags = await axios.get(`${process.env.REACT_APP_API_URL}/hashtags`, {
             headers: {

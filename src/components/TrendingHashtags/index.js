@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { PostsContext } from "../../contexts/PostsContext";
 import { Wrapper } from "./styles";
 import getHashtags from "./utils/getHashtags";
 
@@ -7,11 +8,13 @@ export default function TrendingHashtags() {
 
     const navigate = useNavigate()
 
+    const { posts } = useContext(PostsContext)
+
     const [hashtags, setHashtags] = useState([])
 
     useEffect(() => {
         getHashtags(setHashtags)
-    }, [])
+    }, [posts])
 
     return (
         <Wrapper data-test="trending" >
