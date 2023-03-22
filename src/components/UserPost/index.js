@@ -1,6 +1,6 @@
 import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, TextArea } from "./styles";
 import { IoHeartOutline, IoTrashSharp, IoPencilSharp, IoHeartSharp } from "react-icons/io5";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Modal from "../Modal";
 import deletePost from "./utils/deletePost";
 import { PostsContext } from "../../contexts/PostsProvider";
