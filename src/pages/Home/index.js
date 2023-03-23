@@ -11,7 +11,9 @@ import { MobileSearchContext } from "../../contexts/MobileProvider"
 import { PostsContext } from "../../contexts/PostsProvider"
 import { UserContext } from "../../contexts/UserProvider"
 import getPosts from "../../utils/getPosts"
-import getUsers from "../../utils/getUsers"
+import handleMyUser from "../../utils/handleMyUser"
+import handlePosts from "../../utils/handlePosts"
+import handleUpdatedPosts from "../../utils/handleUpdatedPosts"
 import { NoPostText } from "../UserPage/styles"
 import { HomeArea, PostsWrapper, Title } from "./styles"
 
@@ -35,21 +37,9 @@ export default function Home() {
     const { setMyUser, setReturnToSignUp } = useContext(UserContext)
     const { sentLogin, setSentLogin } = useContext(LoginContext)
 
-    async function handleMyUser() {
-        await getUsers(setMyUser, 'my_user', setReturnToSignUp)
-    }
-
-    async function handlePosts() {
-        setGotPosts(await getPosts(setPosts))
-    }
-
-    async function handleUpdatedPosts() {
-        setGotPosts(await getPosts(setUpdatedPosts))
-    }
-
     useEffect(() => {
-        handleMyUser()
-        handlePosts()
+        handleMyUser(setMyUser, setReturnToSignUp)
+        handlePosts(setPosts, setGotPosts)
         // eslint-disable-next-line
     }, [sentLogin, setSentLogin])
 
@@ -71,7 +61,7 @@ export default function Home() {
     }, [updatedPosts])
 
     useInterval(() => {
-        handleUpdatedPosts()
+        handleUpdatedPosts(setGotPosts, setUpdatedPosts)
     }, 15000)
 
     return (
@@ -81,9 +71,7 @@ export default function Home() {
                 <PostsWrapper>
                     <Title>timeline</Title>
                     <PagePublishPost />
-                    {
-                        postsToUpdate !== 0 && <UpdatePostsModal/>
-                    }
+                    {postsToUpdate !== 0 && <UpdatePostsModal />}
                     {
                         posts[0] ?
                             posts.map((post, index) =>
