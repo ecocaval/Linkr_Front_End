@@ -65,14 +65,12 @@ export default function Home() {
         for (let i = 0; i < updatedPosts.length; i++) {
             if (updatedPosts[i].postId === posts[0].postId) {
                 setPostsToUpdate(updatedPosts.slice(0, i).length)
-                console.log(updatedPosts.slice(0, i).length)
             }
         }
         // eslint-disable-next-line
     }, [updatedPosts])
 
     useInterval(() => {
-        console.log('triguei interval')
         handleUpdatedPosts()
     }, 15000)
 
