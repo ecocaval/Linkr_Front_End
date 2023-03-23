@@ -1,8 +1,10 @@
 import { useContext, useEffect } from "react"
+import useInterval from 'use-interval'
 import Header from "../../components/Header"
 import Loader from "../../components/Loader"
 import PagePublishPost from "../../components/PublishPost/PagePublishPost"
 import TrendingHashtags from "../../components/TrendingHashtags"
+import UpdatePostsModal from "../../components/UpdatePostsModal"
 import UserPost from "../../components/UserPost"
 import { LoginContext } from "../../contexts/LoginProvider"
 import { MobileSearchContext } from "../../contexts/MobileProvider"
@@ -17,6 +19,10 @@ export default function Home() {
 
     const {
         posts,
+        updatedPosts,
+        setUpdatedPosts,
+        postsToUpdate,
+        setPostsToUpdate,
         setPosts,
         gotPosts,
         setGotPosts,
@@ -37,6 +43,10 @@ export default function Home() {
         setGotPosts(await getPosts(setPosts))
     }
 
+    async function handleUpdatedPosts() {
+        setGotPosts(await getPosts(setUpdatedPosts))
+    }
+
     useEffect(() => {
         handleMyUser()
         handlePosts()
@@ -51,6 +61,19 @@ export default function Home() {
         // eslint-disable-next-line
     }, [mustUpdatePosts])
 
+    useEffect(() => {
+        for (let i = 0; i < updatedPosts.length; i++) {
+            if (updatedPosts[i].postId === posts[0].postId) {
+                setPostsToUpdate(updatedPosts.slice(0, i).length)
+            }
+        }
+        // eslint-disable-next-line
+    }, [updatedPosts])
+
+    useInterval(() => {
+        handleUpdatedPosts()
+    }, 15000)
+
     return (
         <>
             <Header />
@@ -59,10 +82,13 @@ export default function Home() {
                     <Title>timeline</Title>
                     <PagePublishPost />
                     {
+                        postsToUpdate !== 0 && <UpdatePostsModal/>
+                    }
+                    {
                         posts[0] ?
-                            posts.map((post, index) => (
+                            posts.map((post, index) =>
                                 <UserPost key={index} post={post} />
-                            )) :
+                            ) :
                             (gotPosts ?
                                 <NoPostText data-test="message">There are no posts yet</NoPostText> :
                                 <Loader />

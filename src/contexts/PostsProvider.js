@@ -5,6 +5,8 @@ export const PostsContext = createContext();
 export function PostsProvider({ children }) {
 
     const [posts, setPosts] = useState([])
+    const [updatedPosts, setUpdatedPosts] = useState([])
+    const [postsToUpdate, setPostsToUpdate] = useState(0)
     const [mustUpdatePosts, setMustUpdatePosts] = useState(false)
     const [sendPost, setSendPost] = useState(false)
     const [gotPosts, setGotPosts] = useState(false)
@@ -12,14 +14,12 @@ export function PostsProvider({ children }) {
     return (
         <PostsContext.Provider
             value={{
-                posts, 
-                setPosts,
-                mustUpdatePosts, 
-                setMustUpdatePosts, 
-                sendPost, 
-                setSendPost, 
-                gotPosts,
-                setGotPosts
+                posts, setPosts,
+                updatedPosts, setUpdatedPosts,
+                postsToUpdate, setPostsToUpdate,
+                mustUpdatePosts, setMustUpdatePosts,
+                sendPost, setSendPost,
+                gotPosts, setGotPosts
             }}
         >
             {children}

@@ -9,6 +9,15 @@ export const spin180 = keyframes`
     }
 `
 
+export const spin360 = keyframes`
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+`
+
 export const reverseSpin180 = keyframes`
     from {
         transform: rotate(180deg);
