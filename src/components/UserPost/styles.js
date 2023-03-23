@@ -103,7 +103,7 @@ export const Infos = styled.div`
 `
 
 export const Left = styled.div`
-    width: 60px;
+    width: 75px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -119,6 +119,8 @@ export const Left = styled.div`
 
     .likes-count{
         text-align: center;
+        font-size: 14px;
+        margin-bottom: 15px;
     }
 
     .heart-sharp-icon{
@@ -127,6 +129,11 @@ export const Left = styled.div`
         color: red;
         margin-bottom: 5px;
         cursor: pointer;
+    }
+
+    .repost-icon{
+        width: 22px;
+        height: 22px;
     }
 `
 export const Right = styled.div`
