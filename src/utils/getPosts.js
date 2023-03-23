@@ -9,6 +9,7 @@ export default async function getPosts(setPosts, setSendPost) {
                 authorization: `Bearer ${token}`
             }
         })
+        console.log(data)
         setPosts(data)
         if (!!setSendPost) setSendPost(false) //* used in the loader button in the publish post modal
         return true
