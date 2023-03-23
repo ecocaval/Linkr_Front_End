@@ -7,22 +7,28 @@ import UserPost from "../../components/UserPost"
 import { MobileSearchContext } from "../../contexts/MobileProvider"
 import { PostsContext } from "../../contexts/PostsProvider"
 import { UserContext } from "../../contexts/UserProvider"
+import handlePosts from "../../utils/handlePosts"
 import { NoPostText, PostsWrapper, Title, TrendingWrapper, UserArea } from "./styles"
 import getMyPosts from "./utils/getMyPosts"
+import getPageUser from "./utils/getPageUser"
 
 export default function UserPage() {
 
     const { id } = useParams()
-    
-    const { posts } = useContext(PostsContext)
-    const { userSelected } = useContext(UserContext)
+
+    const { posts, setPosts } = useContext(PostsContext)
+    const { userSelected, setUserSelected } = useContext(UserContext)
     const { showMobileSearchInput } = useContext(MobileSearchContext)
-    
+
     const [myPosts, setMyPosts] = useState([])
     const [gotPosts, setGotPosts] = useState(false)
 
     useEffect(() => {
-        if(posts) {
+        if (!userSelected) {
+            getPageUser(setUserSelected, id)
+        }
+
+        if (posts) {
             const filteredPosts = posts.filter(post => {
                 return post.userId === Number(id)
             })
@@ -31,7 +37,13 @@ export default function UserPage() {
         } else {
             getMyPosts(setMyPosts, setGotPosts)
         }
-    }, [id, posts])
+        // eslint-disable-next-line
+    }, [id, posts, userSelected])
+
+    useEffect(() => {
+        handlePosts(setPosts,setGotPosts)
+        // eslint-disable-next-line
+    }, [])
 
     return (
         <>
