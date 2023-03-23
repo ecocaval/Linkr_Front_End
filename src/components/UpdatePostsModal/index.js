@@ -7,10 +7,18 @@ export default function UpdatePostsModal() {
 
     const {
         postsToUpdate,
+        setPosts,
+        updatedPosts,
+        setPostsToUpdate
     } = useContext(PostsContext)
 
     return (
-        <StyledModal>
+        <StyledModal
+            onClick={() => {
+                setPosts(updatedPosts)
+                setPostsToUpdate(0)
+            }}
+        >
             <p>{String(postsToUpdate)} new posts, load more!</p>
             <IoReload
                 style={{
