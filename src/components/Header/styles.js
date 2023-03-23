@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import { fadeUp, reverseFadeUp } from "../../styles/animations/fadeUp"
-import { reverseSpin180, spin180 } from "../../styles/animations/spin180"
+import { reverseSpin180, spin180 } from "../../styles/animations/spin"
 
 export const HeaderCSSvariables = styled.div`
     --header-height: 72px;
