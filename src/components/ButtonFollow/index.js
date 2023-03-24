@@ -70,6 +70,7 @@ export default function ButtonFollow() {
       onClick={handleClick}
       disabled={isLoading}
       colorButton={!clicked}
+      data-test="follow-btn"
     >
       {clicked ? "Follow" : "Unfollow"}
     </ButtonStyle>
