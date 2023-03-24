@@ -2,15 +2,88 @@ import styled from "styled-components"
 
 export const PostArea = styled.div`
     font-family: 'Lato', sans-serif;
+    background-color: #1E1E1E;
+    color: #fff;
+    border-radius: 12px;
+`
+
+export const PostContent = styled.div`
+    
     margin: 0 auto;
     margin-top: 25px;
     padding: 20px;
     max-width: 800px;
     height: auto;
     background-color: #171717;
-    color: #fff;
     border-radius: 12px;
     display: flex;
+`
+
+export const CommentsArea = styled.div`
+
+`
+    
+export const PostComments = styled.div`
+    padding: 0 20px;
+    max-height: 250px;
+    overflow-y: scroll;
+`
+export const PostComment = styled.div`
+    display: flex;
+    padding: 20px 0;
+    border-bottom: 1px solid #353535;
+
+    .avatar{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-left: 5px;
+        margin-right: 18px;
+    }
+    .content{
+
+    }
+    .user-name{
+        span{
+            color: #565656;
+        }
+    }
+    .text-comment{
+        color: #ACACAC;
+    }
+`
+export const InputCommentArea = styled.div`
+    padding: 20px 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .avatar{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        margin-left: 5px;
+        margin-right: 18px;
+    }
+
+    .text-comment{
+        background-color: #252525;
+        color: #575757;
+        font-size: 14px;
+        padding-left: 10px;
+        padding-right: 40px;
+        outline: none;
+        border: 0;
+        height: 40px;
+        border-radius: 5px;
+        width: 100%;
+    }
+
+    .send-icon{
+        position: absolute;
+        right: 35px;
+        cursor: pointer;
+    }
 `
 
 export const Header = styled.div`
@@ -103,12 +176,12 @@ export const Infos = styled.div`
 `
 
 export const Left = styled.div`
-    width: 60px;
+    width: 70px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    margin-right: 30px;
+    margin-right: 10px;
 
     .heart-outline-icon{
         width: 20px;
@@ -119,6 +192,7 @@ export const Left = styled.div`
 
     .likes-count{
         text-align: center;
+        font-size: 11px;
     }
 
     .heart-sharp-icon{
@@ -127,6 +201,18 @@ export const Left = styled.div`
         color: red;
         margin-bottom: 5px;
         cursor: pointer;
+    }
+
+    .chat-icon{
+        width: 20px;
+        height: 20px;
+        margin-top: 15px;
+        cursor: pointer;
+    }
+
+    .comments-count{
+        text-align: center;
+        font-size: 11px;
     }
 `
 export const Right = styled.div`
