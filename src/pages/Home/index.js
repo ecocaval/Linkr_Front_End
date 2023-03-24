@@ -109,9 +109,7 @@ export default function Home() {
                                         <Loader />
                                 )
                         }
-                        {
-                            gettingPosts && <Loader />
-                        }
+                        {gettingPosts && <Loader />}
                         <TrendingHashtags />
                     </PostsWrapper>
                 </InfiniteScroll>

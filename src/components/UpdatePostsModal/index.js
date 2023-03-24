@@ -15,6 +15,7 @@ export default function UpdatePostsModal() {
 
     return (
         <StyledModal
+            data-test="load-btn"
             onClick={() => {
                 setPosts([...updatedPosts, ...posts])
                 setPostsToUpdate(0)
