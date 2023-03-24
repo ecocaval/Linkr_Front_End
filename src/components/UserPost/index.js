@@ -1,5 +1,6 @@
 import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, TextArea } from "./styles";
 import { IoHeartOutline, IoTrashSharp, IoPencilSharp, IoHeartSharp } from "react-icons/io5";
+import { BiRepost } from "react-icons/bi"
 import { useContext, useEffect, useRef, useState } from "react";
 import Modal from "../Modal";
 import deletePost from "./utils/deletePost";
@@ -76,6 +77,8 @@ export default function UserPost({ post }) {
                         </div>
                     }
                     <div data-test="counter" className="likes-count">{likesCount} like{likesCount > 1 ? "s" : ""}</div>
+                    <BiRepost className="repost-icon"/>
+                    <div className="likes-count">0 re-posts</div>
                 </Left>
                 <Right>
                     <Infos>

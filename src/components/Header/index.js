@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react"
 import { IoIosArrowDown } from "react-icons/io"
-import logUserOff from "./utils/logUserOff"
 import filterUsersByInput from "./utils/filterUsersByInput";
 import {
     ArrowController,
@@ -19,12 +18,24 @@ import getUsers from "../../utils/getUsers";
 import { UserContext } from "../../contexts/UserProvider";
 import { useNavigate } from "react-router-dom";
 import { MobileSearchContext } from "../../contexts/MobileProvider";
+import handleMyUser from "../../utils/handleMyUser";
 
 export default function Header() {
 
-    const { myUser } = useContext(UserContext)
-    const { showMobileSearchInput, setShowMobileSearchInput } = useContext(MobileSearchContext)
-    const { returnToSignUp, setReturnToSignUp } = useContext(UserContext)
+    const {
+        myUser,
+        setMyUser
+    } = useContext(UserContext)
+
+    const {
+        showMobileSearchInput,
+        setShowMobileSearchInput
+    } = useContext(MobileSearchContext)
+
+    const {
+        returnToSignUp,
+        setReturnToSignUp
+    } = useContext(UserContext)
 
     const navigate = useNavigate()
 
@@ -48,12 +59,9 @@ export default function Header() {
 
     useEffect(() => {
         getUsers(setUsers, 'users');
+        handleMyUser(setMyUser, setReturnToSignUp)
+        // eslint-disable-next-line
     }, [])
-
-    function logout() {
-        localStorage.clear()
-        navigate('/')
-    }
 
     return (
         <>
@@ -98,10 +106,12 @@ export default function Header() {
                     </StyledHeader>
                     <LogoutModal
                         arrowWasClicked={arrowWasClicked}
-                        onClick={() => { logUserOff() }}
                         data-test="menu"
                     >
-                        <p data-test="logout" onClick={logout}>Logout</p>
+                        <p data-test="logout" onClick={() => {
+                            localStorage.clear()
+                            navigate('/')
+                        }}>Logout</p>
                     </LogoutModal>
                     {showMobileSearchInput && <MobileSearchInput />}
                 </HeaderCSSvariables>

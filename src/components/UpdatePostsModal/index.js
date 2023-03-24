@@ -6,6 +6,7 @@ import { StyledModal } from "./styles";
 export default function UpdatePostsModal() {
 
     const {
+        posts,
         postsToUpdate,
         setPosts,
         updatedPosts,
@@ -14,8 +15,9 @@ export default function UpdatePostsModal() {
 
     return (
         <StyledModal
+            data-test="load-btn"
             onClick={() => {
-                setPosts(updatedPosts)
+                setPosts([...updatedPosts, ...posts])
                 setPostsToUpdate(0)
             }}
         >

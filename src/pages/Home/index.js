@@ -1,5 +1,6 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import useInterval from 'use-interval'
+import InfiniteScroll from 'react-infinite-scroller';
 import Header from "../../components/Header"
 import Loader from "../../components/Loader"
 import PagePublishPost from "../../components/PublishPost/PagePublishPost"
@@ -9,13 +10,12 @@ import UserPost from "../../components/UserPost"
 import { LoginContext } from "../../contexts/LoginProvider"
 import { MobileSearchContext } from "../../contexts/MobileProvider"
 import { PostsContext } from "../../contexts/PostsProvider"
-import { UserContext } from "../../contexts/UserProvider"
 import getPosts from "../../utils/getPosts"
-import handleMyUser from "../../utils/handleMyUser"
 import handlePosts from "../../utils/handlePosts"
 import handleUpdatedPosts from "../../utils/handleUpdatedPosts"
 import { NoPostText } from "../UserPage/styles"
 import { HomeArea, PostsWrapper, Title } from "./styles"
+import { loadMorePosts } from "./utils/loadMorePosts";
 
 export default function Home() {
 
@@ -34,11 +34,13 @@ export default function Home() {
     } = useContext(PostsContext)
 
     const { showMobileSearchInput } = useContext(MobileSearchContext)
-    const { setMyUser, setReturnToSignUp } = useContext(UserContext)
     const { sentLogin, setSentLogin } = useContext(LoginContext)
 
+    const [scannedAllPosts, setScannedAllPosts] = useState(false)
+    const [gettingPosts, setGettingPosts] = useState(false)
+    const [hasMorePosts, setHasMorePosts] = useState(false)
+
     useEffect(() => {
-        handleMyUser(setMyUser, setReturnToSignUp)
         handlePosts(setPosts, setGotPosts)
         // eslint-disable-next-line
     }, [sentLogin, setSentLogin])
@@ -52,38 +54,65 @@ export default function Home() {
     }, [mustUpdatePosts])
 
     useEffect(() => {
-        for (let i = 0; i < updatedPosts.length; i++) {
-            if (updatedPosts[i].postId === posts[0].postId) {
-                setPostsToUpdate(updatedPosts.slice(0, i).length)
+        if (updatedPosts.length !== postsToUpdate) {
+            for (let i = 0; i < updatedPosts.length; i++) {
+                if (updatedPosts[i].postId === posts[0].postId) {
+                    setPostsToUpdate(updatedPosts.slice(0, i).length)
+                    setUpdatedPosts(updatedPosts.slice(0, i))
+                }
             }
         }
         // eslint-disable-next-line
     }, [updatedPosts])
 
     useInterval(() => {
-        handleUpdatedPosts(setGotPosts, setUpdatedPosts)
+        if (posts.length > 0)
+            handleUpdatedPosts(setGotPosts, setUpdatedPosts)
     }, 15000)
+
+    useEffect(() => {
+        if (posts.length !== 0 && !hasMorePosts && !scannedAllPosts && !gettingPosts) {
+            setHasMorePosts(true)
+        }
+        // eslint-disable-next-line
+    }, [posts])
 
     return (
         <>
             <Header />
             <HomeArea showMobileSearchInput={showMobileSearchInput}>
-                <PostsWrapper>
-                    <Title>timeline</Title>
-                    <PagePublishPost />
-                    {postsToUpdate !== 0 && <UpdatePostsModal />}
-                    {
-                        posts[0] ?
-                            posts.map((post, index) =>
-                                <UserPost key={index} post={post} />
-                            ) :
-                            (gotPosts ?
-                                <NoPostText data-test="message">There are no posts yet</NoPostText> :
-                                <Loader />
-                            )
-                    }
-                    <TrendingHashtags />
-                </PostsWrapper>
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={(page) => {
+                        setHasMorePosts(false)
+                        setGettingPosts(true)
+                        loadMorePosts(page, posts, setScannedAllPosts, setHasMorePosts, setGettingPosts, setPosts)
+                    }}
+                    useWindow={false}
+                    hasMore={hasMorePosts}
+                    loader={<Loader key={0} />}
+                >
+                    <PostsWrapper>
+                        <Title>timeline</Title>
+                        <PagePublishPost />
+                        {postsToUpdate !== 0 && <UpdatePostsModal />}
+                        {
+                            posts[0] ?
+
+                                posts.map((post, index) =>
+                                    <UserPost key={index} post={post} />
+                                )
+
+                                : (
+                                    gotPosts ?
+                                        <NoPostText data-test="message">There are no posts yet</NoPostText> :
+                                        <Loader />
+                                )
+                        }
+                        {gettingPosts && <Loader />}
+                        <TrendingHashtags />
+                    </PostsWrapper>
+                </InfiniteScroll>
             </HomeArea>
         </>
     )
