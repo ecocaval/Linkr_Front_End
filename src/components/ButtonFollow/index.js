@@ -21,7 +21,11 @@ export default function ButtonFollow() {
           const { data } = await axios.post(
             `${process.env.REACT_APP_API_URL}/users/${id}/follow?status=true`,
             {},
-            config
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
           );
           console.log(data);
           if (data.is_following) {
@@ -33,7 +37,7 @@ export default function ButtonFollow() {
       }
     };
     statusButton();
-  }, [id]);
+  }, [id, token]);
 
   async function handleClick() {
     setIsLoading(true);
@@ -48,7 +52,6 @@ export default function ButtonFollow() {
       } else {
         await axios.delete(
           `${process.env.REACT_APP_API_URL}/users/${id}/unfollow`,
-          {},
           config
         );
         setClicked(!clicked);
