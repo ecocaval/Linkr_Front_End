@@ -10,9 +10,7 @@ import UserPost from "../../components/UserPost"
 import { LoginContext } from "../../contexts/LoginProvider"
 import { MobileSearchContext } from "../../contexts/MobileProvider"
 import { PostsContext } from "../../contexts/PostsProvider"
-import { UserContext } from "../../contexts/UserProvider"
 import getPosts from "../../utils/getPosts"
-import handleMyUser from "../../utils/handleMyUser"
 import handlePosts from "../../utils/handlePosts"
 import handleUpdatedPosts from "../../utils/handleUpdatedPosts"
 import { NoPostText } from "../UserPage/styles"
@@ -36,7 +34,6 @@ export default function Home() {
     } = useContext(PostsContext)
 
     const { showMobileSearchInput } = useContext(MobileSearchContext)
-    const { setMyUser, setReturnToSignUp } = useContext(UserContext)
     const { sentLogin, setSentLogin } = useContext(LoginContext)
 
     const [scannedAllPosts, setScannedAllPosts] = useState(false)
@@ -44,7 +41,6 @@ export default function Home() {
     const [hasMorePosts, setHasMorePosts] = useState(false)
 
     useEffect(() => {
-        handleMyUser(setMyUser, setReturnToSignUp)
         handlePosts(setPosts, setGotPosts)
         // eslint-disable-next-line
     }, [sentLogin, setSentLogin])
@@ -70,7 +66,8 @@ export default function Home() {
     }, [updatedPosts])
 
     useInterval(() => {
-        handleUpdatedPosts(setGotPosts, setUpdatedPosts)
+        if (posts.length > 0)
+            handleUpdatedPosts(setGotPosts, setUpdatedPosts)
     }, 15000)
 
     useEffect(() => {

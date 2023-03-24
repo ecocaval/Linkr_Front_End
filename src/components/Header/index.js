@@ -22,9 +22,20 @@ import handleMyUser from "../../utils/handleMyUser";
 
 export default function Header() {
 
-    const { myUser, setMyUser } = useContext(UserContext)
-    const { showMobileSearchInput, setShowMobileSearchInput } = useContext(MobileSearchContext)
-    const { returnToSignUp, setReturnToSignUp } = useContext(UserContext)
+    const {
+        myUser,
+        setMyUser
+    } = useContext(UserContext)
+
+    const {
+        showMobileSearchInput,
+        setShowMobileSearchInput
+    } = useContext(MobileSearchContext)
+
+    const {
+        returnToSignUp,
+        setReturnToSignUp
+    } = useContext(UserContext)
 
     const navigate = useNavigate()
 
@@ -48,7 +59,7 @@ export default function Header() {
 
     useEffect(() => {
         getUsers(setUsers, 'users');
-        if (!myUser.name) handleMyUser(setMyUser, setReturnToSignUp)
+        handleMyUser(setMyUser, setReturnToSignUp)
         // eslint-disable-next-line
     }, [])
 
