@@ -76,7 +76,7 @@ export default function UserPost({ post }) {
                             <IoHeartOutline className="heart-outline-icon" />
                         </div>
                     }
-                    <div data-test="counter" className="likes-count">{likesCount} likes</div>
+                    <div data-test="counter" className="likes-count">{likesCount} like{likesCount > 1 ? "s" : ""}</div>
                     <BiRepost className="repost-icon"/>
                     <div className="likes-count">0 re-posts</div>
                 </Left>

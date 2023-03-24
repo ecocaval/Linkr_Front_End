@@ -25,6 +25,7 @@ export const UserArea = styled.div`
 export const PostsWrapper = styled.div`
     max-width: 550px;
     margin: auto;
+    position: relative;
     
     > div:first-child {
         display: flex;

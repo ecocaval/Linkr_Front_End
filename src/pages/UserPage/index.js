@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
+import ButtonFollow from "../../components/ButtonFollow"
 import Header from "../../components/Header"
 import Loader from "../../components/Loader"
 import TrendingHashtags from "../../components/TrendingHashtags"
@@ -13,13 +14,11 @@ import getMyPosts from "./utils/getMyPosts"
 import getPageUser from "./utils/getPageUser"
 
 export default function UserPage() {
-
     const { id } = useParams()
-
+    const { myUser } = useContext(UserContext)
     const { posts, setPosts } = useContext(PostsContext)
     const { userSelected, setUserSelected } = useContext(UserContext)
     const { showMobileSearchInput } = useContext(MobileSearchContext)
-
     const [myPosts, setMyPosts] = useState([])
     const [gotPosts, setGotPosts] = useState(false)
 
@@ -70,6 +69,7 @@ export default function UserPage() {
                     <TrendingWrapper>
                         <TrendingHashtags />
                     </TrendingWrapper>
+                    {myUser.id !== Number(id) && <ButtonFollow/>}
                 </PostsWrapper>
             </UserArea>
         </>
