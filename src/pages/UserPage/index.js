@@ -44,7 +44,6 @@ export default function UserPage() {
         // eslint-disable-next-line
     }, [])
 
-    console.log(myUser.id, id)
     return (
         <>
             <Header />
@@ -70,7 +69,7 @@ export default function UserPage() {
                     <TrendingWrapper>
                         <TrendingHashtags />
                     </TrendingWrapper>
-                    {myUser.id !== Number(id) && <ButtonFollow id={id}/>}
+                    {myUser.id !== Number(id) && <ButtonFollow/>}
                 </PostsWrapper>
             </UserArea>
         </>
