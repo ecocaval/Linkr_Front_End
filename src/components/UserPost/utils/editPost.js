@@ -4,13 +4,15 @@ export default async function editPost(post, description, posts, setPosts, setEd
     const token = localStorage.getItem('token')
     if(!token) return  
     try {
-        await axios.put(`${process.env.REACT_APP_API_URL}/posts/${post.postId}`, {
+        const response = await axios.put(`${process.env.REACT_APP_API_URL}/posts/${post.postId}`, {
             description
         }, {
             headers: {
                 authorization: `Bearer ${token}`
             }
         })
+
+        console.log(response)
 
         let indexToUpdate
         const postsCopy = [...posts]

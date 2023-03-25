@@ -31,9 +31,19 @@ export default function UserPost({ post }) {
     const [liked, setLiked] = useState(false);
     const [likesCount, setLikesCount] = useState(Number(post.likesCount));
 
+    useEffect(() => {
+        if (post.likedByUser) setLiked(true)
+        // eslint-disable-next-line
+    }, [])
+
     async function toggleLike() {
-        if (liked) setLikesCount(likesCount - 1)
-        else setLikesCount(likesCount + 1)
+        if (liked) {
+            setLikesCount(likesCount - 1)
+            post.likedByUser = false
+        } else {
+            setLikesCount(likesCount + 1)
+            post.likedByUser = true
+        }
 
         setLiked(!liked)
 
@@ -67,7 +77,7 @@ export default function UserPost({ post }) {
                         })
                         navigate(`/user/${post.userId}`)
                     }} />
-                    {liked ?
+                    {liked || post.likedByUser ?
                         <div data-test="like-btn" onClick={toggleLike}>
                             <IoHeartSharp className="heart-sharp-icon" />
                         </div>
@@ -77,7 +87,7 @@ export default function UserPost({ post }) {
                         </div>
                     }
                     <div data-test="counter" className="likes-count">{likesCount} like{likesCount > 1 ? "s" : ""}</div>
-                    <BiRepost className="repost-icon"/>
+                    <BiRepost className="repost-icon" />
                     <div className="likes-count">0 re-posts</div>
                 </Left>
                 <Right>
@@ -120,15 +130,15 @@ export default function UserPost({ post }) {
                         {
                             !editPostMode &&
                             <ReactTagify
-                                colors={"white"} 
-                                tagClicked={(tag)=> navigate(`/hashtag/${tag.replace("#", "")}`)}
+                                colors={"white"}
+                                tagClicked={(tag) => navigate(`/hashtag/${tag.replace("#", "")}`)}
                             >
                                 <div
-                                className="description"
-                                data-test="description"
-                            >
-                                {post.postDesc}
-                            </div>
+                                    className="description"
+                                    data-test="description"
+                                >
+                                    {post.postDesc}
+                                </div>
                             </ReactTagify>
                         }
                         <LinkArea data-test="link" href={post.linkData.url} target="_blank">

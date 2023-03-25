@@ -48,7 +48,6 @@ export default function ButtonFollow() {
       } else {
         await axios.delete(
           `${process.env.REACT_APP_API_URL}/users/${id}/unfollow`,
-          {},
           config
         );
         setClicked(!clicked);
