@@ -6,43 +6,36 @@ import Loader from "../../components/Loader"
 import TrendingHashtags from "../../components/TrendingHashtags"
 import UserPost from "../../components/UserPost"
 import { MobileSearchContext } from "../../contexts/MobileProvider"
-import { PostsContext } from "../../contexts/PostsProvider"
 import { UserContext } from "../../contexts/UserProvider"
-import handlePosts from "../../utils/handlePosts"
 import { NoPostText, PostsWrapper, Title, TrendingWrapper, UserArea } from "./styles"
-import getMyPosts from "./utils/getMyPosts"
+import getUserPosts from "./utils/getUserPosts"
 import getPageUser from "./utils/getPageUser"
 
 export default function UserPage() {
     const { id } = useParams()
+
     const { myUser } = useContext(UserContext)
-    const { posts, setPosts } = useContext(PostsContext)
     const { userSelected, setUserSelected } = useContext(UserContext)
     const { showMobileSearchInput } = useContext(MobileSearchContext)
-    const [myPosts, setMyPosts] = useState([])
+
+    const [userPosts, setUserPosts] = useState([])
     const [gotPosts, setGotPosts] = useState(false)
+
+    async function handleUserPosts() {
+        const posts = await getUserPosts(id)
+        if(posts) {
+            setUserPosts(posts)
+            setGotPosts(true)
+        }
+    }
 
     useEffect(() => {
         if (!userSelected) {
             getPageUser(setUserSelected, id)
         }
-
-        if (posts) {
-            const filteredPosts = posts.filter(post => {
-                return post.userId === Number(id)
-            })
-            setMyPosts(filteredPosts)
-            return
-        } else {
-            getMyPosts(setMyPosts, setGotPosts)
-        }
+        handleUserPosts()
         // eslint-disable-next-line
-    }, [id, posts, userSelected])
-
-    useEffect(() => {
-        handlePosts(setPosts,setGotPosts)
-        // eslint-disable-next-line
-    }, [])
+    }, [id, userSelected])
 
     return (
         <>
@@ -63,7 +56,7 @@ export default function UserPage() {
                         <Title>{`${userSelected?.name}'s posts`}</Title>
                     </div>
                     {
-                        myPosts[0] ? myPosts.map((post, index) => <UserPost key={index} post={post} />) :
+                        userPosts[0] ? userPosts.map((post, index) => <UserPost key={index} post={post} />) :
                             (gotPosts ? <NoPostText data-test="message">There are no posts yet</NoPostText> : <Loader />)
                     }
                     <TrendingWrapper>
