@@ -11,6 +11,8 @@ import {
     StyledUserAside,
 } from "./styles"
 import { HeaderContext } from "../../contexts/HeaderContext";
+import { LoginContext } from "../../contexts/LoginProvider";
+import { PostsContext } from "../../contexts/PostsProvider";
 import SearchInput from "./SearchInput";
 import { FaSearch } from "react-icons/fa";
 import MobileSearchInput from "./MobileSearchInput";
@@ -19,12 +21,16 @@ import { UserContext } from "../../contexts/UserProvider";
 import { useNavigate } from "react-router-dom";
 import { MobileSearchContext } from "../../contexts/MobileProvider";
 import handleMyUser from "../../utils/handleMyUser";
+import cleanStates from "./utils/cleanStates";
 
 export default function Header() {
 
     const {
         myUser,
-        setMyUser
+        setMyUser,
+        returnToSignUp,
+        setUserSelected,
+        setReturnToSignUp
     } = useContext(UserContext)
 
     const {
@@ -33,9 +39,17 @@ export default function Header() {
     } = useContext(MobileSearchContext)
 
     const {
-        returnToSignUp,
-        setReturnToSignUp
-    } = useContext(UserContext)
+        setPosts,
+        setUpdatedPosts,
+        setPostsToUpdate,
+        setMustUpdatePosts,
+        setSendPost,
+        setGotPosts,
+    } = useContext(PostsContext)
+
+    const {
+        setSentLogin
+    } = useContext(LoginContext)
 
     const navigate = useNavigate()
 
@@ -109,7 +123,17 @@ export default function Header() {
                         data-test="menu"
                     >
                         <p data-test="logout" onClick={() => {
-                            localStorage.clear()
+                            cleanStates({
+                                setSentLogin,
+                                setPosts,
+                                setUpdatedPosts,
+                                setPostsToUpdate,
+                                setMustUpdatePosts,
+                                setSendPost,
+                                setGotPosts,
+                                setMyUser,
+                                setUserSelected
+                            })
                             navigate('/')
                         }}>Logout</p>
                     </LogoutModal>
