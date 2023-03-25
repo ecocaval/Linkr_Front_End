@@ -1,16 +1,15 @@
 import axios from "axios";
 
-export default async function getMyPosts(setUserPosts, setGotPosts) {
+export default async function getUserPosts(id) {
     const token = localStorage.getItem('token')
     if(!token) return  
     try {
-        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/posts?getMyUser=true`, {
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/posts/${id}`, {
             headers: {
                 authorization: `Bearer ${token}`
             }
         })
-        setUserPosts(data)
-        setGotPosts(true)
+        return data
     } catch (error) {
         console.error(error)
     }
