@@ -21,7 +21,11 @@ export default function ButtonFollow() {
           const { data } = await axios.post(
             `${process.env.REACT_APP_API_URL}/users/${id}/follow?status=true`,
             {},
-            config
+            {
+              headers: {
+                authorization: `Bearer ${token}`,
+              },
+            }
           );
           if (data.is_following) {
             setClicked(false);
@@ -32,7 +36,8 @@ export default function ButtonFollow() {
     };
     statusButton();
     // eslint-disable-next-line
-  }, [id]);
+  }, [id, token]);
+
 
   async function handleClick() {
     setIsLoading(true);
@@ -64,6 +69,7 @@ export default function ButtonFollow() {
       onClick={handleClick}
       disabled={isLoading}
       colorButton={!clicked}
+      data-test="follow-btn"
     >
       {clicked ? "Follow" : "Unfollow"}
     </ButtonStyle>
