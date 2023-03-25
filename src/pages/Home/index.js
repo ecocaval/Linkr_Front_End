@@ -16,6 +16,7 @@ import handleUpdatedPosts from "../../utils/handleUpdatedPosts"
 import { NoPostText } from "../UserPage/styles"
 import { HomeArea, PostsWrapper, Title } from "./styles"
 import { loadMorePosts } from "./utils/loadMorePosts";
+import { UserContext } from "../../contexts/UserProvider";
 
 export default function Home() {
 
@@ -35,6 +36,7 @@ export default function Home() {
 
     const { showMobileSearchInput } = useContext(MobileSearchContext)
     const { sentLogin, setSentLogin } = useContext(LoginContext)
+    const { myUser } = useContext(UserContext)
 
     const [scannedAllPosts, setScannedAllPosts] = useState(false)
     const [gettingPosts, setGettingPosts] = useState(false)
@@ -101,14 +103,14 @@ export default function Home() {
                         {postsToUpdate !== 0 && <UpdatePostsModal />}
                         {
                             posts[0] ?
-
                                 posts.map(post =>
                                     <UserPost key={post.postId} post={post} />
                                 )
-
                                 : (
                                     gotPosts ?
-                                        <NoPostText data-test="message">There are no posts yet</NoPostText> :
+                                        <NoPostText data-test="message">
+                                            {myUser.numberOfFollows > 0 ? "No posts found from your friends" : "You don't follow anyone yet. Search for new friends!"}
+                                        </NoPostText> :
                                         <Loader />
                                 )
                         }
