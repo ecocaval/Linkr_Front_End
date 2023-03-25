@@ -70,7 +70,6 @@ export default function ButtonFollow() {
       onClick={() => {
         setMustUpdateUsers(true)
         handleClick()
-
       }}
       disabled={isLoading}
       colorButton={!clicked}
