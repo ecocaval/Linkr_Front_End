@@ -9,14 +9,16 @@ export async function loadMorePosts(page, posts, setScannedAllPosts, setHasMoreP
                 authorization: `Bearer ${token}`
             }
         })
-        if (!newPosts || newPosts.length === 0) {
-            setScannedAllPosts(true)
-            setHasMorePosts(false)
-            setGettingPosts(false)
-            return
-        }
+        
         setPosts([...posts, ...newPosts])
         setGettingPosts(false)
+
+        if(newPosts.length < 10) {
+            setScannedAllPosts(true)
+            setScannedAllPosts(true)
+            setHasMorePosts(false)
+            return
+        }
     } catch (error) {
         console.log(error)
     }
