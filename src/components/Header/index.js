@@ -123,6 +123,7 @@ export default function Header() {
                         data-test="menu"
                     >
                         <p data-test="logout" onClick={() => {
+                            localStorage.clear()
                             cleanStates({
                                 setSentLogin,
                                 setPosts,

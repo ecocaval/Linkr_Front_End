@@ -9,7 +9,6 @@ export default function cleanStates({
     setMyUser,
     setUserSelected
 }) {
-    localStorage.clear()
     if(!!setSentLogin) setSentLogin(false)
     if(!!setPosts) setPosts([])
     if(!!setUpdatedPosts) setUpdatedPosts([])
