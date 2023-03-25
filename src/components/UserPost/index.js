@@ -1,7 +1,7 @@
 import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, TextArea } from "./styles";
 import { IoHeartOutline, IoTrashSharp, IoPencilSharp, IoHeartSharp } from "react-icons/io5";
 import { BiRepost } from "react-icons/bi"
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Modal from "../Modal";
 import deletePost from "./utils/deletePost";
 import { PostsContext } from "../../contexts/PostsProvider";
@@ -28,21 +28,14 @@ export default function UserPost({ post }) {
     const token = localStorage.getItem('token')
     const userId = localStorage.getItem('userId')
 
-    const [liked, setLiked] = useState(false);
+    const [liked, setLiked] = useState(post.likedByUser);
     const [likesCount, setLikesCount] = useState(Number(post.likesCount));
-
-    useEffect(() => {
-        if (post.likedByUser) setLiked(true)
-        // eslint-disable-next-line
-    }, [])
 
     async function toggleLike() {
         if (liked) {
             setLikesCount(likesCount - 1)
-            post.likedByUser = false
         } else {
             setLikesCount(likesCount + 1)
-            post.likedByUser = true
         }
 
         setLiked(!liked)
@@ -77,7 +70,7 @@ export default function UserPost({ post }) {
                         })
                         navigate(`/user/${post.userId}`)
                     }} />
-                    {liked || post.likedByUser ?
+                    {liked ?
                         <div data-test="like-btn" onClick={toggleLike}>
                             <IoHeartSharp className="heart-sharp-icon" />
                         </div>
