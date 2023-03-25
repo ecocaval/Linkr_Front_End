@@ -1,3 +1,5 @@
+import emptyUserImage from "../../../assets/images/emptyUserImage.png"
+
 export default function cleanStates({
     setSentLogin,
     setPosts,
@@ -16,6 +18,6 @@ export default function cleanStates({
     if(!!setMustUpdatePosts) setMustUpdatePosts(false)
     if(!!setSendPost) setSendPost(false)
     if(!!setGotPosts) setGotPosts(false)
-    if(!!setMyUser) setMyUser(false)
+    if(!!setMyUser) setMyUser({ image: emptyUserImage })
     if(!!setUserSelected) setUserSelected(null)
 }
