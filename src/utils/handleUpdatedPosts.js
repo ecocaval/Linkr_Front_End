@@ -1,5 +1,9 @@
 import getPosts from "./getPosts";
 
-export default async function handleUpdatedPosts(setGotPosts, setUpdatedPosts) {
-    setGotPosts(await getPosts(setUpdatedPosts))
+export default async function handleUpdatedPosts(setGotPosts, setUpdatedPosts, setSentPostUpdateRequest) {
+    const posts = await getPosts(setUpdatedPosts)
+    if(posts) {
+        setGotPosts(posts)
+        setSentPostUpdateRequest(false)
+    }
 }
