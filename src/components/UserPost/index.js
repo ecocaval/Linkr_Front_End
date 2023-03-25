@@ -1,4 +1,4 @@
-import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, TextArea } from "./styles";
+import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, SharedByArea, TextArea } from "./styles";
 import { IoHeartOutline, IoTrashSharp, IoPencilSharp, IoHeartSharp } from "react-icons/io5";
 import { BiRepost } from "react-icons/bi"
 import { useContext, useRef, useState } from "react";
@@ -61,6 +61,10 @@ export default function UserPost({ post }) {
 
     return (
         <>
+            <SharedByArea isShared={post.isShared}>
+                <BiRepost />
+                <p>Re-posted by <span>{post.sharedUser}</span></p>
+            </SharedByArea>
             <PostArea data-test="post">
                 <Left>
                     <Avatar src={post.userImage} onClick={() => {

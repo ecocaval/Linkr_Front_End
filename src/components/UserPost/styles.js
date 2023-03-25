@@ -3,7 +3,7 @@ import styled from "styled-components"
 export const PostArea = styled.div`
     font-family: 'Lato', sans-serif;
     margin: 0 auto;
-    margin-top: 25px;
+    margin-bottom: 25px;
     padding: 20px;
     max-width: 800px;
     height: auto;
@@ -152,4 +152,30 @@ export const TextArea = styled.textarea`
     resize: none;
     margin: 10px 0;
     padding: 10px;
+`
+
+export const SharedByArea = styled.div`
+    font-family: 'Lato', sans-serif;
+    font-size: 11px;
+    margin: 0 auto;
+    margin-bottom: -65px;
+    padding: 8px 13px;
+    max-width: 800px;
+    height: 100px;
+    background-color: #1E1E1E;
+    color: #fff;
+    border-radius: 12px;
+    display: ${(props) => (props.isShared ? 'flex' : 'none')};
+
+    svg{
+        font-size: 20px;
+    }
+
+    p{
+        padding-top: 4px;
+        margin-left: 3px;
+        span{
+            font-weight: 700;
+        }
+    }
 `
