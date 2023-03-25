@@ -39,6 +39,7 @@ export default function Home() {
     const [scannedAllPosts, setScannedAllPosts] = useState(false)
     const [gettingPosts, setGettingPosts] = useState(false)
     const [hasMorePosts, setHasMorePosts] = useState(false)
+    const [sentPostUpdateRequest, setSentPostUpdateRequest] = useState(false)
 
     useEffect(() => {
         handlePosts(setPosts, setGotPosts)
@@ -66,8 +67,10 @@ export default function Home() {
     }, [updatedPosts])
 
     useInterval(() => {
-        if (posts.length > 0)
-            handleUpdatedPosts(setGotPosts, setUpdatedPosts)
+        if (posts.length > 0 && !sentPostUpdateRequest) {
+            setSentPostUpdateRequest(true)
+            handleUpdatedPosts(setGotPosts, setUpdatedPosts, setSentPostUpdateRequest)
+        }
     }, 15000)
 
     useEffect(() => {
@@ -99,8 +102,8 @@ export default function Home() {
                         {
                             posts[0] ?
 
-                                posts.map((post, index) =>
-                                    <UserPost key={index} post={post} />
+                                posts.map(post =>
+                                    <UserPost key={post.postId} post={post} />
                                 )
 
                                 : (

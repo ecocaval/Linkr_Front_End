@@ -27,17 +27,17 @@ export default function ButtonFollow() {
               },
             }
           );
-          console.log(data);
           if (data.is_following) {
             setClicked(false);
           }
         }
       } catch (error) {
-        console.log("deu erro");
       }
     };
     statusButton();
+    // eslint-disable-next-line
   }, [id, token]);
+
 
   async function handleClick() {
     setIsLoading(true);
@@ -58,7 +58,6 @@ export default function ButtonFollow() {
       }
       
     } catch (error) {
-      console.log(config)
       alert("Não foi possível executar a operação");
     } finally {
       setIsLoading(false);
