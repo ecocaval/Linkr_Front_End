@@ -1,13 +1,19 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { UserContext } from "../../contexts/UserProvider";
 
 export default function ButtonFollow() {
+  const { id } = useParams();
+
   const [clicked, setClicked] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const { id } = useParams();
+
+  const { setMustUpdateUsers } = useContext(UserContext)
+
   const token = localStorage.getItem("token");
+
   const config = {
     headers: {
       authorization: `Bearer ${token}`,
@@ -56,7 +62,7 @@ export default function ButtonFollow() {
         );
         setClicked(!clicked);
       }
-      
+
     } catch (error) {
       alert("Não foi possível executar a operação");
     } finally {
@@ -66,7 +72,10 @@ export default function ButtonFollow() {
 
   return (
     <ButtonStyle
-      onClick={handleClick}
+      onClick={() => {
+        setMustUpdateUsers(true)
+        handleClick()
+      }}
       disabled={isLoading}
       colorButton={!clicked}
       data-test="follow-btn"

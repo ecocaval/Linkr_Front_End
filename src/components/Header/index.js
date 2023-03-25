@@ -26,6 +26,10 @@ import cleanStates from "./utils/cleanStates";
 export default function Header() {
 
     const {
+        users,
+        setUsers,
+        mustUpdateUsers,
+        setMustUpdateUsers,
         myUser,
         setMyUser,
         returnToSignUp,
@@ -53,11 +57,10 @@ export default function Header() {
 
     const navigate = useNavigate()
 
-    const [users, setUsers] = useState([])
     const [headerInputValue, setHeaderInputValue] = useState("")
     const [arrowWasClicked, setArrowWasClicked] = useState(false)
     const [arrowWasFirstClicked, setArrowWasFirstClicked] = useState(false)
-    const [usersSearchFiltered, setUserSearchFiltered] = useState([])
+    const [usersSearchFiltered, setUsersSearchFiltered] = useState([])
 
     useEffect(() => {
         if (returnToSignUp) {
@@ -67,15 +70,16 @@ export default function Header() {
     }, [returnToSignUp, navigate, setReturnToSignUp])
 
     useEffect(() => {
-        setUserSearchFiltered(filterUsersByInput(users, headerInputValue))
+        setUsersSearchFiltered(filterUsersByInput(users, headerInputValue))
         // eslint-disable-next-line
     }, [headerInputValue])
 
     useEffect(() => {
+        setMustUpdateUsers(false)
         getUsers(setUsers, 'users');
         handleMyUser(setMyUser, setReturnToSignUp)
         // eslint-disable-next-line
-    }, [])
+    }, [mustUpdateUsers])
 
     return (
         <>

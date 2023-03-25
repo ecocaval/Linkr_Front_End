@@ -43,6 +43,7 @@ export default function SearchInput() {
                         <div>
                             <img src={user.image} alt="user search img" />
                             <p>{user.name}</p>
+                            {user.imFollowing && <p style={{color: "#C5C5C5"}}>• following</p>}
                         </div>
                         <div className="division-line" />
                     </ul>
