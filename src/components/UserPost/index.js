@@ -1,5 +1,5 @@
-import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, SharedByArea, TextArea } from "./styles";
-import { IoHeartOutline, IoTrashSharp, IoPencilSharp, IoHeartSharp } from "react-icons/io5";
+import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, SharedByArea, TextArea, PostContent, PostComments, PostComment, InputCommentArea, CommentsArea } from "./styles";
+import { IoHeartOutline, IoTrashSharp, IoPencilSharp, IoHeartSharp, IoChatbubblesOutline, IoSend } from "react-icons/io5";
 import { BiRepost } from "react-icons/bi"
 import { useContext, useRef, useState } from "react";
 import Modal from "../Modal";
@@ -13,6 +13,7 @@ import axios from "axios";
 import { ReactTagify } from "react-tagify";
 
 export default function UserPost({ post }) {
+    let linkImage = 'https://media.licdn.com/dms/image/D4D03AQHl-zufa65n4Q/profile-displayphoto-shrink_800_800/0/1670975033670?e=1684972800&v=beta&t=nZKZZECnTDU0JZsGFI2HAXzuIyqq_KCHTBKvJR38lhk'
     const navigate = useNavigate();
 
     const { posts, setPosts } = useContext(PostsContext)
@@ -22,6 +23,7 @@ export default function UserPost({ post }) {
     const [postBeingDeleted, setPostBeingDeleted] = useState(false)
     const [editPostMode, setEditPostMode] = useState(false)
     const [description, setDescription] = useState(post.postDesc)
+    const [showComments, setShowComments] = useState(false)
 
     const keyPressRef = useRef(null)
 
@@ -85,98 +87,182 @@ export default function UserPost({ post }) {
                 <p>Re-posted by <span>{post.sharedUser}</span></p>
             </SharedByArea>
             <PostArea data-test="post">
-                <Left>
-                    <Avatar src={post.userImage} onClick={() => {
-                        setUserSelected({
-                            id: post.userId,
-                            name: post.userName,
-                            image: post.userImage
-                        })
-                        navigate(`/user/${post.userId}`)
-                    }} />
-                    {liked ?
-                        <div data-test="like-btn" onClick={toggleLike}>
-                            <IoHeartSharp className="heart-sharp-icon" />
-                        </div>
-                        :
-                        <div data-test="like-btn" onClick={toggleLike}>
-                            <IoHeartOutline className="heart-outline-icon" />
-                        </div>
-                    }
-                    <div data-test="counter" className="likes-count">{likesCount} like{likesCount > 1 ? "s" : ""}</div>
-                    <BiRepost className="repost-icon" onClick={sharePost}/>
-                    <div className="likes-count">0 re-posts</div>
-                </Left>
-                <Right>
-                    <Infos>
-                        <Header>
-                            <div className="user-name" data-test="username">{post.userName}</div>
-                            <Icons>
-                                {
-                                    post.userCanDeletePost &&
-                                    <>
-                                        <IoPencilSharp
-                                            className="icon"
-                                            onClick={() => {
-                                                setEditPostMode(!editPostMode)
-                                                if (!!editPostMode) setDescription(post.postDesc)
-                                            }}
-                                            data-test="edit-btn"
-                                        />
-                                        <IoTrashSharp
-                                            className="icon"
-                                            onClick={() => { setShowDeleteModal(!showDeleteModal) }}
-                                            data-test="delete-btn"
-                                        />
-                                    </>
-                                }
-                            </Icons>
-                        </Header>
-                        {
-                            editPostMode && <TextArea
-                                name="description"
-                                ref={keyPressRef}
-                                onKeyDown={(e) => {
-                                    handleKeyPress(e, post, description, setDescription, posts, setPosts, setEditPostMode)
-                                }}
-                                data-test="edit-input"
-                                onChange={(e) => { setDescription(e.target.value) }}
-                                value={description}
-                            />
+                <PostContent>
+                    <Left>
+                        <Avatar src={post.userImage} onClick={() => {
+                            setUserSelected({
+                                id: post.userId,
+                                name: post.userName,
+                                image: post.userImage
+                            })
+                            navigate(`/user/${post.userId}`)
+                        }} />
+                        {/* Likes */}
+                        {liked ?
+                            <div data-test="like-btn" onClick={toggleLike}>
+                                <IoHeartSharp className="heart-sharp-icon" />
+                            </div>
+                            :
+                            <div data-test="like-btn" onClick={toggleLike}>
+                                <IoHeartOutline className="heart-outline-icon" />
+                            </div>
                         }
-                        {
-                            !editPostMode &&
-                            <ReactTagify
-                                colors={"white"}
-                                tagClicked={(tag) => navigate(`/hashtag/${tag.replace("#", "")}`)}
-                            >
-                                <div
-                                    className="description"
-                                    data-test="description"
+                        <div data-test="counter" className="count-text">{likesCount} like{likesCount > 1 ? "s" : ""}</div>
+
+                        {/* Comments */}
+                        <div onClick={() => setShowComments(!showComments)}>
+                            <IoChatbubblesOutline className="chat-icon" />
+                        </div>
+                        <div className="count-text">0 comments</div>
+
+                        {/* Reposts */}
+                        <BiRepost className="repost-icon" onClick={sharePost} />
+                        <div className="count-text">0 re-posts</div>
+                    </Left>
+                    <Right>
+                        <Infos>
+                            <Header>
+                                <div className="user-name" data-test="username">{post.userName}</div>
+                                <Icons>
+                                    {
+                                        post.userCanDeletePost &&
+                                        <>
+                                            <IoPencilSharp
+                                                className="icon"
+                                                onClick={() => {
+                                                    setEditPostMode(!editPostMode)
+                                                    if (!!editPostMode) setDescription(post.postDesc)
+                                                }}
+                                                data-test="edit-btn"
+                                            />
+                                            <IoTrashSharp
+                                                className="icon"
+                                                onClick={() => { setShowDeleteModal(!showDeleteModal) }}
+                                                data-test="delete-btn"
+                                            />
+                                        </>
+                                    }
+                                </Icons>
+                            </Header>
+                            {
+                                editPostMode && <TextArea
+                                    name="description"
+                                    ref={keyPressRef}
+                                    onKeyDown={(e) => {
+                                        handleKeyPress(e, post, description, setDescription, posts, setPosts, setEditPostMode)
+                                    }}
+                                    data-test="edit-input"
+                                    onChange={(e) => { setDescription(e.target.value) }}
+                                    value={description}
+                                />
+                            }
+                            {
+                                !editPostMode &&
+                                <ReactTagify
+                                    colors={"white"}
+                                    tagClicked={(tag) => navigate(`/hashtag/${tag.replace("#", "")}`)}
                                 >
-                                    {post.postDesc}
+                                    <div
+                                        className="description"
+                                        data-test="description"
+                                    >
+                                        {post.postDesc}
+                                    </div>
+                                </ReactTagify>
+                            }
+                            <LinkArea data-test="link" href={post.linkData.url} target="_blank">
+                                <div className="left">
+                                    <div className="title">{post.linkData.title}</div>
+                                    <div className="subtitle">
+                                        {post.linkData.description}
+                                    </div>
+                                    <div className="link">
+                                        {post.linkData.url}
+                                    </div>
                                 </div>
-                            </ReactTagify>
-                        }
-                        <LinkArea data-test="link" href={post.linkData.url} target="_blank">
-                            <div className="left">
-                                <div className="title">{post.linkData.title}</div>
-                                <div className="subtitle">
-                                    {post.linkData.description}
+                                <div className="right">
+                                    <img src={post.linkData.image} alt="" />
                                 </div>
-                                <div className="link">
-                                    {post.linkData.url}
+                            </LinkArea>
+                        </Infos>
+                    </Right>
+                </PostContent>
+
+                {/* Comments */}
+                {showComments &&
+                    <CommentsArea>
+                        <PostComments>
+                            <PostComment>
+                                <img src={linkImage} className="avatar"></img>
+                                <div className="content">
+                                    <div className="user-name">
+                                        João Avatares
+                                        <span> • following</span>
+                                    </div>
+                                    <div className="text-comment">
+                                        muito massa!!!!!!!! top top top
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="right">
-                                <img src={post.linkData.image} alt="" />
-                            </div>
-                        </LinkArea>
-                    </Infos>
-                </Right>
+                            </PostComment>
+                            <PostComment>
+                                <img src={linkImage} className="avatar"></img>
+                                <div className="content">
+                                    <div className="user-name">
+                                        João Avatares
+                                        <span> • following</span>
+                                    </div>
+                                    <div className="text-comment">
+                                        muito massa!!!!!!!! top top top
+                                    </div>
+                                </div>
+                            </PostComment>
+                            <PostComment>
+                                <img src={linkImage} className="avatar"></img>
+                                <div className="content">
+                                    <div className="user-name">
+                                        João Avatares
+                                        <span> • following</span>
+                                    </div>
+                                    <div className="text-comment">
+                                        Adoreiiiiiiiiiiiiii. top top top
+                                    </div>
+                                </div>
+                            </PostComment>
+                            <PostComment>
+                                <img src={linkImage} className="avatar"></img>
+                                <div className="content">
+                                    <div className="user-name">
+                                        João Avatares
+                                        <span> • following</span>
+                                    </div>
+                                    <div className="text-comment">
+                                        Adoreiiiiiiiiiiiiii. top top top
+                                    </div>
+                                </div>
+                            </PostComment>
+                            <PostComment>
+                                <img src={linkImage} className="avatar"></img>
+                                <div className="content">
+                                    <div className="user-name">
+                                        João Avatares
+                                        <span> • following</span>
+                                    </div>
+                                    <div className="text-comment">
+                                        muito massa!!!!!!!! top top top
+                                    </div>
+                                </div>
+                            </PostComment>
+                        </PostComments>
+                        <InputCommentArea>
+                            <img src={linkImage} className="avatar"></img>
+                            <input placeholder="write a comment..." className="text-comment" type="text" />
+                            <IoSend className="send-icon" />
+                        </InputCommentArea>
+                    </CommentsArea>
+                }
             </PostArea>
-            {
-                showDeleteModal &&
+
+            {showDeleteModal &&
                 <Modal setShowModal={setShowDeleteModal}>
                     <p>Are you sure you want to delete this post?</p>
                     <div>
