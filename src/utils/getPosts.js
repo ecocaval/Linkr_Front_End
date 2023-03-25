@@ -18,7 +18,7 @@ export default async function getPosts(setPosts, setSendPost) {
     return false
 }
 
-export function checkForDuplicityInPosts(posts) {
+function checkForDuplicityInPosts(posts) {
     const postsHashTable = {}
     let postsCopy = [...posts]
     let indexesToRemove = []
