@@ -31,7 +31,7 @@ function checkForDuplicityInPosts(posts) {
     }
     if (indexesToRemove.length) {
         indexesToRemove.forEach(index => {
-            postsCopy = postsCopy.splice(index, 1)
+            postsCopy.splice(index, 1)
         })
         return postsCopy
     }
