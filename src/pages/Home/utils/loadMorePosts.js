@@ -15,7 +15,6 @@ export async function loadMorePosts(page, posts, setScannedAllPosts, setHasMoreP
 
         if(newPosts.length < 10) {
             setScannedAllPosts(true)
-            setScannedAllPosts(true)
             setHasMorePosts(false)
             return
         }
