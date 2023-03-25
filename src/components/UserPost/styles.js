@@ -134,6 +134,7 @@ export const Left = styled.div`
     .repost-icon{
         width: 22px;
         height: 22px;
+        cursor: pointer;
     }
 `
 export const Right = styled.div`

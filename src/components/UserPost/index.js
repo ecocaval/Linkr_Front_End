@@ -59,6 +59,25 @@ export default function UserPost({ post }) {
         }
     }
 
+    async function sharePost() {
+        const data = {
+            postId: post.postId,
+            userId
+        }
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        try {
+            await axios.post(process.env.REACT_APP_API_URL + '/posts/share', data, config)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <>
             <SharedByArea isShared={post.isShared}>
@@ -85,7 +104,7 @@ export default function UserPost({ post }) {
                         </div>
                     }
                     <div data-test="counter" className="likes-count">{likesCount} like{likesCount > 1 ? "s" : ""}</div>
-                    <BiRepost className="repost-icon" />
+                    <BiRepost className="repost-icon" onClick={sharePost}/>
                     <div className="likes-count">0 re-posts</div>
                 </Left>
                 <Right>
