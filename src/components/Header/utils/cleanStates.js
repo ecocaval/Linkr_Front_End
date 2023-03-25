@@ -11,10 +11,7 @@ export default function cleanStates({
 }) {
     localStorage.clear()
     if(!!setSentLogin) setSentLogin(false)
-    if(!!setPosts) {
-        console.log('setouposts')
-        setPosts([])
-    }
+    if(!!setPosts) setPosts([])
     if(!!setUpdatedPosts) setUpdatedPosts([])
     if(!!setPostsToUpdate) setPostsToUpdate(0)
     if(!!setMustUpdatePosts) setMustUpdatePosts(false)
