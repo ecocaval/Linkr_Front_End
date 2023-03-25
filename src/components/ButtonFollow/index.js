@@ -23,16 +23,15 @@ export default function ButtonFollow() {
             {},
             config
           );
-          console.log(data);
           if (data.is_following) {
             setClicked(false);
           }
         }
       } catch (error) {
-        console.log("deu erro");
       }
     };
     statusButton();
+    // eslint-disable-next-line
   }, [id]);
 
   async function handleClick() {
@@ -54,7 +53,6 @@ export default function ButtonFollow() {
       }
       
     } catch (error) {
-      console.log(config)
       alert("Não foi possível executar a operação");
     } finally {
       setIsLoading(false);

@@ -55,6 +55,7 @@ export default function UserPost({ post }) {
             await axios.post(process.env.REACT_APP_API_URL + '/posts/toggle-like', data, config)
         } catch (error) {
             console.log(error);
+            setLiked(!liked)
         }
     }
 

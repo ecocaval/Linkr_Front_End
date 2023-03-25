@@ -102,8 +102,8 @@ export default function Home() {
                         {
                             posts[0] ?
 
-                                posts.map((post, index) =>
-                                    <UserPost key={index} post={post} />
+                                posts.map(post =>
+                                    <UserPost key={post.postId} post={post} />
                                 )
 
                                 : (
