@@ -13,7 +13,7 @@ import axios from "axios";
 import { ReactTagify } from "react-tagify";
 
 export default function UserPost({ post }) {
-    let linkImage = 'https://media.licdn.com/dms/image/D4D03AQHl-zufa65n4Q/profile-displayphoto-shrink_800_800/0/1670975033670?e=1684972800&v=beta&t=nZKZZECnTDU0JZsGFI2HAXzuIyqq_KCHTBKvJR38lhk'
+    const { myUser } = useContext(UserContext)
     const navigate = useNavigate();
 
     const { posts, setPosts } = useContext(PostsContext)
@@ -48,7 +48,7 @@ export default function UserPost({ post }) {
 
         try {
             let comments = await axios.get(process.env.REACT_APP_API_URL + `/posts/comments/${post.postId}`, config)
-
+            console.log(comments.data);
             setPostComments(comments.data);
         } catch (error) {
             console.log(error)
@@ -241,10 +241,10 @@ export default function UserPost({ post }) {
                         <PostComments>
                             {postComments.map(comment => (
                                 <PostComment key={comment.id}>
-                                    <img src="" className="avatar"></img>
+                                    <img src={comment.user_photo} className="avatar"></img>
                                     <div className="content">
                                         <div className="user-name">
-                                            João Avatares
+                                            {comment.user_name}
                                             <span> • following</span>
                                         </div>
                                         <div className="text-comment">
@@ -255,7 +255,7 @@ export default function UserPost({ post }) {
                             ))}
                         </PostComments>
                         <InputCommentArea>
-                            <img src={linkImage} className="avatar"></img>
+                            <img src={myUser.image} className="avatar"></img>
                             <input
                                 value={commentDesc}
                                 onChange={(e) => setCommentDesc(e.target.value)}
