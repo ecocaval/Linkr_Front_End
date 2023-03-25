@@ -1,7 +1,7 @@
 import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, TextArea } from "./styles";
 import { IoHeartOutline, IoTrashSharp, IoPencilSharp, IoHeartSharp } from "react-icons/io5";
 import { BiRepost } from "react-icons/bi"
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import Modal from "../Modal";
 import deletePost from "./utils/deletePost";
 import { PostsContext } from "../../contexts/PostsProvider";
@@ -28,12 +28,15 @@ export default function UserPost({ post }) {
     const token = localStorage.getItem('token')
     const userId = localStorage.getItem('userId')
 
-    const [liked, setLiked] = useState(false);
+    const [liked, setLiked] = useState(post.likedByUser);
     const [likesCount, setLikesCount] = useState(Number(post.likesCount));
 
     async function toggleLike() {
-        if (liked) setLikesCount(likesCount - 1)
-        else setLikesCount(likesCount + 1)
+        if (liked) {
+            setLikesCount(likesCount - 1)
+        } else {
+            setLikesCount(likesCount + 1)
+        }
 
         setLiked(!liked)
 
@@ -77,7 +80,7 @@ export default function UserPost({ post }) {
                         </div>
                     }
                     <div data-test="counter" className="likes-count">{likesCount} like{likesCount > 1 ? "s" : ""}</div>
-                    <BiRepost className="repost-icon"/>
+                    <BiRepost className="repost-icon" />
                     <div className="likes-count">0 re-posts</div>
                 </Left>
                 <Right>
@@ -120,15 +123,15 @@ export default function UserPost({ post }) {
                         {
                             !editPostMode &&
                             <ReactTagify
-                                colors={"white"} 
-                                tagClicked={(tag)=> navigate(`/hashtag/${tag.replace("#", "")}`)}
+                                colors={"white"}
+                                tagClicked={(tag) => navigate(`/hashtag/${tag.replace("#", "")}`)}
                             >
                                 <div
-                                className="description"
-                                data-test="description"
-                            >
-                                {post.postDesc}
-                            </div>
+                                    className="description"
+                                    data-test="description"
+                                >
+                                    {post.postDesc}
+                                </div>
                             </ReactTagify>
                         }
                         <LinkArea data-test="link" href={post.linkData.url} target="_blank">
