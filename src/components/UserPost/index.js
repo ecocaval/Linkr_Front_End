@@ -11,6 +11,8 @@ import { ReactTagify } from "react-tagify";
 import { Tooltip } from 'react-tooltip';
 import { getUserLikesText } from "./utils/getUserLikesText";
 import { v4 as uuidv4 } from 'uuid'
+import Modal from "../Modal";
+import { Blocks } from "react-loader-spinner"
 
 export default function UserPost({
     post,
@@ -38,6 +40,8 @@ export default function UserPost({
     const [showComments, setShowComments] = useState(false)
     const [postComments, setPostComments] = useState([]);
     const [commentDesc, setCommentDesc] = useState('');
+    const [showShareModal, setShowShareModal] = useState(false)
+    const [postBeingShared, setPostBeingShared] = useState(false)
 
     const keyPressRef = useRef(null)
 
@@ -176,10 +180,10 @@ export default function UserPost({
 
     return (
         <>
-            {/* <SharedByArea isShared={post.isShared}>
+            <SharedByArea isShared={post.isShared}>
                 <BiRepost />
                 <p>Re-posted by <span>{post.sharedUser}</span></p>
-            </SharedByArea> */}
+            </SharedByArea>
             <PostArea data-test="post">
                 <PostContent>
                     <Left>
@@ -215,7 +219,7 @@ export default function UserPost({
                         <div className="count-text">{postComments.length} comments</div>
 
                         {/* Reposts */}
-                        <BiRepost className="repost-icon" onClick={sharePost} />
+                        <BiRepost className="repost-icon" onClick={() => setShowShareModal(!showShareModal)} />
                         <div className="count-text">0 re-posts</div>
                     </Left>
                     <Right>
@@ -335,6 +339,42 @@ export default function UserPost({
                     </CommentsArea>
                 }
             </PostArea>
+
+            {
+                showShareModal &&
+                <Modal showShareModal={showShareModal}>
+                    <p>Do you want to re-post this link?</p>
+                    <div>
+                        <button
+                            data-test="cancel"
+                            onClick={() => setShowShareModal(false)}
+                            disabled={postBeingShared}
+                        >
+                            No, cancel
+                        </button>
+                        <button
+                            data-test="confirm"
+                            onClick={() => {
+                                setPostBeingShared(true)
+                                sharePost()
+                            }}
+                            disabled={postBeingShared}
+                            style={{ overflow: 'hidden' }}
+                        >
+                            {postBeingShared ?
+                                <Blocks
+                                    visible={true}
+                                    height="40"
+                                    width="40"
+                                    ariaLabel="blocks-loading"
+                                    wrapperClass="blocks-wrapper"
+                                    style={{ overflow: 'hidden' }}
+                                />
+                                : "Yes, share!"}
+                        </button>
+                    </div>
+                </Modal>
+            }
         </>
     )
 }

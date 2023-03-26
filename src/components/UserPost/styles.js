@@ -10,7 +10,7 @@ export const PostArea = styled.div`
 export const PostContent = styled.div`
     
     margin: 0 auto;
-    margin-top: 25px;
+    margin-bottom: 25px;
     padding: 20px;
     max-width: 800px;
     height: auto;
@@ -33,7 +33,7 @@ export const PostContent = styled.div`
 // `
 
 export const CommentsArea = styled.div`
-
+    margin-bottom: 25px;
 `
     
 export const PostComments = styled.div`
