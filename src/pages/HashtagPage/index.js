@@ -17,6 +17,7 @@ export default function HashtagPage() {
     const { hashtagPosts, setHashtagPosts } = useContext(PostsContext)
     const { showMobileSearchInput } = useContext(MobileSearchContext)
 
+    const [idOfEdition, setIdOfEdition] = useState(-Infinity)
     const [gotPosts, setGotPosts] = useState(false)
     const [firstRender, setFirstRender] = useState(true)
 
@@ -39,7 +40,15 @@ export default function HashtagPage() {
                     {
                         gotPosts ?
                             (hashtagPosts[0] ?
-                                hashtagPosts.map((post, index) => <UserPost key={uuidv4()} post={post} postIndex={index} page={'hashtags'} />) :
+                                hashtagPosts.map((post, index) =>
+                                    <UserPost
+                                        key={uuidv4()}
+                                        post={post}
+                                        postIndex={index}
+                                        page={'hashtags'}
+                                        idOfEdition={idOfEdition}
+                                        setIdOfEdition={setIdOfEdition}
+                                    />) :
                                 <NoPostText data-test="message">There are no posts yet</NoPostText>) :
                             <Loader />
                     }

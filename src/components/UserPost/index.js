@@ -14,7 +14,7 @@ import { ReactTagify } from "react-tagify";
 import { Tooltip } from 'react-tooltip';
 import { getUserLikesText } from "./utils/getUserLikesText";
 
-export default function UserPost({ post, postIndex, page }) {
+export default function UserPost({ post, postIndex, page, idOfEdition, setIdOfEdition }) {
     const navigate = useNavigate();
 
     const { myUser, setUserSelected } = useContext(UserContext)
@@ -28,8 +28,8 @@ export default function UserPost({ post, postIndex, page }) {
     } = useContext(PostsContext)
 
     const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [sentEditRequest, setSentEditRequest] = useState(false)
     const [postBeingDeleted, setPostBeingDeleted] = useState(false)
-    const [editPostMode, setEditPostMode] = useState(false)
     const [description, setDescription] = useState(post.postDesc)
     const [showComments, setShowComments] = useState(false)
     const [postComments, setPostComments] = useState([]);
@@ -39,6 +39,10 @@ export default function UserPost({ post, postIndex, page }) {
 
     const token = localStorage.getItem('token')
     const userId = localStorage.getItem('userId')
+
+    useEffect(() => {
+        if (keyPressRef.current) keyPressRef.current.focus()
+    }, [keyPressRef.current])
 
     useEffect(() => {
         getPostComments()
@@ -218,8 +222,12 @@ export default function UserPost({ post, postIndex, page }) {
                                             <IoPencilSharp
                                                 className="icon"
                                                 onClick={() => {
-                                                    setEditPostMode(!editPostMode)
-                                                    if (!!editPostMode) setDescription(post.postDesc)
+                                                    if (idOfEdition >= 0) {
+                                                        setIdOfEdition(-Infinity)
+                                                    } else {
+                                                        setIdOfEdition(post.postId)
+                                                        setDescription(post.postDesc)
+                                                    }
                                                 }}
                                                 data-test="edit-btn"
                                             />
@@ -233,11 +241,21 @@ export default function UserPost({ post, postIndex, page }) {
                                 </Icons>
                             </Header>
                             {
-                                editPostMode && <TextArea
+                                idOfEdition === post.postId && <TextArea
                                     name="description"
+                                    disabled={sentEditRequest}
                                     ref={keyPressRef}
-                                    onKeyDown={(e) => {
-                                        handleKeyPress(e, post, description, setDescription, posts, setPosts, setEditPostMode)
+                                    onKeyDown={(event) => {
+                                        handleKeyPress(
+                                            event,
+                                            post,
+                                            description,
+                                            setDescription,
+                                            posts,
+                                            setPosts,
+                                            setIdOfEdition,
+                                            setSentEditRequest
+                                        )
                                     }}
                                     data-test="edit-input"
                                     onChange={(e) => { setDescription(e.target.value) }}
@@ -245,7 +263,7 @@ export default function UserPost({ post, postIndex, page }) {
                                 />
                             }
                             {
-                                !editPostMode &&
+                                idOfEdition !== post.postId &&
                                 <ReactTagify
                                     colors={"white"}
                                     tagClicked={(tag) => navigate(`/hashtag/${tag.replace("#", "")}`)}
