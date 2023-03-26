@@ -1,141 +1,47 @@
 import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, SharedByArea, TextArea, PostContent, PostComments, PostComment, InputCommentArea, CommentsArea } from "./styles";
 import { IoHeartOutline, IoTrashSharp, IoPencilSharp, IoHeartSharp, IoChatbubblesOutline, IoSend } from "react-icons/io5";
 import { BiRepost } from "react-icons/bi"
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
+import Modal from "../Modal";
+import deletePost from "./utils/deletePost";
 import { PostsContext } from "../../contexts/PostsProvider";
+import { Blocks } from 'react-loader-spinner';
 import { UserContext } from "../../contexts/UserProvider";
 import { useNavigate } from "react-router-dom";
 import handleKeyPress from "./utils/handleKeyPress";
 import axios from "axios";
 import { ReactTagify } from "react-tagify";
-import { Tooltip } from 'react-tooltip';
-import { getUserLikesText } from "./utils/getUserLikesText";
-import { v4 as uuidv4 } from 'uuid'
 
-export default function UserPost({
-    post,
-    postIndex,
-    page,
-    idOfEdition,
-    setIdOfEdition,
-    setIdOfDeletion,
-}) {
+export default function UserPost({ post }) {
+    let linkImage = 'https://media.licdn.com/dms/image/D4D03AQHl-zufa65n4Q/profile-displayphoto-shrink_800_800/0/1670975033670?e=1684972800&v=beta&t=nZKZZECnTDU0JZsGFI2HAXzuIyqq_KCHTBKvJR38lhk'
     const navigate = useNavigate();
-    const toolTipId = uuidv4();
 
-    const { myUser, setUserSelected } = useContext(UserContext)
-    const {
-        posts,
-        setPosts,
-        userPosts,
-        setUserPosts,
-        hashtagPosts,
-        setHashtagPosts
-    } = useContext(PostsContext)
+    const { posts, setPosts } = useContext(PostsContext)
+    const { setUserSelected } = useContext(UserContext)
 
-    const [sentEditRequest, setSentEditRequest] = useState(false)
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [showShareModal, setShowShareModal] = useState(false)
+    const [postBeingDeleted, setPostBeingDeleted] = useState(false)
+    const [editPostMode, setEditPostMode] = useState(false)
     const [description, setDescription] = useState(post.postDesc)
     const [showComments, setShowComments] = useState(false)
-    const [postComments, setPostComments] = useState([]);
-    const [commentDesc, setCommentDesc] = useState('');
 
     const keyPressRef = useRef(null)
 
     const token = localStorage.getItem('token')
     const userId = localStorage.getItem('userId')
 
-    useEffect(() => {
-        if (keyPressRef.current) keyPressRef.current.focus()
-        // eslint-disable-next-line
-    }, [keyPressRef.current])
-
-    useEffect(() => {
-        getPostComments()
-        // eslint-disable-next-line
-    }, []);
-
-    async function getPostComments() {
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
-        try {
-            let comments = await axios.get(process.env.REACT_APP_API_URL + `/posts/comments/${post.postId}`, config)
-            setPostComments(comments.data);
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    async function addComment() {
-        if (commentDesc.length === 0) return
-
-        let data = {
-            post_id: post.postId,
-            user_id: userId,
-            description: commentDesc
-        }
-
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        }
-
-        try {
-            await axios.post(process.env.REACT_APP_API_URL + '/posts/comments', data, config)
-            setCommentDesc('')
-            getPostComments()
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    const [liked, setLiked] = useState(post.likedByUser);
+    const [likesCount, setLikesCount] = useState(Number(post.likesCount));
 
     async function toggleLike() {
-        let postsCopy
-
-        switch (page) {
-            case 'home':
-                postsCopy = [...posts]
-                break;
-            case 'users':
-                postsCopy = [...userPosts]
-                break;
-            case 'hashtags':
-                postsCopy = [...hashtagPosts]
-                break;
-            default:
-                break;
-        }
-
-        postsCopy[postIndex].likedByUser = !postsCopy[postIndex].likedByUser
-
-        if (!postsCopy[postIndex].likedByUser) {
-            postsCopy[postIndex].likesCount = Number(postsCopy[postIndex].likesCount) - 1
-            postsCopy[postIndex].usersThatLiked = postsCopy[postIndex].usersThatLiked.filter(user => user.user_id !== myUser.id)
+        if (liked) {
+            setLikesCount(likesCount - 1)
         } else {
-            postsCopy[postIndex].likesCount = Number(postsCopy[postIndex].likesCount) + 1
-            if (!postsCopy[postIndex].usersThatLiked) postsCopy[postIndex].usersThatLiked = []
-            postsCopy[postIndex].usersThatLiked.push({ user_id: myUser.id, name: myUser.name })
-
+            setLikesCount(likesCount + 1)
         }
 
-        switch (page) {
-            case 'home':
-                setPosts(postsCopy)
-                break;
-            case 'users':
-                setUserPosts(postsCopy)
-                break;
-            case 'hashtags':
-                setHashtagPosts(postsCopy)
-                break;
-            default:
-                break;
-        }
-
-        setPosts(postsCopy)
+        setLiked(!liked)
 
         let data = {
             post_id: post.postId,
@@ -152,6 +58,7 @@ export default function UserPost({
             await axios.post(process.env.REACT_APP_API_URL + '/posts/toggle-like', data, config)
         } catch (error) {
             console.log(error);
+            setLiked(!liked)
         }
     }
 
@@ -192,30 +99,25 @@ export default function UserPost({
                             navigate(`/user/${post.userId}`)
                         }} />
                         {/* Likes */}
-                        <Tooltip id={toolTipId} >
-                            {getUserLikesText(post.usersThatLiked)}
-                        </Tooltip>
-                        {post.likedByUser ?
-                            <div data-tooltip-id={toolTipId}
-                                data-test="like-btn" onClick={toggleLike}>
+                        {liked ?
+                            <div data-test="like-btn" onClick={toggleLike}>
                                 <IoHeartSharp className="heart-sharp-icon" />
                             </div>
                             :
-                            <div data-tooltip-id="my-tooltip"
-                                data-test="like-btn" onClick={toggleLike}>
+                            <div data-test="like-btn" onClick={toggleLike}>
                                 <IoHeartOutline className="heart-outline-icon" />
                             </div>
                         }
-                        <div data-test="counter" className="count-text">{post.likesCount} like{post.likesCount > 1 ? "s" : ""}</div>
+                        <div data-test="counter" className="count-text">{likesCount} like{likesCount > 1 ? "s" : ""}</div>
 
                         {/* Comments */}
                         <div onClick={() => setShowComments(!showComments)}>
                             <IoChatbubblesOutline className="chat-icon" />
                         </div>
-                        <div className="count-text">{postComments.length} comments</div>
+                        <div className="count-text">0 comments</div>
 
                         {/* Reposts */}
-                        <BiRepost className="repost-icon" onClick={sharePost} />
+                        <BiRepost className="repost-icon" onClick={() => setShowShareModal(!showShareModal)} />
                         <div className="count-text">0 re-posts</div>
                     </Left>
                     <Right>
@@ -229,18 +131,14 @@ export default function UserPost({
                                             <IoPencilSharp
                                                 className="icon"
                                                 onClick={() => {
-                                                    if (idOfEdition >= 0) {
-                                                        setIdOfEdition(-Infinity)
-                                                    } else {
-                                                        setIdOfEdition(post.postId)
-                                                        setDescription(post.postDesc)
-                                                    }
+                                                    setEditPostMode(!editPostMode)
+                                                    if (!!editPostMode) setDescription(post.postDesc)
                                                 }}
                                                 data-test="edit-btn"
                                             />
                                             <IoTrashSharp
                                                 className="icon"
-                                                onClick={() => { setIdOfDeletion(post.postId) }}
+                                                onClick={() => { setShowDeleteModal(!showDeleteModal) }}
                                                 data-test="delete-btn"
                                             />
                                         </>
@@ -248,21 +146,11 @@ export default function UserPost({
                                 </Icons>
                             </Header>
                             {
-                                idOfEdition === post.postId && <TextArea
+                                editPostMode && <TextArea
                                     name="description"
-                                    disabled={sentEditRequest}
                                     ref={keyPressRef}
-                                    onKeyDown={(event) => {
-                                        handleKeyPress(
-                                            event,
-                                            post,
-                                            description,
-                                            setDescription,
-                                            posts,
-                                            setPosts,
-                                            setIdOfEdition,
-                                            setSentEditRequest
-                                        )
+                                    onKeyDown={(e) => {
+                                        handleKeyPress(e, post, description, setDescription, posts, setPosts, setEditPostMode)
                                     }}
                                     data-test="edit-input"
                                     onChange={(e) => { setDescription(e.target.value) }}
@@ -270,7 +158,7 @@ export default function UserPost({
                                 />
                             }
                             {
-                                idOfEdition !== post.postId &&
+                                !editPostMode &&
                                 <ReactTagify
                                     colors={"white"}
                                     tagClicked={(tag) => navigate(`/hashtag/${tag.replace("#", "")}`)}
@@ -305,36 +193,144 @@ export default function UserPost({
                 {showComments &&
                     <CommentsArea>
                         <PostComments>
-                            {postComments.map(comment => (
-                                <PostComment key={comment.id}>
-                                    <img src={comment.user_photo} className="avatar" alt=""></img>
-                                    <div className="content">
-                                        <div className="user-name">
-                                            {comment.user_name}
-                                            <span> • following</span>
-                                        </div>
-                                        <div className="text-comment">
-                                            {comment.description}
-                                        </div>
+                            <PostComment>
+                                <img src={linkImage} className="avatar"></img>
+                                <div className="content">
+                                    <div className="user-name">
+                                        João Avatares
+                                        <span> • following</span>
                                     </div>
-                                </PostComment>
-                            ))}
+                                    <div className="text-comment">
+                                        muito massa!!!!!!!! top top top
+                                    </div>
+                                </div>
+                            </PostComment>
+                            <PostComment>
+                                <img src={linkImage} className="avatar"></img>
+                                <div className="content">
+                                    <div className="user-name">
+                                        João Avatares
+                                        <span> • following</span>
+                                    </div>
+                                    <div className="text-comment">
+                                        muito massa!!!!!!!! top top top
+                                    </div>
+                                </div>
+                            </PostComment>
+                            <PostComment>
+                                <img src={linkImage} className="avatar"></img>
+                                <div className="content">
+                                    <div className="user-name">
+                                        João Avatares
+                                        <span> • following</span>
+                                    </div>
+                                    <div className="text-comment">
+                                        Adoreiiiiiiiiiiiiii. top top top
+                                    </div>
+                                </div>
+                            </PostComment>
+                            <PostComment>
+                                <img src={linkImage} className="avatar"></img>
+                                <div className="content">
+                                    <div className="user-name">
+                                        João Avatares
+                                        <span> • following</span>
+                                    </div>
+                                    <div className="text-comment">
+                                        Adoreiiiiiiiiiiiiii. top top top
+                                    </div>
+                                </div>
+                            </PostComment>
+                            <PostComment>
+                                <img src={linkImage} className="avatar"></img>
+                                <div className="content">
+                                    <div className="user-name">
+                                        João Avatares
+                                        <span> • following</span>
+                                    </div>
+                                    <div className="text-comment">
+                                        muito massa!!!!!!!! top top top
+                                    </div>
+                                </div>
+                            </PostComment>
                         </PostComments>
                         <InputCommentArea>
-                            <img src={myUser.image} className="avatar" alt=""></img>
-                            <input
-                                value={commentDesc}
-                                onChange={(e) => setCommentDesc(e.target.value)}
-                                placeholder="write a comment..."
-                                className="text-comment"
-                                type="text"
-                            />
-                            <div onClick={addComment}><IoSend className="send-icon" /></div>
-
+                            <img src={linkImage} className="avatar"></img>
+                            <input placeholder="write a comment..." className="text-comment" type="text" />
+                            <IoSend className="send-icon" />
                         </InputCommentArea>
                     </CommentsArea>
                 }
             </PostArea>
+
+            {showDeleteModal &&
+                <Modal setShowModal={setShowDeleteModal}>
+                    <p>Are you sure you want to delete this post?</p>
+                    <div>
+                        <button
+                            data-test="cancel"
+                            onClick={() => { setShowDeleteModal(false) }}
+                            disabled={postBeingDeleted}
+                        >
+                            No, go back
+                        </button>
+                        <button
+                            data-test="confirm"
+                            onClick={() => {
+                                setPostBeingDeleted(true)
+                                deletePost(post, setPosts, setPostBeingDeleted, setShowDeleteModal)
+                            }}
+                            disabled={postBeingDeleted}
+                            style={{ overflow: 'hidden' }}
+                        >
+                            {postBeingDeleted ?
+                                <Blocks
+                                    visible={true}
+                                    height="40"
+                                    width="40"
+                                    ariaLabel="blocks-loading"
+                                    wrapperClass="blocks-wrapper"
+                                    style={{ overflow: 'hidden' }}
+                                />
+                                : "Yes, delete it"}
+                        </button>
+                    </div>
+                </Modal>
+            }
+
+            {showShareModal &&
+                <Modal setShowModal={setShowShareModal}>
+                    <p>Do you want to re-post this link?</p>
+                    <div>
+                        <button
+                            data-test="cancel"
+                            onClick={() => setShowShareModal(false)}
+                            disabled={postBeingDeleted}
+                        >
+                            No, cancel
+                        </button>
+                        <button
+                            data-test="confirm"
+                            onClick={() => {
+                                sharePost()
+                            }}
+                            disabled={postBeingDeleted}
+                            style={{ overflow: 'hidden' }}
+                        >
+                            {postBeingDeleted ?
+                                <Blocks
+                                    visible={true}
+                                    height="40"
+                                    width="40"
+                                    ariaLabel="blocks-loading"
+                                    wrapperClass="blocks-wrapper"
+                                    style={{ overflow: 'hidden' }}
+                                />
+                                : "Yes, share!"}
+                        </button>
+                    </div>
+                </Modal>
+            }
         </>
     )
 }
