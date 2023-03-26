@@ -1,10 +1,20 @@
 import editPost from "./editPost";
 
-export default function handleKeyPress(event, post, description, setDescription, posts, setPosts, setEditPostMode) {
+export default function handleKeyPress(
+    event,
+    post,
+    description,
+    setDescription,
+    posts,
+    setPosts,
+    setIdOfEdition,
+    setSentEditRequest
+) {
     if (event.key === 'Enter') {
-        editPost(post, description, posts, setPosts, setEditPostMode)
+        setSentEditRequest(true)
+        editPost(post, description, posts, setPosts, setIdOfEdition, setSentEditRequest)
     } else if (event.key === 'Escape') {
-        setEditPostMode(false)
+        setIdOfEdition(-Infinity)
         setDescription(post.postDesc)
     }
 }

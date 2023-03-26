@@ -17,7 +17,10 @@ import { NoPostText } from "../UserPage/styles"
 import { HomeArea, PostsWrapper, Title } from "./styles"
 import { loadMorePosts } from "./utils/loadMorePosts";
 import { UserContext } from "../../contexts/UserProvider";
-import { v4 as uuidv4} from "uuid"
+import { v4 as uuidv4 } from "uuid"
+import Modal from "../../components/Modal";
+import deletePost from "../../components/UserPost/utils/deletePost";
+import { Blocks } from "react-loader-spinner";
 
 export default function Home() {
 
@@ -39,12 +42,16 @@ export default function Home() {
     const { sentLogin, setSentLogin } = useContext(LoginContext)
     const { myUser } = useContext(UserContext)
 
+    const [postBeingDeleted, setPostBeingDeleted] = useState(false)
+    const [idOfDeletion, setIdOfDeletion] = useState(-Infinity)
+    const [idOfEdition, setIdOfEdition] = useState(-Infinity)
     const [scannedAllPosts, setScannedAllPosts] = useState(false)
     const [gettingPosts, setGettingPosts] = useState(false)
     const [hasMorePosts, setHasMorePosts] = useState(false)
     const [sentPostUpdateRequest, setSentPostUpdateRequest] = useState(false)
 
     useEffect(() => {
+        setGotPosts(false)
         handlePosts(setPosts, setGotPosts)
         // eslint-disable-next-line
     }, [sentLogin, setSentLogin])
@@ -72,7 +79,7 @@ export default function Home() {
     useInterval(() => {
         if (posts.length > 0 && !sentPostUpdateRequest) {
             setSentPostUpdateRequest(true)
-            handleUpdatedPosts(setGotPosts, setUpdatedPosts, setSentPostUpdateRequest)
+            handleUpdatedPosts(setUpdatedPosts, setSentPostUpdateRequest)
         }
     }, 15000)
 
@@ -103,23 +110,64 @@ export default function Home() {
                         <PagePublishPost />
                         {postsToUpdate !== 0 && <UpdatePostsModal />}
                         {
-                            posts[0] ?
-                                posts.map((post, index) =>
-                                    <UserPost key={uuidv4()} post={post} postIndex={index} />
-                                )
-                                : (
-                                    gotPosts ?
+                            gotPosts ? (
+                                posts[0] ?
+                                    posts.map((post, index) => <UserPost
+                                        key={uuidv4()}
+                                        post={post}
+                                        postIndex={index}
+                                        page={'home'}
+                                        idOfEdition={idOfEdition}
+                                        setIdOfEdition={setIdOfEdition}
+                                        setIdOfDeletion={setIdOfDeletion}
+                                    />
+                                    ) : (
                                         <NoPostText data-test="message">
                                             {myUser.numberOfFollows > 0 ? "No posts found from your friends" : "You don't follow anyone yet. Search for new friends!"}
-                                        </NoPostText> :
-                                        <Loader />
-                                )
+                                        </NoPostText>
+                                    )
+                            ) : <Loader />
                         }
                         {gettingPosts && <Loader />}
                         <TrendingHashtags />
                     </PostsWrapper>
                 </InfiniteScroll>
             </HomeArea>
+            {
+            idOfDeletion >= 0 &&
+                <Modal setIdOfDeletion={setIdOfDeletion}>
+                    <p>Are you sure you want to delete this post?</p>
+                    <div>
+                        <button
+                            data-test="cancel"
+                            onClick={() => { setIdOfDeletion(-Infinity) }}
+                            disabled={postBeingDeleted}
+                        >
+                            No, go back
+                        </button>
+                        <button
+                            data-test="confirm"
+                            onClick={() => {
+                                setPostBeingDeleted(true)
+                                deletePost(idOfDeletion, setPosts, setIdOfDeletion, setPostBeingDeleted, 'home')
+                            }}
+                            disabled={postBeingDeleted}
+                            style={{ overflow: 'hidden' }}
+                        >
+                            {postBeingDeleted ?
+                                <Blocks
+                                    visible={true}
+                                    height="40"
+                                    width="40"
+                                    ariaLabel="blocks-loading"
+                                    wrapperClass="blocks-wrapper"
+                                    style={{ overflow: 'hidden' }}
+                                />
+                                : "Yes, delete it"}
+                        </button>
+                    </div>
+                </Modal>
+            }
         </>
     )
 }
