@@ -17,6 +17,8 @@ import { NoPostText } from "../UserPage/styles"
 import { HomeArea, PostsWrapper, Title } from "./styles"
 import { loadMorePosts } from "./utils/loadMorePosts";
 import { UserContext } from "../../contexts/UserProvider";
+import { v4 as uuidv4} from "uuid"
+uuidv4()
 
 export default function Home() {
 
@@ -69,7 +71,7 @@ export default function Home() {
     }, [updatedPosts])
 
     useInterval(() => {
-        if (posts.length > 0 && !sentPostUpdateRequest && posts.length >= 10) {
+        if (posts.length > 0 && !sentPostUpdateRequest) {
             setSentPostUpdateRequest(true)
             handleUpdatedPosts(setGotPosts, setUpdatedPosts, setSentPostUpdateRequest)
         }
@@ -103,8 +105,8 @@ export default function Home() {
                         {postsToUpdate !== 0 && <UpdatePostsModal />}
                         {
                             posts[0] ?
-                                posts.map(post =>
-                                    <UserPost key={post.postId} post={post} />
+                                posts.map((post, index) =>
+                                    <UserPost key={uuidv4()} post={post} postIndex={index} />
                                 )
                                 : (
                                     gotPosts ?

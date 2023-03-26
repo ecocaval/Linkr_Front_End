@@ -1,7 +1,7 @@
 import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, SharedByArea, TextArea, PostContent, PostComments, PostComment, InputCommentArea, CommentsArea } from "./styles";
 import { IoHeartOutline, IoTrashSharp, IoPencilSharp, IoHeartSharp, IoChatbubblesOutline, IoSend } from "react-icons/io5";
 import { BiRepost } from "react-icons/bi"
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Modal from "../Modal";
 import deletePost from "./utils/deletePost";
 import { PostsContext } from "../../contexts/PostsProvider";
@@ -12,7 +12,7 @@ import handleKeyPress from "./utils/handleKeyPress";
 import axios from "axios";
 import { ReactTagify } from "react-tagify";
 
-export default function UserPost({ post }) {
+export default function UserPost({ post, postIndex }) {
     let linkImage = 'https://media.licdn.com/dms/image/D4D03AQHl-zufa65n4Q/profile-displayphoto-shrink_800_800/0/1670975033670?e=1684972800&v=beta&t=nZKZZECnTDU0JZsGFI2HAXzuIyqq_KCHTBKvJR38lhk'
     const navigate = useNavigate();
 
@@ -24,7 +24,7 @@ export default function UserPost({ post }) {
     const [editPostMode, setEditPostMode] = useState(false)
     const [description, setDescription] = useState(post.postDesc)
     const [showComments, setShowComments] = useState(false)
-
+    
     const keyPressRef = useRef(null)
 
     const token = localStorage.getItem('token')
@@ -34,6 +34,18 @@ export default function UserPost({ post }) {
     const [likesCount, setLikesCount] = useState(Number(post.likesCount));
 
     async function toggleLike() {
+        if (postIndex !== null) {
+            const postsCopy = [...posts]
+            postsCopy[postIndex].likedByUser = !postsCopy[postIndex].likedByUser
+
+            if (!postsCopy[postIndex].likedByUser) {
+                postsCopy[postIndex].likesCount = Number(postsCopy[postIndex].likesCount) - 1
+            } else {
+                postsCopy[postIndex].likesCount = Number(postsCopy[postIndex].likesCount) + 1
+            }
+            setPosts(postsCopy)
+        }
+
         if (liked) {
             setLikesCount(likesCount - 1)
         } else {
