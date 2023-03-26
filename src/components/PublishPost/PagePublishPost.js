@@ -11,6 +11,7 @@ export default function PagePublishPost() {
 
     const token = localStorage.getItem('token')
 
+    const [errorDuringSent, setErrorDuringSent] = useState(false) 
     const [form, setForm] = useState({
         link: "",
         description: ""
@@ -31,20 +32,25 @@ export default function PagePublishPost() {
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/posts/new`, data, config)
             if (response) {
-                setMustUpdatePosts(true)
             }
         } catch (error) {
             alert("There was an error publishing your link")
+            setSendPost(false)
+            setErrorDuringSent(true)
             console.log(error)
         }
+        setMustUpdatePosts(true)
     }
 
     useEffect(() => {
-        if (!sendPost) {
+        if (!sendPost && !errorDuringSent) {
             setForm({
                 link: "",
                 description: ""
             })
+        }
+        if(errorDuringSent) {
+            setErrorDuringSent(false)
         }
     }, [sendPost])
 
