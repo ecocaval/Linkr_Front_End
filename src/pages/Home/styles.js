@@ -16,7 +16,7 @@ export const HomeArea = styled.div`
         height: ${props => props.showMobileSearchInput ? "calc(100vh - 152px)" : "calc(100vh - 72px)" };
     }
     
-    @media only page and (hover: none) and (pointer: coarse) and (max-width:475px){
+    @media only screen and (hover: none) and (pointer: coarse) and (max-width:475px){
         ::-webkit-scrollbar {
             width: 0;
         }
