@@ -12,7 +12,7 @@ import handleKeyPress from "./utils/handleKeyPress";
 import axios from "axios";
 import { ReactTagify } from "react-tagify";
 
-export default function UserPost({ post }) {
+export default function UserPost({ post, postIndex }) {
     const { myUser } = useContext(UserContext)
     const navigate = useNavigate();
 
@@ -45,10 +45,8 @@ export default function UserPost({ post }) {
                 Authorization: `Bearer ${token}`
             }
         }
-
         try {
             let comments = await axios.get(process.env.REACT_APP_API_URL + `/posts/comments/${post.postId}`, config)
-            console.log(comments.data);
             setPostComments(comments.data);
         } catch (error) {
             console.log(error)
@@ -81,6 +79,18 @@ export default function UserPost({ post }) {
     }
 
     async function toggleLike() {
+        if (postIndex !== null) {
+            const postsCopy = [...posts]
+            postsCopy[postIndex].likedByUser = !postsCopy[postIndex].likedByUser
+
+            if (!postsCopy[postIndex].likedByUser) {
+                postsCopy[postIndex].likesCount = Number(postsCopy[postIndex].likesCount) - 1
+            } else {
+                postsCopy[postIndex].likesCount = Number(postsCopy[postIndex].likesCount) + 1
+            }
+            setPosts(postsCopy)
+        }
+
         if (liked) {
             setLikesCount(likesCount - 1)
         } else {

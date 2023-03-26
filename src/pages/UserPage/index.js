@@ -10,6 +10,7 @@ import { UserContext } from "../../contexts/UserProvider"
 import { NoPostText, PostsWrapper, Title, TrendingWrapper, UserArea } from "./styles"
 import getUserPosts from "./utils/getUserPosts"
 import getPageUser from "./utils/getPageUser"
+import { v4 as uuidv4} from "uuid"
 
 export default function UserPage() {
     const { id } = useParams()
@@ -56,7 +57,7 @@ export default function UserPage() {
                         <Title>{`${userSelected?.name}'s posts`}</Title>
                     </div>
                     {
-                        userPosts[0] ? userPosts.map((post, index) => <UserPost key={index} post={post} />) :
+                        userPosts[0] ? userPosts.map((post, index) => <UserPost key={uuidv4()} post={post} />) :
                             (gotPosts ? <NoPostText data-test="message">There are no posts yet</NoPostText> : <Loader />)
                     }
                     <TrendingWrapper>

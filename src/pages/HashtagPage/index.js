@@ -8,6 +8,7 @@ import { MobileSearchContext } from "../../contexts/MobileProvider"
 import { PostsContext } from "../../contexts/PostsProvider"
 import { HashtagsArea, NoPostText, PostsWrapper, Title } from "./styles"
 import getHashtagPosts from "./utils/getHashtagPosts"
+import { v4 as uuidv4} from "uuid"
 
 export default function HashtagPage() {
 
@@ -44,7 +45,7 @@ export default function HashtagPage() {
                 <PostsWrapper>
                     <Title data-test="hashtag-title" >{`#${hashtag}`}</Title>
                     {
-                        hashtagPosts[0] ? hashtagPosts.map((post, index) => <UserPost key={index} post={post} />) :
+                        hashtagPosts[0] ? hashtagPosts.map((post, index) => <UserPost key={uuidv4()} post={post} />) :
                             (gotPosts ? <NoPostText data-test="message">There are no posts yet</NoPostText> : <Loader />)
                     }
                     <TrendingHashtags />

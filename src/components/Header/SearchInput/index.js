@@ -5,6 +5,7 @@ import { HeaderContext } from "../../../contexts/HeaderContext";
 import { InputWrapper, StyledInput, UsersInSearch } from "./styles"
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../../../contexts/UserProvider";
+import { v4 as uuidv4} from "uuid"
 
 export default function SearchInput() {
 
@@ -35,8 +36,8 @@ export default function SearchInput() {
             </StyledInput>
             <i><FaSearch style={{ color: "gray" }} /></i>
             <UsersInSearch usersSearchFiltered={usersSearchFiltered}>
-                {usersSearchFiltered.map((user, index) => (
-                    <ul key={index} data-test="user-search" onClick={() => {
+                {usersSearchFiltered.map((user) => (
+                    <ul key={uuidv4()} data-test="user-search" onClick={() => {
                         setUserSelected(user)
                         navigate(`/user/${user.id}`)
                     }}>
