@@ -70,7 +70,7 @@ export default function Home() {
     }, [updatedPosts])
 
     useInterval(() => {
-        if (posts.length > 0 && !sentPostUpdateRequest && posts.length >= 10) {
+        if (posts.length > 0 && !sentPostUpdateRequest) {
             setSentPostUpdateRequest(true)
             handleUpdatedPosts(setGotPosts, setUpdatedPosts, setSentPostUpdateRequest)
         }
