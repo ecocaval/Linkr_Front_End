@@ -176,10 +176,10 @@ export default function UserPost({
 
     return (
         <>
-            <SharedByArea isShared={post.isShared}>
+            {/* <SharedByArea isShared={post.isShared}>
                 <BiRepost />
                 <p>Re-posted by <span>{post.sharedUser}</span></p>
-            </SharedByArea>
+            </SharedByArea> */}
             <PostArea data-test="post">
                 <PostContent>
                     <Left>
