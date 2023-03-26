@@ -32,6 +32,7 @@ export default function PagePublishPost() {
         try {
             const response = await axios.post(`${process.env.REACT_APP_API_URL}/posts/new`, data, config)
             if (response) {
+                setMustUpdatePosts(true)
             }
         } catch (error) {
             alert("There was an error publishing your link")
@@ -39,7 +40,6 @@ export default function PagePublishPost() {
             setErrorDuringSent(true)
             console.log(error)
         }
-        setMustUpdatePosts(true)
     }
 
     useEffect(() => {
