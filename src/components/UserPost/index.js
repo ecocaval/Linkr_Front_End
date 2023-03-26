@@ -13,7 +13,7 @@ import axios from "axios";
 import { ReactTagify } from "react-tagify";
 
 export default function UserPost({ post, postIndex }) {
-    let linkImage = 'https://media.licdn.com/dms/image/D4D03AQHl-zufa65n4Q/profile-displayphoto-shrink_800_800/0/1670975033670?e=1684972800&v=beta&t=nZKZZECnTDU0JZsGFI2HAXzuIyqq_KCHTBKvJR38lhk'
+    const { myUser } = useContext(UserContext)
     const navigate = useNavigate();
 
     const { posts, setPosts } = useContext(PostsContext)
@@ -24,7 +24,9 @@ export default function UserPost({ post, postIndex }) {
     const [editPostMode, setEditPostMode] = useState(false)
     const [description, setDescription] = useState(post.postDesc)
     const [showComments, setShowComments] = useState(false)
-    
+    const [postComments, setPostComments] = useState([]);
+    const [commentDesc, setCommentDesc] = useState('');
+
     const keyPressRef = useRef(null)
 
     const token = localStorage.getItem('token')
@@ -32,6 +34,49 @@ export default function UserPost({ post, postIndex }) {
 
     const [liked, setLiked] = useState(post.likedByUser);
     const [likesCount, setLikesCount] = useState(Number(post.likesCount));
+
+    useEffect(() => {
+        getPostComments()
+    }, []);
+
+    async function getPostComments() {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        try {
+            let comments = await axios.get(process.env.REACT_APP_API_URL + `/posts/comments/${post.postId}`, config)
+            setPostComments(comments.data);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function addComment(){
+        if(commentDesc.length == 0) return
+
+        let data = {
+            post_id: post.postId,
+            user_id: userId,
+            description: commentDesc
+        }
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        try {
+            await axios.post(process.env.REACT_APP_API_URL + '/posts/comments', data, config)
+            setCommentDesc('')
+            getPostComments()
+        } catch (error) {
+            console.log(error);
+            setLiked(!liked)
+        }
+    }
 
     async function toggleLike() {
         if (postIndex !== null) {
@@ -125,7 +170,7 @@ export default function UserPost({ post, postIndex }) {
                         <div onClick={() => setShowComments(!showComments)}>
                             <IoChatbubblesOutline className="chat-icon" />
                         </div>
-                        <div className="count-text">0 comments</div>
+                        <div className="count-text">{postComments.length} comments</div>
 
                         {/* Reposts */}
                         <BiRepost className="repost-icon" onClick={sharePost} />
@@ -204,71 +249,32 @@ export default function UserPost({ post, postIndex }) {
                 {showComments &&
                     <CommentsArea>
                         <PostComments>
-                            <PostComment>
-                                <img src={linkImage} className="avatar"></img>
-                                <div className="content">
-                                    <div className="user-name">
-                                        João Avatares
-                                        <span> • following</span>
+                            {postComments.map(comment => (
+                                <PostComment key={comment.id}>
+                                    <img src={comment.user_photo} className="avatar"></img>
+                                    <div className="content">
+                                        <div className="user-name">
+                                            {comment.user_name}
+                                            <span> • following</span>
+                                        </div>
+                                        <div className="text-comment">
+                                            {comment.description}
+                                        </div>
                                     </div>
-                                    <div className="text-comment">
-                                        muito massa!!!!!!!! top top top
-                                    </div>
-                                </div>
-                            </PostComment>
-                            <PostComment>
-                                <img src={linkImage} className="avatar"></img>
-                                <div className="content">
-                                    <div className="user-name">
-                                        João Avatares
-                                        <span> • following</span>
-                                    </div>
-                                    <div className="text-comment">
-                                        muito massa!!!!!!!! top top top
-                                    </div>
-                                </div>
-                            </PostComment>
-                            <PostComment>
-                                <img src={linkImage} className="avatar"></img>
-                                <div className="content">
-                                    <div className="user-name">
-                                        João Avatares
-                                        <span> • following</span>
-                                    </div>
-                                    <div className="text-comment">
-                                        Adoreiiiiiiiiiiiiii. top top top
-                                    </div>
-                                </div>
-                            </PostComment>
-                            <PostComment>
-                                <img src={linkImage} className="avatar"></img>
-                                <div className="content">
-                                    <div className="user-name">
-                                        João Avatares
-                                        <span> • following</span>
-                                    </div>
-                                    <div className="text-comment">
-                                        Adoreiiiiiiiiiiiiii. top top top
-                                    </div>
-                                </div>
-                            </PostComment>
-                            <PostComment>
-                                <img src={linkImage} className="avatar"></img>
-                                <div className="content">
-                                    <div className="user-name">
-                                        João Avatares
-                                        <span> • following</span>
-                                    </div>
-                                    <div className="text-comment">
-                                        muito massa!!!!!!!! top top top
-                                    </div>
-                                </div>
-                            </PostComment>
+                                </PostComment>
+                            ))}
                         </PostComments>
                         <InputCommentArea>
-                            <img src={linkImage} className="avatar"></img>
-                            <input placeholder="write a comment..." className="text-comment" type="text" />
-                            <IoSend className="send-icon" />
+                            <img src={myUser.image} className="avatar"></img>
+                            <input
+                                value={commentDesc}
+                                onChange={(e) => setCommentDesc(e.target.value)}
+                                placeholder="write a comment..."
+                                className="text-comment"
+                                type="text"
+                            />
+                            <div onClick={addComment}><IoSend className="send-icon" /></div>
+                            
                         </InputCommentArea>
                     </CommentsArea>
                 }
