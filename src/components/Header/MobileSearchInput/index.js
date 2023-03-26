@@ -5,7 +5,6 @@ import { HeaderContext } from "../../../contexts/HeaderContext";
 import { UserContext } from "../../../contexts/UserProvider";
 import { InputWrapper, StyledInput, UsersInSearch } from "./styles"
 import { v4 as uuidv4} from "uuid"
-uuidv4()
 
 export default function MobileSearchInput() {
 

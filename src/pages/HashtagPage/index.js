@@ -9,7 +9,6 @@ import { PostsContext } from "../../contexts/PostsProvider"
 import { HashtagsArea, NoPostText, PostsWrapper, Title } from "./styles"
 import getHashtagPosts from "./utils/getHashtagPosts"
 import { v4 as uuidv4} from "uuid"
-uuidv4()
 
 export default function HashtagPage() {
 

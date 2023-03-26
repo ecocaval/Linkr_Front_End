@@ -4,7 +4,6 @@ import { PostsContext } from "../../contexts/PostsProvider";
 import { Wrapper } from "./styles";
 import getHashtags from "./utils/getHashtags";
 import { v4 as uuidv4} from "uuid"
-uuidv4()
 
 export default function TrendingHashtags() {
 
