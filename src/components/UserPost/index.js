@@ -183,13 +183,6 @@ export default function UserPost({ post, postIndex, page }) {
                             navigate(`/user/${post.userId}`)
                         }} />
                         {/* Likes */}
-                        {/* <a
-                            data-tooltip-id="my-tooltip"
-                            data-tooltip-content="Hello world!"
-                            data-tooltip-place="top"
-                        >
-                            ◕‿‿◕
-                        </a> */}
                         <Tooltip id="my-tooltip" >
                             {getUserLikesText(post.usersThatLiked)}
                         </Tooltip>
