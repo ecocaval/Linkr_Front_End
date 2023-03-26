@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import ButtonFollow from "../../components/ButtonFollow"
 import Header from "../../components/Header"
@@ -15,6 +15,8 @@ import { PostsContext } from "../../contexts/PostsProvider"
 
 export default function UserPage() {
     const { id } = useParams()
+
+    const [idOfEdition, setIdOfEdition] = useState(-Infinity)
 
     const { myUser, userSelected, setUserSelected } = useContext(UserContext)
     const { userPosts, setUserPosts, gotPosts, setGotPosts } = useContext(PostsContext)
@@ -58,7 +60,15 @@ export default function UserPage() {
                     {
                         gotPosts ?
                             (userPosts[0] ?
-                                userPosts.map((post, index) => <UserPost key={uuidv4()} post={post} postIndex={index} page={'users'} />) :
+                                userPosts.map((post, index) =>
+                                    <UserPost
+                                        key={uuidv4()}
+                                        post={post}
+                                        postIndex={index}
+                                        page={'users'}
+                                        idOfEdition={idOfEdition}
+                                        setIdOfEdition={setIdOfEdition}
+                                    />) :
                                 <NoPostText data-test="message">There are no posts yet</NoPostText>) :
                             <Loader />
                     }

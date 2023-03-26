@@ -39,6 +39,7 @@ export default function Home() {
     const { sentLogin, setSentLogin } = useContext(LoginContext)
     const { myUser } = useContext(UserContext)
 
+    const [idOfEdition, setIdOfEdition] = useState(-Infinity)
     const [scannedAllPosts, setScannedAllPosts] = useState(false)
     const [gettingPosts, setGettingPosts] = useState(false)
     const [hasMorePosts, setHasMorePosts] = useState(false)
@@ -73,7 +74,7 @@ export default function Home() {
     useInterval(() => {
         if (posts.length > 0 && !sentPostUpdateRequest) {
             setSentPostUpdateRequest(true)
-            handleUpdatedPosts(setGotPosts, setUpdatedPosts, setSentPostUpdateRequest)
+            handleUpdatedPosts(setUpdatedPosts, setSentPostUpdateRequest)
         }
     }, 15000)
 
@@ -106,8 +107,14 @@ export default function Home() {
                         {
                             gotPosts ? (
                                 posts[0] ?
-                                    posts.map((post, index) =>
-                                        <UserPost key={uuidv4()} post={post} postIndex={index} page={'home'} />
+                                    posts.map((post, index) => <UserPost
+                                        key={uuidv4()}
+                                        post={post}
+                                        postIndex={index}
+                                        page={'home'}
+                                        idOfEdition={idOfEdition}
+                                        setIdOfEdition={setIdOfEdition}
+                                    />
                                     ) : (
                                         <NoPostText data-test="message">
                                             {myUser.numberOfFollows > 0 ? "No posts found from your friends" : "You don't follow anyone yet. Search for new friends!"}
