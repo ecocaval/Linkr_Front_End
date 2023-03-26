@@ -42,6 +42,7 @@ export default function UserPost({
     const [commentDesc, setCommentDesc] = useState('');
     const [showShareModal, setShowShareModal] = useState(false)
     const [postBeingShared, setPostBeingShared] = useState(false)
+    const [following, setFollowing] = useState([]);
 
     const keyPressRef = useRef(null)
 
@@ -55,6 +56,7 @@ export default function UserPost({
 
     useEffect(() => {
         getPostComments()
+        getFollowers()
         // eslint-disable-next-line
     }, []);
 
@@ -67,6 +69,20 @@ export default function UserPost({
         try {
             let comments = await axios.get(process.env.REACT_APP_API_URL + `/posts/comments/${post.postId}`, config)
             setPostComments(comments.data);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    async function getFollowers() {
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        try {
+            let followers = await axios.get(process.env.REACT_APP_API_URL + `/users/following/${userId}`, config)
+            let aux = followers.data.map(f => f.followed_id)
+            setFollowing(aux);
         } catch (error) {
             console.log(error)
         }
@@ -213,10 +229,10 @@ export default function UserPost({
                         <div data-test="counter" className="count-text">{post.likesCount} like{post.likesCount > 1 ? "s" : ""}</div>
 
                         {/* Comments */}
-                        <div onClick={() => setShowComments(!showComments)}>
+                        <div data-test="comment-btn" onClick={() => setShowComments(!showComments)}>
                             <IoChatbubblesOutline className="chat-icon" />
                         </div>
-                        <div className="count-text">{postComments.length} comments</div>
+                        <div data-test="comment-counter" className="count-text">{postComments.length} comments</div>
 
                         {/* Reposts */}
                         <BiRepost className="repost-icon" onClick={() => setShowShareModal(!showShareModal)} />
@@ -307,15 +323,18 @@ export default function UserPost({
 
                 {/* Comments */}
                 {showComments &&
-                    <CommentsArea>
+                    <CommentsArea data-test="comment-box">
                         <PostComments>
                             {postComments.map(comment => (
-                                <PostComment key={comment.id}>
+                                <PostComment data-test="comment" key={comment.id}>
                                     <img src={comment.user_photo} className="avatar" alt=""></img>
                                     <div className="content">
                                         <div className="user-name">
                                             {comment.user_name}
-                                            <span> • following</span>
+                                            <span>
+                                                {comment.user_id == post.userId ? ` • post's author` : ''}
+                                                {following.includes(comment.user_id) ? ` • following` : ''}
+                                            </span>
                                         </div>
                                         <div className="text-comment">
                                             {comment.description}
@@ -327,13 +346,14 @@ export default function UserPost({
                         <InputCommentArea>
                             <img src={myUser.image} className="avatar" alt=""></img>
                             <input
+                                data-test="comment-input"
                                 value={commentDesc}
                                 onChange={(e) => setCommentDesc(e.target.value)}
                                 placeholder="write a comment..."
                                 className="text-comment"
                                 type="text"
                             />
-                            <div onClick={addComment}><IoSend className="send-icon" /></div>
+                            <div data-test="comment-submit" onClick={addComment}><IoSend className="send-icon" /></div>
 
                         </InputCommentArea>
                     </CommentsArea>
