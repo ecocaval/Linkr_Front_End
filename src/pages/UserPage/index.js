@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react"
+import { useContext, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import ButtonFollow from "../../components/ButtonFollow"
 import Header from "../../components/Header"
@@ -10,27 +10,26 @@ import { UserContext } from "../../contexts/UserProvider"
 import { NoPostText, PostsWrapper, Title, TrendingWrapper, UserArea } from "./styles"
 import getUserPosts from "./utils/getUserPosts"
 import getPageUser from "./utils/getPageUser"
-import { v4 as uuidv4} from "uuid"
+import { v4 as uuidv4 } from "uuid"
+import { PostsContext } from "../../contexts/PostsProvider"
 
 export default function UserPage() {
     const { id } = useParams()
 
-    const { myUser } = useContext(UserContext)
-    const { userSelected, setUserSelected } = useContext(UserContext)
+    const { myUser, userSelected, setUserSelected } = useContext(UserContext)
+    const { userPosts, setUserPosts, gotPosts, setGotPosts } = useContext(PostsContext)
     const { showMobileSearchInput } = useContext(MobileSearchContext)
-
-    const [userPosts, setUserPosts] = useState([])
-    const [gotPosts, setGotPosts] = useState(false)
 
     async function handleUserPosts() {
         const posts = await getUserPosts(id)
-        if(posts) {
+        if (posts) {
             setUserPosts(posts)
             setGotPosts(true)
         }
     }
 
     useEffect(() => {
+        setGotPosts(false)
         if (!userSelected) {
             getPageUser(setUserSelected, id)
         }
@@ -57,13 +56,16 @@ export default function UserPage() {
                         <Title>{`${userSelected?.name}'s posts`}</Title>
                     </div>
                     {
-                        userPosts[0] ? userPosts.map((post, index) => <UserPost key={uuidv4()} post={post} />) :
-                            (gotPosts ? <NoPostText data-test="message">There are no posts yet</NoPostText> : <Loader />)
+                        gotPosts ?
+                            (userPosts[0] ?
+                                userPosts.map((post, index) => <UserPost key={uuidv4()} post={post} postIndex={index} page={'users'} />) :
+                                <NoPostText data-test="message">There are no posts yet</NoPostText>) :
+                            <Loader />
                     }
                     <TrendingWrapper>
                         <TrendingHashtags />
                     </TrendingWrapper>
-                    {myUser.id !== Number(id) && <ButtonFollow/>}
+                    {myUser.id !== Number(id) && <ButtonFollow />}
                 </PostsWrapper>
             </UserArea>
         </>

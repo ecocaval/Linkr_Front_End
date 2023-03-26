@@ -11,13 +11,21 @@ import { useNavigate } from "react-router-dom";
 import handleKeyPress from "./utils/handleKeyPress";
 import axios from "axios";
 import { ReactTagify } from "react-tagify";
+import { Tooltip } from 'react-tooltip';
+import { getUserLikesText } from "./utils/getUserLikesText";
 
-export default function UserPost({ post, postIndex }) {
-    const { myUser } = useContext(UserContext)
+export default function UserPost({ post, postIndex, page }) {
     const navigate = useNavigate();
 
-    const { posts, setPosts } = useContext(PostsContext)
-    const { setUserSelected } = useContext(UserContext)
+    const { myUser, setUserSelected } = useContext(UserContext)
+    const {
+        posts,
+        setPosts,
+        userPosts,
+        setUserPosts,
+        hashtagPosts,
+        setHashtagPosts
+    } = useContext(PostsContext)
 
     const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [postBeingDeleted, setPostBeingDeleted] = useState(false)
@@ -32,11 +40,9 @@ export default function UserPost({ post, postIndex }) {
     const token = localStorage.getItem('token')
     const userId = localStorage.getItem('userId')
 
-    const [liked, setLiked] = useState(post.likedByUser);
-    const [likesCount, setLikesCount] = useState(Number(post.likesCount));
-
     useEffect(() => {
         getPostComments()
+        // eslint-disable-next-line
     }, []);
 
     async function getPostComments() {
@@ -53,8 +59,8 @@ export default function UserPost({ post, postIndex }) {
         }
     }
 
-    async function addComment(){
-        if(commentDesc.length == 0) return
+    async function addComment() {
+        if (commentDesc.length === 0) return
 
         let data = {
             post_id: post.postId,
@@ -74,30 +80,53 @@ export default function UserPost({ post, postIndex }) {
             getPostComments()
         } catch (error) {
             console.log(error);
-            setLiked(!liked)
         }
     }
 
     async function toggleLike() {
-        if (postIndex !== null) {
-            const postsCopy = [...posts]
-            postsCopy[postIndex].likedByUser = !postsCopy[postIndex].likedByUser
+        let postsCopy
 
-            if (!postsCopy[postIndex].likedByUser) {
-                postsCopy[postIndex].likesCount = Number(postsCopy[postIndex].likesCount) - 1
-            } else {
-                postsCopy[postIndex].likesCount = Number(postsCopy[postIndex].likesCount) + 1
-            }
-            setPosts(postsCopy)
+        switch (page) {
+            case 'home':
+                postsCopy = [...posts]
+                break;
+            case 'users':
+                postsCopy = [...userPosts]
+                break;
+            case 'hashtags':
+                postsCopy = [...hashtagPosts]
+                break;
+            default:
+                break;
         }
 
-        if (liked) {
-            setLikesCount(likesCount - 1)
+        postsCopy[postIndex].likedByUser = !postsCopy[postIndex].likedByUser
+
+        if (!postsCopy[postIndex].likedByUser) {
+            postsCopy[postIndex].likesCount = Number(postsCopy[postIndex].likesCount) - 1
+            postsCopy[postIndex].usersThatLiked = postsCopy[postIndex].usersThatLiked.filter(user => user.user_id !== myUser.id)
         } else {
-            setLikesCount(likesCount + 1)
+            postsCopy[postIndex].likesCount = Number(postsCopy[postIndex].likesCount) + 1
+            if (!postsCopy[postIndex].usersThatLiked) postsCopy[postIndex].usersThatLiked = []
+            postsCopy[postIndex].usersThatLiked.push({ user_id: myUser.id, name: myUser.name })
+
         }
 
-        setLiked(!liked)
+        switch (page) {
+            case 'home':
+                setPosts(postsCopy)
+                break;
+            case 'users':
+                setUserPosts(postsCopy)
+                break;
+            case 'hashtags':
+                setHashtagPosts(postsCopy)
+                break;
+            default:
+                break;
+        }
+
+        setPosts(postsCopy)
 
         let data = {
             post_id: post.postId,
@@ -114,7 +143,6 @@ export default function UserPost({ post, postIndex }) {
             await axios.post(process.env.REACT_APP_API_URL + '/posts/toggle-like', data, config)
         } catch (error) {
             console.log(error);
-            setLiked(!liked)
         }
     }
 
@@ -155,16 +183,26 @@ export default function UserPost({ post, postIndex }) {
                             navigate(`/user/${post.userId}`)
                         }} />
                         {/* Likes */}
-                        {liked ?
-                            <div data-test="like-btn" onClick={toggleLike}>
+                        {/* <a
+                            data-tooltip-id="my-tooltip"
+                            data-tooltip-content="Hello world!"
+                            data-tooltip-place="top"
+                        >
+                            ◕‿‿◕
+                        </a> */}
+                        <Tooltip id="my-tooltip" >
+                            {getUserLikesText(post.usersThatLiked)}
+                        </Tooltip>
+                        {post.likedByUser ?
+                            <div data-tooltip-id="my-tooltip" data-test="like-btn" onClick={toggleLike}>
                                 <IoHeartSharp className="heart-sharp-icon" />
                             </div>
                             :
-                            <div data-test="like-btn" onClick={toggleLike}>
+                            <div data-tooltip-id="my-tooltip" data-test="like-btn" onClick={toggleLike}>
                                 <IoHeartOutline className="heart-outline-icon" />
                             </div>
                         }
-                        <div data-test="counter" className="count-text">{likesCount} like{likesCount > 1 ? "s" : ""}</div>
+                        <div data-test="counter" className="count-text">{post.likesCount} like{post.likesCount > 1 ? "s" : ""}</div>
 
                         {/* Comments */}
                         <div onClick={() => setShowComments(!showComments)}>
@@ -251,7 +289,7 @@ export default function UserPost({ post, postIndex }) {
                         <PostComments>
                             {postComments.map(comment => (
                                 <PostComment key={comment.id}>
-                                    <img src={comment.user_photo} className="avatar"></img>
+                                    <img src={comment.user_photo} className="avatar" alt=""></img>
                                     <div className="content">
                                         <div className="user-name">
                                             {comment.user_name}
@@ -265,7 +303,7 @@ export default function UserPost({ post, postIndex }) {
                             ))}
                         </PostComments>
                         <InputCommentArea>
-                            <img src={myUser.image} className="avatar"></img>
+                            <img src={myUser.image} className="avatar" alt=""></img>
                             <input
                                 value={commentDesc}
                                 onChange={(e) => setCommentDesc(e.target.value)}
@@ -274,7 +312,7 @@ export default function UserPost({ post, postIndex }) {
                                 type="text"
                             />
                             <div onClick={addComment}><IoSend className="send-icon" /></div>
-                            
+
                         </InputCommentArea>
                     </CommentsArea>
                 }

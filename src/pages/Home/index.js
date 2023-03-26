@@ -17,7 +17,7 @@ import { NoPostText } from "../UserPage/styles"
 import { HomeArea, PostsWrapper, Title } from "./styles"
 import { loadMorePosts } from "./utils/loadMorePosts";
 import { UserContext } from "../../contexts/UserProvider";
-import { v4 as uuidv4} from "uuid"
+import { v4 as uuidv4 } from "uuid"
 
 export default function Home() {
 
@@ -45,6 +45,7 @@ export default function Home() {
     const [sentPostUpdateRequest, setSentPostUpdateRequest] = useState(false)
 
     useEffect(() => {
+        setGotPosts(false)
         handlePosts(setPosts, setGotPosts)
         // eslint-disable-next-line
     }, [sentLogin, setSentLogin])
@@ -103,17 +104,16 @@ export default function Home() {
                         <PagePublishPost />
                         {postsToUpdate !== 0 && <UpdatePostsModal />}
                         {
-                            posts[0] ?
-                                posts.map((post, index) =>
-                                    <UserPost key={uuidv4()} post={post} postIndex={index} />
-                                )
-                                : (
-                                    gotPosts ?
+                            gotPosts ? (
+                                posts[0] ?
+                                    posts.map((post, index) =>
+                                        <UserPost key={uuidv4()} post={post} postIndex={index} page={'home'} />
+                                    ) : (
                                         <NoPostText data-test="message">
                                             {myUser.numberOfFollows > 0 ? "No posts found from your friends" : "You don't follow anyone yet. Search for new friends!"}
-                                        </NoPostText> :
-                                        <Loader />
-                                )
+                                        </NoPostText>
+                                    )
+                            ) : <Loader />
                         }
                         {gettingPosts && <Loader />}
                         <TrendingHashtags />

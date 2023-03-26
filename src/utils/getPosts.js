@@ -9,31 +9,11 @@ export default async function getPosts(setPosts, setSendPost) {
                 authorization: `Bearer ${token}`
             }
         })
-        setPosts(checkForDuplicityInPosts(data))
+        setPosts(data)
         if (!!setSendPost) setSendPost(false) //* used in the loader button in the publish post modal
         return true
     } catch (error) {
         console.error(error)
     }
     return false
-}
-
-function checkForDuplicityInPosts(posts) {
-    const postsHashTable = {}
-    let postsCopy = [...posts]
-    let indexesToRemove = []
-
-    for (let i = 0; i < posts.length; i++) {
-        if (postsHashTable[posts[i].postId]) {
-            indexesToRemove.push(i)
-        }
-        else postsHashTable[posts[i].postId] = true
-    }
-    if (indexesToRemove.length) {
-        indexesToRemove.forEach(index => {
-            postsCopy.splice(index, 1)
-        })
-        return postsCopy
-    }
-    return posts
 }

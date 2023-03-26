@@ -44,6 +44,8 @@ export default function Header() {
 
     const {
         setPosts,
+        setUserPosts,
+        setHashtagPosts,
         setUpdatedPosts,
         setPostsToUpdate,
         setMustUpdatePosts,
@@ -131,6 +133,8 @@ export default function Header() {
                             cleanStates({
                                 setSentLogin,
                                 setPosts,
+                                setUserPosts,
+                                setHashtagPosts,
                                 setUpdatedPosts,
                                 setPostsToUpdate,
                                 setMustUpdatePosts,
