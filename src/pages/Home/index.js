@@ -18,6 +18,9 @@ import { HomeArea, PostsWrapper, Title } from "./styles"
 import { loadMorePosts } from "./utils/loadMorePosts";
 import { UserContext } from "../../contexts/UserProvider";
 import { v4 as uuidv4 } from "uuid"
+import Modal from "../../components/Modal";
+import deletePost from "../../components/UserPost/utils/deletePost";
+import { Blocks } from "react-loader-spinner";
 
 export default function Home() {
 
@@ -39,6 +42,8 @@ export default function Home() {
     const { sentLogin, setSentLogin } = useContext(LoginContext)
     const { myUser } = useContext(UserContext)
 
+    const [postBeingDeleted, setPostBeingDeleted] = useState(false)
+    const [idOfDeletion, setIdOfDeletion] = useState(-Infinity)
     const [idOfEdition, setIdOfEdition] = useState(-Infinity)
     const [scannedAllPosts, setScannedAllPosts] = useState(false)
     const [gettingPosts, setGettingPosts] = useState(false)
@@ -114,6 +119,7 @@ export default function Home() {
                                         page={'home'}
                                         idOfEdition={idOfEdition}
                                         setIdOfEdition={setIdOfEdition}
+                                        setIdOfDeletion={setIdOfDeletion}
                                     />
                                     ) : (
                                         <NoPostText data-test="message">
@@ -127,6 +133,41 @@ export default function Home() {
                     </PostsWrapper>
                 </InfiniteScroll>
             </HomeArea>
+            {
+            idOfDeletion >= 0 &&
+                <Modal setIdOfDeletion={setIdOfDeletion}>
+                    <p>Are you sure you want to delete this post?</p>
+                    <div>
+                        <button
+                            data-test="cancel"
+                            onClick={() => { setIdOfDeletion(-Infinity) }}
+                            disabled={postBeingDeleted}
+                        >
+                            No, go back
+                        </button>
+                        <button
+                            data-test="confirm"
+                            onClick={() => {
+                                setPostBeingDeleted(true)
+                                deletePost(idOfDeletion, setPosts, setIdOfDeletion, setPostBeingDeleted, 'home')
+                            }}
+                            disabled={postBeingDeleted}
+                            style={{ overflow: 'hidden' }}
+                        >
+                            {postBeingDeleted ?
+                                <Blocks
+                                    visible={true}
+                                    height="40"
+                                    width="40"
+                                    ariaLabel="blocks-loading"
+                                    wrapperClass="blocks-wrapper"
+                                    style={{ overflow: 'hidden' }}
+                                />
+                                : "Yes, delete it"}
+                        </button>
+                    </div>
+                </Modal>
+            }
         </>
     )
 }
