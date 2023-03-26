@@ -9,6 +9,9 @@ import { PostsContext } from "../../contexts/PostsProvider"
 import { HashtagsArea, NoPostText, PostsWrapper, Title } from "./styles"
 import getHashtagPosts from "./utils/getHashtagPosts"
 import { v4 as uuidv4 } from "uuid"
+import Modal from "../../components/Modal"
+import deletePost from "../../components/UserPost/utils/deletePost"
+import { Blocks } from "react-loader-spinner"
 
 export default function HashtagPage() {
 
@@ -17,6 +20,8 @@ export default function HashtagPage() {
     const { hashtagPosts, setHashtagPosts } = useContext(PostsContext)
     const { showMobileSearchInput } = useContext(MobileSearchContext)
 
+    const [postBeingDeleted, setPostBeingDeleted] = useState(false)
+    const [idOfDeletion, setIdOfDeletion] = useState(-Infinity)
     const [idOfEdition, setIdOfEdition] = useState(-Infinity)
     const [gotPosts, setGotPosts] = useState(false)
     const [firstRender, setFirstRender] = useState(true)
@@ -48,6 +53,7 @@ export default function HashtagPage() {
                                         page={'hashtags'}
                                         idOfEdition={idOfEdition}
                                         setIdOfEdition={setIdOfEdition}
+                                        setIdOfDeletion={setIdOfDeletion}
                                     />) :
                                 <NoPostText data-test="message">There are no posts yet</NoPostText>) :
                             <Loader />
@@ -55,6 +61,41 @@ export default function HashtagPage() {
                     <TrendingHashtags />
                 </PostsWrapper>
             </HashtagsArea>
+            {
+                idOfDeletion >= 0 &&
+                <Modal setIdOfDeletion={setIdOfDeletion}>
+                    <p>Are you sure you want to delete this post?</p>
+                    <div>
+                        <button
+                            data-test="cancel"
+                            onClick={() => { setIdOfDeletion(-Infinity) }}
+                            disabled={postBeingDeleted}
+                        >
+                            No, go back
+                        </button>
+                        <button
+                            data-test="confirm"
+                            onClick={() => {
+                                setPostBeingDeleted(true)
+                                deletePost(idOfDeletion, setHashtagPosts, setIdOfDeletion, setPostBeingDeleted, 'hashtags', hashtag)
+                            }}
+                            disabled={postBeingDeleted}
+                            style={{ overflow: 'hidden' }}
+                        >
+                            {postBeingDeleted ?
+                                <Blocks
+                                    visible={true}
+                                    height="40"
+                                    width="40"
+                                    ariaLabel="blocks-loading"
+                                    wrapperClass="blocks-wrapper"
+                                    style={{ overflow: 'hidden' }}
+                                />
+                                : "Yes, delete it"}
+                        </button>
+                    </div>
+                </Modal>
+            }
         </>
     )
 }

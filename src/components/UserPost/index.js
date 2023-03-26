@@ -2,10 +2,7 @@ import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, SharedBy
 import { IoHeartOutline, IoTrashSharp, IoPencilSharp, IoHeartSharp, IoChatbubblesOutline, IoSend } from "react-icons/io5";
 import { BiRepost } from "react-icons/bi"
 import { useContext, useEffect, useRef, useState } from "react";
-import Modal from "../Modal";
-import deletePost from "./utils/deletePost";
 import { PostsContext } from "../../contexts/PostsProvider";
-import { Blocks } from 'react-loader-spinner';
 import { UserContext } from "../../contexts/UserProvider";
 import { useNavigate } from "react-router-dom";
 import handleKeyPress from "./utils/handleKeyPress";
@@ -14,7 +11,14 @@ import { ReactTagify } from "react-tagify";
 import { Tooltip } from 'react-tooltip';
 import { getUserLikesText } from "./utils/getUserLikesText";
 
-export default function UserPost({ post, postIndex, page, idOfEdition, setIdOfEdition }) {
+export default function UserPost({
+    post,
+    postIndex,
+    page,
+    idOfEdition,
+    setIdOfEdition,
+    setIdOfDeletion,
+}) {
     const navigate = useNavigate();
 
     const { myUser, setUserSelected } = useContext(UserContext)
@@ -27,9 +31,7 @@ export default function UserPost({ post, postIndex, page, idOfEdition, setIdOfEd
         setHashtagPosts
     } = useContext(PostsContext)
 
-    const [showDeleteModal, setShowDeleteModal] = useState(false)
     const [sentEditRequest, setSentEditRequest] = useState(false)
-    const [postBeingDeleted, setPostBeingDeleted] = useState(false)
     const [description, setDescription] = useState(post.postDesc)
     const [showComments, setShowComments] = useState(false)
     const [postComments, setPostComments] = useState([]);
@@ -42,6 +44,7 @@ export default function UserPost({ post, postIndex, page, idOfEdition, setIdOfEd
 
     useEffect(() => {
         if (keyPressRef.current) keyPressRef.current.focus()
+        // eslint-disable-next-line
     }, [keyPressRef.current])
 
     useEffect(() => {
@@ -233,7 +236,7 @@ export default function UserPost({ post, postIndex, page, idOfEdition, setIdOfEd
                                             />
                                             <IoTrashSharp
                                                 className="icon"
-                                                onClick={() => { setShowDeleteModal(!showDeleteModal) }}
+                                                onClick={() => { setIdOfDeletion(post.postId) }}
                                                 data-test="delete-btn"
                                             />
                                         </>
@@ -328,41 +331,6 @@ export default function UserPost({ post, postIndex, page, idOfEdition, setIdOfEd
                     </CommentsArea>
                 }
             </PostArea>
-
-            {showDeleteModal &&
-                <Modal setShowModal={setShowDeleteModal}>
-                    <p>Are you sure you want to delete this post?</p>
-                    <div>
-                        <button
-                            data-test="cancel"
-                            onClick={() => { setShowDeleteModal(false) }}
-                            disabled={postBeingDeleted}
-                        >
-                            No, go back
-                        </button>
-                        <button
-                            data-test="confirm"
-                            onClick={() => {
-                                setPostBeingDeleted(true)
-                                deletePost(post, setPosts, setPostBeingDeleted, setShowDeleteModal)
-                            }}
-                            disabled={postBeingDeleted}
-                            style={{ overflow: 'hidden' }}
-                        >
-                            {postBeingDeleted ?
-                                <Blocks
-                                    visible={true}
-                                    height="40"
-                                    width="40"
-                                    ariaLabel="blocks-loading"
-                                    wrapperClass="blocks-wrapper"
-                                    style={{ overflow: 'hidden' }}
-                                />
-                                : "Yes, delete it"}
-                        </button>
-                    </div>
-                </Modal>
-            }
         </>
     )
 }
