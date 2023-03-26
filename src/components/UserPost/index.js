@@ -10,6 +10,7 @@ import axios from "axios";
 import { ReactTagify } from "react-tagify";
 import { Tooltip } from 'react-tooltip';
 import { getUserLikesText } from "./utils/getUserLikesText";
+import { v4 as uuidv4 } from 'uuid'
 
 export default function UserPost({
     post,
@@ -20,6 +21,7 @@ export default function UserPost({
     setIdOfDeletion,
 }) {
     const navigate = useNavigate();
+    const toolTipId = uuidv4();
 
     const { myUser, setUserSelected } = useContext(UserContext)
     const {
@@ -190,15 +192,17 @@ export default function UserPost({
                             navigate(`/user/${post.userId}`)
                         }} />
                         {/* Likes */}
-                        <Tooltip id="my-tooltip" >
+                        <Tooltip id={toolTipId} >
                             {getUserLikesText(post.usersThatLiked)}
                         </Tooltip>
                         {post.likedByUser ?
-                            <div data-tooltip-id="my-tooltip" data-test="like-btn" onClick={toggleLike}>
+                            <div data-tooltip-id={toolTipId}
+                                data-test="like-btn" onClick={toggleLike}>
                                 <IoHeartSharp className="heart-sharp-icon" />
                             </div>
                             :
-                            <div data-tooltip-id="my-tooltip" data-test="like-btn" onClick={toggleLike}>
+                            <div data-tooltip-id="my-tooltip"
+                                data-test="like-btn" onClick={toggleLike}>
                                 <IoHeartOutline className="heart-outline-icon" />
                             </div>
                         }

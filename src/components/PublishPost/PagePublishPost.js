@@ -3,13 +3,14 @@ import axios from "axios"
 import { useContext, useState } from "react"
 import { UserContext } from "../../contexts/UserProvider.js"
 import { PostsContext } from "../../contexts/PostsProvider"
+import { useEffect } from "react"
 
 export default function PagePublishPost() {
     const { myUser } = useContext(UserContext)
     const { setMustUpdatePosts, sendPost, setSendPost } = useContext(PostsContext)
 
     const token = localStorage.getItem('token')
-    
+
     const [form, setForm] = useState({
         link: "",
         description: ""
@@ -28,17 +29,24 @@ export default function PagePublishPost() {
         const data = { ...form }
         const config = { headers: { Authorization: `Bearer ${token}` } }
         try {
-            await axios.post(`${process.env.REACT_APP_API_URL}/posts/new`, data, config)
-            setForm({
-                link: "",
-                description: ""
-            })
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/posts/new`, data, config)
+            if (response) {
+                setMustUpdatePosts(true)
+            }
         } catch (error) {
             alert("There was an error publishing your link")
             console.log(error)
         }
-        setMustUpdatePosts(true)
     }
+
+    useEffect(() => {
+        if (!sendPost) {
+            setForm({
+                link: "",
+                description: ""
+            })
+        }
+    }, [sendPost])
 
     return (
         <StyledSection data-test="publish-box">
@@ -56,8 +64,8 @@ export default function PagePublishPost() {
                         onChange={handleForm}
                         value={form.link}
                         disabled={sendPost}
-                        data-test="link" 
-                    >   
+                        data-test="link"
+                    >
                     </input>
                     <textarea
                         placeholder="Write something..."
@@ -67,7 +75,7 @@ export default function PagePublishPost() {
                         disabled={sendPost}
                         data-test="description"
                     ></textarea>
-                    <button 
+                    <button
                         type="submit"
                         disabled={sendPost}
                         data-test="publish-btn"
