@@ -42,9 +42,12 @@ export default function Home() {
     const { sentLogin, setSentLogin } = useContext(LoginContext)
     const { myUser } = useContext(UserContext)
 
+    const [postBeingCommented, setPostBeingCommented] = useState(false)
+    const [postBeingEdited, setPostBeingEdited] = useState(false)
     const [postBeingDeleted, setPostBeingDeleted] = useState(false)
-    const [idOfDeletion, setIdOfDeletion] = useState(-Infinity)
+    const [idOfComment, setIdOfComment] = useState(-Infinity)
     const [idOfEdition, setIdOfEdition] = useState(-Infinity)
+    const [idOfDeletion, setIdOfDeletion] = useState(-Infinity)
     const [scannedAllPosts, setScannedAllPosts] = useState(false)
     const [gettingPosts, setGettingPosts] = useState(false)
     const [hasMorePosts, setHasMorePosts] = useState(false)
@@ -77,7 +80,7 @@ export default function Home() {
     }, [updatedPosts])
 
     useInterval(() => {
-        if (posts.length > 0 && !sentPostUpdateRequest) {
+        if (posts.length > 0 && !sentPostUpdateRequest && !postBeingEdited && !postBeingCommented) {
             setSentPostUpdateRequest(true)
             handleUpdatedPosts(setUpdatedPosts, setSentPostUpdateRequest)
         }
@@ -89,6 +92,18 @@ export default function Home() {
         }
         // eslint-disable-next-line
     }, [posts])
+
+    useEffect(() => {
+        if (idOfEdition >= 0) setPostBeingEdited(true)
+        else if (postBeingEdited) setPostBeingEdited(false)
+        // eslint-disable-next-line
+    }, [idOfEdition])
+
+    useEffect(() => {
+        if (idOfComment >= 0) setPostBeingCommented(true)
+        else if (postBeingCommented) setPostBeingCommented(false)
+        // eslint-disable-next-line
+    }, [idOfComment])
 
     return (
         <>
@@ -120,6 +135,8 @@ export default function Home() {
                                         idOfEdition={idOfEdition}
                                         setIdOfEdition={setIdOfEdition}
                                         setIdOfDeletion={setIdOfDeletion}
+                                        idOfComment={idOfComment}
+                                        setIdOfComment={setIdOfComment}
                                     />
                                     ) : (
                                         <NoPostText data-test="message">
@@ -134,7 +151,7 @@ export default function Home() {
                 </InfiniteScroll>
             </HomeArea>
             {
-            idOfDeletion >= 0 &&
+                idOfDeletion >= 0 &&
                 <Modal setIdOfDeletion={setIdOfDeletion}>
                     <p>Are you sure you want to delete this post?</p>
                     <div>

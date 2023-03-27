@@ -19,7 +19,10 @@ import { Blocks } from "react-loader-spinner"
 export default function UserPage() {
     const { id } = useParams()
 
+    const [postBeingCommented, setPostBeingCommented] = useState(false)
+    const [postBeingEdited, setPostBeingEdited] = useState(false)
     const [postBeingDeleted, setPostBeingDeleted] = useState(false)
+    const [idOfComment, setIdOfComment] = useState(-Infinity)
     const [idOfDeletion, setIdOfDeletion] = useState(-Infinity)
     const [idOfEdition, setIdOfEdition] = useState(-Infinity)
 
@@ -43,6 +46,18 @@ export default function UserPage() {
         handleUserPosts()
         // eslint-disable-next-line
     }, [id, userSelected])
+
+    useEffect(() => {
+        if (idOfEdition >= 0) setPostBeingEdited(true)
+        else if (postBeingEdited) setPostBeingEdited(false)
+        // eslint-disable-next-line
+    }, [idOfEdition])
+
+    useEffect(() => {
+        if (idOfComment >= 0) setPostBeingCommented(true)
+        else if (postBeingCommented) setPostBeingCommented(false)
+        // eslint-disable-next-line
+    }, [idOfComment])
 
     return (
         <>
@@ -74,6 +89,8 @@ export default function UserPage() {
                                         idOfEdition={idOfEdition}
                                         setIdOfEdition={setIdOfEdition}
                                         setIdOfDeletion={setIdOfDeletion}
+                                        idOfComment={idOfComment}
+                                        setIdOfComment={setIdOfComment}
                                     />) :
                                 <NoPostText data-test="message">There are no posts yet</NoPostText>) :
                             <Loader />
