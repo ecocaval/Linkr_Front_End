@@ -1,4 +1,4 @@
-import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, SharedByArea, TextArea, PostContent, PostComments, PostComment, InputCommentArea, CommentsArea } from "./styles";
+import { Avatar, Header, Icons, Infos, Left, LinkArea, PostArea, Right, SharedByArea, TextArea, PostContent, PostComments, PostComment, InputCommentArea, CommentsArea, UserName } from "./styles";
 import { IoHeartOutline, IoTrashSharp, IoPencilSharp, IoHeartSharp, IoChatbubblesOutline, IoSend } from "react-icons/io5";
 import { BiRepost } from "react-icons/bi"
 import { useContext, useEffect, useRef, useState } from "react";
@@ -21,6 +21,8 @@ export default function UserPost({
     idOfEdition,
     setIdOfEdition,
     setIdOfDeletion,
+    idOfComment,
+    setIdOfComment
 }) {
     const navigate = useNavigate();
     const toolTipId = uuidv4();
@@ -37,7 +39,6 @@ export default function UserPost({
 
     const [sentEditRequest, setSentEditRequest] = useState(false)
     const [description, setDescription] = useState(post.postDesc)
-    const [showComments, setShowComments] = useState(false)
     const [postComments, setPostComments] = useState([]);
     const [commentDesc, setCommentDesc] = useState('');
     const [showShareModal, setShowShareModal] = useState(false)
@@ -203,14 +204,7 @@ export default function UserPost({
             <PostArea data-test="post">
                 <PostContent>
                     <Left>
-                        <Avatar src={post.userImage} onClick={() => {
-                            setUserSelected({
-                                id: post.userId,
-                                name: post.userName,
-                                image: post.userImage
-                            })
-                            navigate(`/user/${post.userId}`)
-                        }} />
+                        <Avatar src={post.userImage} />
                         {/* Likes */}
                         <Tooltip id={toolTipId} >
                             {getUserLikesText(post.usersThatLiked)}
@@ -229,7 +223,10 @@ export default function UserPost({
                         <div data-test="counter" className="count-text">{post.likesCount} like{post.likesCount > 1 ? "s" : ""}</div>
 
                         {/* Comments */}
-                        <div data-test="comment-btn" onClick={() => setShowComments(!showComments)}>
+                        <div data-test="comment-btn" onClick={() => {
+                            if (idOfComment >= 0) setIdOfComment(-Infinity)
+                            else setIdOfComment(post.postId)
+                        }}>
                             <IoChatbubblesOutline className="chat-icon" />
                         </div>
                         <div data-test="comment-counter" className="count-text">{postComments.length} comments</div>
@@ -241,7 +238,18 @@ export default function UserPost({
                     <Right>
                         <Infos>
                             <Header>
-                                <div className="user-name" data-test="username">{post.userName}</div>
+                                <UserName
+                                    className="user-name"
+                                    data-test="username"
+                                    onClick={() => {
+                                        setUserSelected({
+                                            id: post.userId,
+                                            name: post.userName,
+                                            image: post.userImage
+                                        })
+                                        navigate(`/user/${post.userId}`)
+                                    }}
+                                >{post.userName}</UserName>
                                 <Icons>
                                     {
                                         post.userCanDeletePost &&
@@ -278,8 +286,8 @@ export default function UserPost({
                                             post,
                                             description,
                                             setDescription,
-                                            posts,
-                                            setPosts,
+                                            (page === 'home' ? posts : (page === 'users' ? userPosts : hashtagPosts)),
+                                            (page === 'home' ? setPosts : (page === 'users' ? setUserPosts : setHashtagPosts)),
                                             setIdOfEdition,
                                             setSentEditRequest
                                         )
@@ -322,7 +330,7 @@ export default function UserPost({
                 </PostContent>
 
                 {/* Comments */}
-                {showComments &&
+                {idOfComment === post.postId &&
                     <CommentsArea data-test="comment-box">
                         <PostComments>
                             {postComments.map(comment => (
@@ -332,7 +340,7 @@ export default function UserPost({
                                         <div className="user-name">
                                             {comment.user_name}
                                             <span>
-                                                {comment.user_id == post.userId ? ` • post's author` : ''}
+                                                {comment.user_id === post.userId ? ` • post's author` : ''}
                                                 {following.includes(comment.user_id) ? ` • following` : ''}
                                             </span>
                                         </div>

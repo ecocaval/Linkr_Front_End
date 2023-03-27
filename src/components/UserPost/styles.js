@@ -35,7 +35,7 @@ export const PostContent = styled.div`
 export const CommentsArea = styled.div`
     margin-bottom: 25px;
 `
-    
+
 export const PostComments = styled.div`
     padding: 0 20px;
     max-height: 250px;
@@ -162,16 +162,18 @@ export const LinkArea = styled.a`
 
 `
 
+export const UserName = styled.p`
+    &:hover {
+        cursor: pointer;
+    }
+`
+
 export const Avatar = styled.img`
     width: 50px;
     height: 50px;
     object-fit: cover;
     border-radius: 50%;
     margin-bottom: 20px;
-
-    &:hover {
-        cursor: pointer;
-    }
 `
 export const Infos = styled.div`
     display: flex;

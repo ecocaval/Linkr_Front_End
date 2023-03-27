@@ -20,7 +20,10 @@ export default function HashtagPage() {
     const { hashtagPosts, setHashtagPosts } = useContext(PostsContext)
     const { showMobileSearchInput } = useContext(MobileSearchContext)
 
+    const [postBeingCommented, setPostBeingCommented] = useState(false)
+    const [postBeingEdited, setPostBeingEdited] = useState(false)
     const [postBeingDeleted, setPostBeingDeleted] = useState(false)
+    const [idOfComment, setIdOfComment] = useState(-Infinity)
     const [idOfDeletion, setIdOfDeletion] = useState(-Infinity)
     const [idOfEdition, setIdOfEdition] = useState(-Infinity)
     const [gotPosts, setGotPosts] = useState(false)
@@ -35,6 +38,18 @@ export default function HashtagPage() {
         }
         // eslint-disable-next-line 
     }, [hashtag])
+
+    useEffect(() => {
+        if (idOfEdition >= 0) setPostBeingEdited(true)
+        else if (postBeingEdited) setPostBeingEdited(false)
+        // eslint-disable-next-line
+    }, [idOfEdition])
+
+    useEffect(() => {
+        if (idOfComment >= 0) setPostBeingCommented(true)
+        else if (postBeingCommented) setPostBeingCommented(false)
+        // eslint-disable-next-line
+    }, [idOfComment])
 
     return (
         <>
@@ -54,6 +69,8 @@ export default function HashtagPage() {
                                         idOfEdition={idOfEdition}
                                         setIdOfEdition={setIdOfEdition}
                                         setIdOfDeletion={setIdOfDeletion}
+                                        idOfComment={idOfComment}
+                                        setIdOfComment={setIdOfComment}
                                     />) :
                                 <NoPostText data-test="message">There are no posts yet</NoPostText>) :
                             <Loader />
